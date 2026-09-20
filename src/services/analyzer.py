@@ -159,56 +159,41 @@ def analyze_geographic_drilldown(
     return market_df, region_df, country_df
 
 
-def compute_territory_quadrant_matrix(df: pd.DataFrame) -> pd.DataFrame:
-    """Classify 147 sovereign operating territories into strategic portfolio quadrants.
+def compute_quarterly_seasonality(df: pd.DataFrame) -> pd.DataFrame:
+    """Compute quarterly seasonality metrics (Q1-Q4) across fiscal years.
 
-    Quadrants:
-    1. Core Value Engines: Sales >= $50K and Margin >= 10%
-    2. Margin-Diluted Volume Channels: Sales >= $50K and Margin < 10% and Margin >= 0%
-    3. High-Yield Niche Profit Centers: Sales < $50K and Margin >= 15%
-    4. Deficit Rationalization Priorities: Margin < 0%
-    5. Secondary Developing Channels: Other positive margin territories
+    Evaluates intra-year cyclical cadence and validates fourth-quarter volume concentration.
 
     Args:
-        df: Input DataFrame.
+        df: Input DataFrame with 'Order Date', 'Sales', 'Profit'.
 
     Returns:
-        DataFrame with territorial classification and economic metrics.
+        DataFrame aggregated by Year and Quarter with Sales, Profit, Margin, and Annual Revenue Share %.
     """
-    if df.empty or "Country" not in df.columns:
+    if df.empty or "Order Date" not in df.columns:
         return pd.DataFrame()
 
-    territory = (
-        df.groupby(["Country", "Market"], as_index=False)
+    temp = df.copy()
+    temp["Year"] = temp["Order Date"].dt.year
+    temp["Quarter_Num"] = "Q" + temp["Order Date"].dt.quarter.astype(str)
+
+    quarterly = (
+        temp.groupby(["Year", "Quarter_Num"], as_index=False)
         .agg(
             Sales=("Sales", "sum"),
             Profit=("Profit", "sum"),
-            Orders=("Order ID", "nunique"),
-            Line_Items=("Row ID", "count"),
-            Avg_Discount=("Discount", "mean"),
+            Orders=("Order ID", "nunique") if "Order ID" in temp.columns else ("Sales", "count"),
         )
+        .sort_values(by=["Year", "Quarter_Num"])
     )
-    territory["Profit_Margin"] = (
-        territory["Profit"] / territory["Sales"].replace(0, float("nan"))
+
+    annual_sales = quarterly.groupby("Year")["Sales"].transform("sum")
+    quarterly["Quarter_Share_Pct"] = (quarterly["Sales"] / annual_sales) * 100.0
+    quarterly["Profit_Margin"] = (
+        quarterly["Profit"] / quarterly["Sales"].replace(0, np.nan)
     ).fillna(0.0) * 100.0
-    territory["Avg_Discount_Pct"] = territory["Avg_Discount"] * 100.0
 
-    def _assign_quadrant(row: pd.Series) -> str:
-        sales = row["Sales"]
-        margin = row["Profit_Margin"]
-        if margin < 0.0:
-            return "Deficit Rationalization Priority"
-        elif sales >= 50000.0 and margin >= 10.0:
-            return "Core Value Engine"
-        elif sales >= 50000.0 and margin < 10.0:
-            return "Margin-Diluted Volume Channel"
-        elif sales < 50000.0 and margin >= 15.0:
-            return "High-Yield Niche Profit Center"
-        else:
-            return "Secondary Developing Territory"
-
-    territory["Portfolio_Quadrant"] = territory.apply(_assign_quadrant, axis=1)
-    return territory.sort_values(by="Sales", ascending=False)
+    return quarterly
 
 
 def analyze_product_breakdown(
@@ -323,113 +308,6 @@ def analyze_shipping_and_priority(
 
     return ship_mode_df, priority_df
 
-
-def simulate_turnaround_impact(
-    df: pd.DataFrame,
-    max_discount_cap: float = 20.0,
-    restructure_deficit_territories: bool = True,
-    table_freight_surcharge: float = 0.0,
-    volume_attrition_rate: float = 5.0,
-) -> dict[str, Any]:
-    """Dynamically simulate financial turnaround impact and build an EBITDA bridge.
-
-    Args:
-        df: Input master DataFrame.
-        max_discount_cap: Maximum allowable discount percentage (e.g. 15.0 or 20.0).
-        restructure_deficit_territories: If True, restructures Turkey & Nigeria to break-even.
-        table_freight_surcharge: Dollar freight surcharge applied per Table quantity sold.
-        volume_attrition_rate: Percentage of discounted orders lost due to price sensitivity.
-
-    Returns:
-        Dictionary containing baseline metrics, projected metrics, and waterfall bridge items.
-    """
-    if df.empty:
-        return {
-            "baseline_sales": 0.0,
-            "baseline_profit": 0.0,
-            "baseline_margin": 0.0,
-            "projected_sales": 0.0,
-            "projected_profit": 0.0,
-            "projected_margin": 0.0,
-            "net_ebitda_uplift": 0.0,
-            "bridge_components": {},
-        }
-
-    sim = df.copy()
-    baseline_sales = float(sim["Sales"].sum())
-    baseline_profit = float(sim["Profit"].sum())
-    baseline_margin = (baseline_profit / baseline_sales * 100.0) if baseline_sales > 0 else 0.0
-
-    # 1. Commercial Pricing Governance (Capping discounts above threshold)
-    cap_fraction = max_discount_cap / 100.0
-    excess_mask = sim["Discount"] > cap_fraction
-
-    # Estimate base undiscounted price: Sales / (1 - Discount)
-    undiscounted_price = np.where(
-        sim["Discount"] < 0.99,
-        sim["Sales"] / (1.0 - sim["Discount"]),
-        sim["Sales"],
-    )
-
-    # Calculate revenue if capped at max_discount_cap
-    capped_sales = np.where(
-        excess_mask,
-        undiscounted_price * (1.0 - cap_fraction),
-        sim["Sales"],
-    )
-
-    gross_pricing_recovery = float(np.sum(capped_sales[excess_mask] - sim["Sales"][excess_mask]))
-
-    # Apply volume attrition penalty to capped orders (price elasticity churn)
-    attrition_fraction = volume_attrition_rate / 100.0
-    attrition_profit_drag = gross_pricing_recovery * attrition_fraction
-
-    # 2. Deficit Territory Restructuring (Turkey & Nigeria transition to break-even)
-    territorial_recovery = 0.0
-    if restructure_deficit_territories:
-        deficit_mask = sim["Country"].isin(["Turkey", "Nigeria"]) & (sim["Profit"] < 0)
-        territorial_recovery = float(abs(sim[deficit_mask]["Profit"].sum()))
-
-    # 3. Bulky Merchandise Dimensional Freight Recovery (Tables)
-    bulky_freight_recovery = 0.0
-    if table_freight_surcharge > 0.0 and "Sub-Category" in sim.columns:
-        table_mask = sim["Sub-Category"] == "Tables"
-        total_table_units = float(sim[table_mask]["Quantity"].sum()) if table_mask.any() else 0.0
-        bulky_freight_recovery = total_table_units * table_freight_surcharge
-
-    # Net Financial Syntheses
-    projected_profit = (
-        baseline_profit
-        + gross_pricing_recovery
-        + territorial_recovery
-        + bulky_freight_recovery
-        - attrition_profit_drag
-    )
-
-    # Projected Sales adjustments
-    projected_sales = baseline_sales + gross_pricing_recovery - (gross_pricing_recovery * attrition_fraction)
-    projected_margin = (projected_profit / projected_sales * 100.0) if projected_sales > 0 else 0.0
-    net_ebitda_uplift = projected_profit - baseline_profit
-
-    bridge_components = {
-        "Reported Base Profit": baseline_profit,
-        "Pricing Discipline (Discount Cap)": gross_pricing_recovery,
-        "Territory Restructuring (3PL Model)": territorial_recovery,
-        "Bulky Freight Pass-Through": bulky_freight_recovery,
-        "Volume Attrition Friction": -attrition_profit_drag,
-        "Projected Operating Profit": projected_profit,
-    }
-
-    return {
-        "baseline_sales": baseline_sales,
-        "baseline_profit": baseline_profit,
-        "baseline_margin": baseline_margin,
-        "projected_sales": projected_sales,
-        "projected_profit": projected_profit,
-        "projected_margin": projected_margin,
-        "net_ebitda_uplift": net_ebitda_uplift,
-        "bridge_components": bridge_components,
-    }
 
 
 def filter_data(
@@ -664,4 +542,122 @@ def simulate_turnaround_impact(
         "attrition_drag": attrition_drag,
         "bridge_components": bridge_components,
     }
+
+
+def compute_scenario_sensitivity_matrix(df: pd.DataFrame) -> pd.DataFrame:
+    """Pre-compute three institutional turnaround policy scenarios for Board evaluation.
+
+    Scenarios:
+    1. Conservative Case: 25% Discount Cap, $0 Table Surcharge, 7.0% Churn Attrition, Partial Restructuring (50% recovery).
+    2. Base Case (Recommended Plan): 20% Discount Cap, $15 Table Surcharge, 5.0% Churn Attrition, Full Restructuring.
+    3. Aggressive Case: 15% Discount Cap, $25 Table Surcharge, 3.0% Churn Attrition, Full Restructuring.
+
+    Args:
+        df: Input master transactions DataFrame.
+
+    Returns:
+        Summary DataFrame comparing scenario levers and projected financial outcomes.
+    """
+    if df.empty:
+        return pd.DataFrame()
+
+    baseline_profit = float(df["Profit"].sum()) if "Profit" in df.columns else 0.0
+    baseline_sales = float(df["Sales"].sum()) if "Sales" in df.columns else 0.0
+    baseline_margin = (baseline_profit / baseline_sales * 100.0) if baseline_sales > 0 else 0.0
+
+    # 1. Conservative Case
+    res_cons = simulate_turnaround_impact(
+        df=df,
+        max_discount_cap=0.25,
+        restructure_deficit_territories=False,
+        table_freight_surcharge=0.0,
+        volume_attrition_rate=0.07,
+    )
+    turkey_nigeria_deficit = 0.0
+    if "Country" in df.columns and "Profit" in df.columns:
+        deficit_mask = df["Country"].isin(["Turkey", "Nigeria"]) & (df["Profit"] < 0)
+        turkey_nigeria_deficit = float(abs(df.loc[deficit_mask, "Profit"].sum()))
+    cons_profit = res_cons["projected_profit"] + (0.50 * turkey_nigeria_deficit)
+    cons_uplift = cons_profit - baseline_profit
+    cons_margin = (cons_profit / res_cons["projected_sales"] * 100.0) if res_cons["projected_sales"] > 0 else 0.0
+    cons_pct_uplift = (cons_uplift / baseline_profit * 100.0) if baseline_profit > 0 else 0.0
+
+    # 2. Base Case (Recommended Plan)
+    res_base = simulate_turnaround_impact(
+        df=df,
+        max_discount_cap=0.20,
+        restructure_deficit_territories=True,
+        table_freight_surcharge=15.0,
+        volume_attrition_rate=0.05,
+    )
+    base_profit = res_base["projected_profit"]
+    base_uplift = res_base["net_ebitda_uplift"]
+    base_margin = res_base["projected_margin"]
+    base_pct_uplift = (base_uplift / baseline_profit * 100.0) if baseline_profit > 0 else 0.0
+
+    # 3. Aggressive Case
+    res_aggr = simulate_turnaround_impact(
+        df=df,
+        max_discount_cap=0.15,
+        restructure_deficit_territories=True,
+        table_freight_surcharge=25.0,
+        volume_attrition_rate=0.03,
+    )
+    aggr_profit = res_aggr["projected_profit"]
+    aggr_uplift = res_aggr["net_ebitda_uplift"]
+    aggr_margin = res_aggr["projected_margin"]
+    aggr_pct_uplift = (aggr_uplift / baseline_profit * 100.0) if baseline_profit > 0 else 0.0
+
+    scenarios = [
+        {
+            "Strategic Scenario": "Baseline (Status Quo)",
+            "Discount Cap": "No Cap",
+            "Table Surcharge": "$0 / Unit",
+            "International Model": "Direct Fulfillment (Deficit)",
+            "Churn Attrition": "0.0%",
+            "Repriced Orders": 0,
+            "Projected Operating EBITDA": baseline_profit,
+            "Net EBITDA Uplift": 0.0,
+            "EBITDA Uplift (%)": 0.0,
+            "Projected Operating Margin": baseline_margin,
+        },
+        {
+            "Strategic Scenario": "1. Conservative Case",
+            "Discount Cap": "25.0%",
+            "Table Surcharge": "$0 / Unit",
+            "International Model": "Hybrid / Partial 3PL (50%)",
+            "Churn Attrition": "7.0%",
+            "Repriced Orders": res_cons["affected_orders_count"],
+            "Projected Operating EBITDA": cons_profit,
+            "Net EBITDA Uplift": cons_uplift,
+            "EBITDA Uplift (%)": cons_pct_uplift,
+            "Projected Operating Margin": cons_margin,
+        },
+        {
+            "Strategic Scenario": "2. Base Case (Recommended Plan)",
+            "Discount Cap": "20.0%",
+            "Table Surcharge": "$15 / Unit",
+            "International Model": "Bonded 3PL Master Distributor",
+            "Churn Attrition": "5.0%",
+            "Repriced Orders": res_base["affected_orders_count"],
+            "Projected Operating EBITDA": base_profit,
+            "Net EBITDA Uplift": base_uplift,
+            "EBITDA Uplift (%)": base_pct_uplift,
+            "Projected Operating Margin": base_margin,
+        },
+        {
+            "Strategic Scenario": "3. Aggressive Case",
+            "Discount Cap": "15.0%",
+            "Table Surcharge": "$25 / Unit",
+            "International Model": "Bonded 3PL Master Distributor",
+            "Churn Attrition": "3.0%",
+            "Repriced Orders": res_aggr["affected_orders_count"],
+            "Projected Operating EBITDA": aggr_profit,
+            "Net EBITDA Uplift": aggr_uplift,
+            "EBITDA Uplift (%)": aggr_pct_uplift,
+            "Projected Operating Margin": aggr_margin,
+        },
+    ]
+
+    return pd.DataFrame(scenarios)
 

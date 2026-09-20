@@ -4,7 +4,7 @@ import streamlit as st
 
 
 def sanitize_markdown_text(text: str) -> str:
-    """Escape currency dollar signs in markdown strings to prevent KaTeX math mode corruption.
+    r"""Escape currency dollar signs in markdown strings to prevent KaTeX math mode corruption.
 
     In Streamlit, multiple unescaped '$' symbols cause text to be rendered as LaTeX math formulas,
     stripping whitespace and italicizing characters. Escaping as r'\$' forces standard text rendering.

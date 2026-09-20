@@ -8,6 +8,8 @@ from src.services.analyzer import (
     analyze_geographic_drilldown,
     analyze_product_breakdown,
     compute_overview_kpis,
+    compute_quarterly_seasonality,
+    compute_scenario_sensitivity_matrix,
     compute_territory_quadrant_matrix,
     compute_yoy_growth,
     filter_data,
@@ -149,4 +151,36 @@ def test_simulate_turnaround_impact(sample_superstore_df: pd.DataFrame) -> None:
     empty_sim = simulate_turnaround_impact(pd.DataFrame())
     assert empty_sim["baseline_profit"] == 0.0
     assert empty_sim["net_ebitda_uplift"] == 0.0
+
+
+def test_compute_quarterly_seasonality(sample_superstore_df: pd.DataFrame) -> None:
+    """Verify quarterly seasonality aggregation and revenue share calculation."""
+    q_df = compute_quarterly_seasonality(sample_superstore_df)
+    assert not q_df.empty
+    assert "Quarter_Num" in q_df.columns
+    assert "Quarter_Share_Pct" in q_df.columns
+    assert "Sales" in q_df.columns
+    assert "Profit" in q_df.columns
+
+    # Test empty DataFrame
+    assert compute_quarterly_seasonality(pd.DataFrame()).empty
+
+
+def test_compute_scenario_sensitivity_matrix(sample_superstore_df: pd.DataFrame) -> None:
+    """Verify pre-computed scenario sensitivity matrix generation."""
+    matrix = compute_scenario_sensitivity_matrix(sample_superstore_df)
+    assert not matrix.empty
+    assert len(matrix) == 4  # Baseline + 3 Turnaround Cases
+    scenarios = list(matrix["Strategic Scenario"])
+    assert "Baseline (Status Quo)" in scenarios
+    assert "1. Conservative Case" in scenarios
+    assert "2. Base Case (Recommended Plan)" in scenarios
+    assert "3. Aggressive Case" in scenarios
+
+    assert "Projected Operating EBITDA" in matrix.columns
+    assert "Net EBITDA Uplift" in matrix.columns
+    assert "Projected Operating Margin" in matrix.columns
+
+    # Test empty DataFrame
+    assert compute_scenario_sensitivity_matrix(pd.DataFrame()).empty
 

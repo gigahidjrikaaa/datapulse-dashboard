@@ -5,8 +5,10 @@ import streamlit as st
 
 from src.components.charts import create_ebitda_bridge_chart
 from src.components.metrics import render_kpi_card
-from src.components.narratives import render_chart_story_card, render_data_dictionary_expander
-from src.services.analyzer import simulate_turnaround_impact
+from src.services.analyzer import (
+    compute_scenario_sensitivity_matrix,
+    simulate_turnaround_impact,
+)
 
 
 def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
@@ -177,6 +179,26 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
         )
         st.dataframe(
             bridge_df.style.format({"Impact ($ USD)": "${:,.2f}"}),
+            use_container_width=True,
+        )
+
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("#### Institutional Scenario Sensitivity Matrix (Pre-Configured Policy Packages)")
+        st.markdown(
+            "Comparative multi-scenario evaluation model pre-configured for executive review, evaluating Conservative, "
+            "Base Case (Target Plan), and Aggressive turnaround packages alongside the status quo baseline."
+        )
+        scenario_matrix = compute_scenario_sensitivity_matrix(df)
+        st.dataframe(
+            scenario_matrix.style.format(
+                {
+                    "Repriced Orders": "{:,}",
+                    "Projected Operating EBITDA": "${:,.2f}",
+                    "Net EBITDA Uplift": "+${:,.2f}",
+                    "EBITDA Uplift (%)": "{:+.1f}%",
+                    "Projected Operating Margin": "{:.2f}%",
+                }
+            ),
             use_container_width=True,
         )
 

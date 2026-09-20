@@ -3,9 +3,10 @@
 import pandas as pd
 import streamlit as st
 
+from src.components.charts import create_ebitda_bridge_chart
 from src.components.metrics import render_kpi_cards
 from src.components.narratives import render_data_dictionary_expander
-from src.services.analyzer import compute_overview_kpis
+from src.services.analyzer import compute_overview_kpis, simulate_turnaround_impact
 
 
 def render_executive_summary_view(df: pd.DataFrame) -> None:
@@ -149,22 +150,34 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
             st.metric(
                 "Reported Operating Profit",
                 f"${kpis['total_profit']:,.0f}",
-                "11.6% Operating Margin",
-                help="Current actual earnings after absorbing $920K in losses.",
+                f"{kpis['profit_margin']:.1f}% Operating Margin",
+                help="Current actual earnings after absorbing operating losses.",
             )
         with c2:
             st.metric(
                 "Recoverable Negative Margin Drag",
                 f"+${kpis['profit_loss_drag']:,.0f}",
-                "Wiped out by 24.5% of order lines",
+                f"Wiped out by {kpis['loss_order_pct']:.1f}% of order lines",
                 help="Cumulative dollar loss from transactions executed below cost-to-serve.",
             )
         with c3:
-            potential_profit = kpis['total_profit'] + kpis['profit_loss_drag']
-            potential_margin = (potential_profit / kpis['total_sales'] * 100.0) if kpis['total_sales'] > 0 else 0
+            potential_profit = kpis["total_profit"] + kpis["profit_loss_drag"]
+            potential_margin = (potential_profit / kpis["total_sales"] * 100.0) if kpis["total_sales"] > 0 else 0
             st.metric(
                 "Adjusted Operating Profit Potential",
                 f"${potential_profit:,.0f}",
                 f"{potential_margin:.1f}% Margin (+62.7% Upside)",
                 help="Unburdened operating earnings potential under strict pricing governance.",
             )
+
+        st.markdown("<br>", unsafe_allow_html=True)
+        # Visual Anchor Exhibit: Mini EBITDA Turnaround Bridge
+        sim_summary = simulate_turnaround_impact(
+            df=df,
+            max_discount_cap=0.20,
+            restructure_deficit_territories=True,
+            table_freight_surcharge=15.0,
+            volume_attrition_rate=0.05,
+        )
+        bridge_fig = create_ebitda_bridge_chart(sim_summary["bridge_components"])
+        st.plotly_chart(bridge_fig, use_container_width=True)

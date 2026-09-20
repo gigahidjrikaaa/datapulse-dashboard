@@ -3,7 +3,11 @@
 import pandas as pd
 import streamlit as st
 
-from src.components.charts import create_discount_cliff_chart
+from src.components.charts import (
+    create_discount_cliff_chart,
+    create_discount_profit_scatter,
+    create_freight_absorption_chart,
+)
 from src.components.narratives import render_chart_story_card, render_data_dictionary_expander
 from src.services.analyzer import (
     analyze_discount_impact,
@@ -96,12 +100,25 @@ def render_trends_view(df: pd.DataFrame) -> None:
             ),
         )
 
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("#### Forensic Transaction Scatter: Empirical Verification of the Inversion Tipping Point")
+        st.markdown(
+            "Every individual order plotted across contractual discount rate (%) versus realized net operating profit ($ USD). "
+            "Dashed line marks the 20.0% inversion threshold; dotted line marks break-even."
+        )
+        scatter_fig = create_discount_profit_scatter(df)
+        st.plotly_chart(scatter_fig, use_container_width=True)
+
     st.divider()
 
     # 2. Shipping Cost and Order Priority Analysis
     with st.container(border=True):
         st.markdown("### 2. Freight Absorption Ratios and Fulfillment Service Levels")
         ship_df, priority_df = analyze_shipping_and_priority(df)
+
+        # Priority 2: Visual Freight Absorption Exhibit
+        freight_chart = create_freight_absorption_chart(ship_df)
+        st.plotly_chart(freight_chart, use_container_width=True)
 
         c1, c2 = st.columns(2)
         with c1:

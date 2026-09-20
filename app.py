@@ -6,6 +6,7 @@ from src.components.filters import render_sidebar_filters
 from src.config import APP_LAYOUT, APP_SUBTITLE, APP_TITLE, APP_VERSION
 from src.services.analyzer import filter_data
 from src.services.data_loader import load_sales_data
+from src.views.data_explorer import render_data_explorer_view
 from src.views.eda import render_eda_view
 from src.views.executive_summary import render_executive_summary_view
 from src.views.overview import render_overview_view
@@ -88,6 +89,9 @@ def main() -> None:
     def view_task4_5() -> None:
         render_revival_strategy_view(st.session_state["filtered_df"])
 
+    def view_data_explorer() -> None:
+        render_data_explorer_view(st.session_state["filtered_df"])
+
     # Streamlit Navigation Router (Strictly professional, zero emojis)
     page_nav = st.navigation(
         [
@@ -111,6 +115,10 @@ def main() -> None:
             st.Page(
                 view_task4_5,
                 title="Section 4: Strategic Turnaround Framework & Action Plan",
+            ),
+            st.Page(
+                view_data_explorer,
+                title="Section 5: Transaction Ledger & Forensic Data Explorer",
             ),
         ]
     )

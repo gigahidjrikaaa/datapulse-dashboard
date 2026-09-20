@@ -6,6 +6,8 @@ import streamlit as st
 from src.components.charts import (
     create_country_loss_chart,
     create_market_share_pie,
+    create_region_margin_chart,
+    create_segment_performance_chart,
     create_subcat_profit_chart,
     create_territory_quadrant_chart,
 )
@@ -183,10 +185,57 @@ def render_eda_view(df: pd.DataFrame) -> None:
 
         st.divider()
 
+        # Region-level hierarchy (fills the reg_df gap)
         with st.container(border=True):
-            st.markdown("#### Regional Operating Matrix")
+            st.markdown("#### Sub-Regional Operating Profit & Margin Breakdown (13 Geographic Regions)")
+            st.markdown(
+                "Hierarchical deconstruction from Market to Sub-Region, evaluating margin realization across operating clusters."
+            )
+            col_reg_chart, col_reg_table = st.columns([3, 2])
+            with col_reg_chart:
+                reg_fig = create_region_margin_chart(reg_df)
+                st.plotly_chart(reg_fig, use_container_width=True)
+            with col_reg_table:
+                st.markdown("##### Sub-Region Operating Summary")
+                st.dataframe(
+                    reg_df.style.format(
+                        {
+                            "Sales": "${:,.2f}",
+                            "Profit": "${:,.2f}",
+                            "Shipping_Cost": "${:,.2f}",
+                            "Profit_Margin": "{:.2f}%",
+                            "Avg_Discount_Pct": "{:.1f}%",
+                            "Orders": "{:,}",
+                        }
+                    ),
+                    use_container_width=True,
+                )
+
+        st.divider()
+
+        with st.container(border=True):
+            st.markdown("#### Primary Theater Operating Matrix (Markets)")
             st.dataframe(
                 mkt_df.style.format(
+                    {
+                        "Sales": "${:,.2f}",
+                        "Profit": "${:,.2f}",
+                        "Shipping_Cost": "${:,.2f}",
+                        "Profit_Margin": "{:.2f}%",
+                        "Avg_Discount_Pct": "{:.1f}%",
+                        "Orders": "{:,}",
+                    }
+                ),
+                use_container_width=True,
+            )
+
+        # Full Country-Level Table (All 147 Territories)
+        with st.expander("Explore Full Sovereign Territories Operating Matrix (All 147 Countries)"):
+            st.markdown(
+                "Comprehensive operating ledger across all 147 sovereign operating jurisdictions, sorted by cumulative operating contribution."
+            )
+            st.dataframe(
+                country_df.style.format(
                     {
                         "Sales": "${:,.2f}",
                         "Profit": "${:,.2f}",
@@ -279,6 +328,10 @@ def render_eda_view(df: pd.DataFrame) -> None:
             segment_df["Profit_Margin"] = (segment_df["Profit"] / segment_df["Sales"]) * 100.0
             segment_df["Avg_Discount_Pct"] = segment_df["Avg_Discount"] * 100.0
 
+            segment_chart = create_segment_performance_chart(segment_df)
+            st.plotly_chart(segment_chart, use_container_width=True)
+
+            st.markdown("##### Account Tier Economic Matrix")
             st.dataframe(
                 segment_df.style.format(
                     {

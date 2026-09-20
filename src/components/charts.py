@@ -381,3 +381,334 @@ def create_ebitda_bridge_chart(bridge_components: dict[str, float]) -> go.Figure
         margin=dict(l=40, r=40, t=60, b=40),
     )
     return fig
+
+
+def create_discount_profit_scatter(df: pd.DataFrame, max_points: int = 15000) -> go.Figure:
+    """Create a WebGL scatter plot showing per-order Discount vs. Profit.
+
+    Visually confirms the unit economics tipping point at the 20.0% discount inversion threshold.
+
+    Args:
+        df: Input DataFrame containing 'Discount', 'Profit', 'Sales', 'Sub-Category', 'Country'.
+        max_points: Max points to display for responsiveness.
+
+    Returns:
+        Plotly Figure.
+    """
+    if df.empty or "Discount" not in df.columns or "Profit" not in df.columns:
+        return go.Figure()
+
+    plot_df = df
+    if len(df) > max_points:
+        plot_df = df.sample(n=max_points, random_state=42)
+
+    plot_df = plot_df.copy()
+    plot_df["Discount_Pct"] = plot_df["Discount"] * 100.0
+
+    pos_mask = plot_df["Profit"] >= 0
+    neg_mask = ~pos_mask
+
+    fig = go.Figure()
+
+    # Profitable transactions (Green)
+    if pos_mask.any():
+        pos_df = plot_df[pos_mask]
+        fig.add_trace(
+            go.Scattergl(
+                x=pos_df["Discount_Pct"],
+                y=pos_df["Profit"],
+                mode="markers",
+                name="Profitable (Margin >= 0%)",
+                marker=dict(size=5, color=SUCCESS_COLOR, opacity=0.45),
+                customdata=list(zip(
+                    pos_df.get("Order ID", pos_df.index),
+                    pos_df.get("Country", [""] * len(pos_df)),
+                    pos_df.get("Sub-Category", [""] * len(pos_df)),
+                    pos_df.get("Sales", [0.0] * len(pos_df)),
+                )),
+                hovertemplate=(
+                    "<b>Order ID:</b> %{customdata[0]}<br>"
+                    "<b>Territory:</b> %{customdata[1]} | <b>Line:</b> %{customdata[2]}<br>"
+                    "<b>Discount:</b> %{x:.1f}%<br>"
+                    "<b>Operating Profit:</b> $%{y:,.2f}<br>"
+                    "<b>Gross Sales:</b> $%{customdata[3]:,.2f}<extra></extra>"
+                ),
+            )
+        )
+
+    # Loss transactions (Red)
+    if neg_mask.any():
+        neg_df = plot_df[neg_mask]
+        fig.add_trace(
+            go.Scattergl(
+                x=neg_df["Discount_Pct"],
+                y=neg_df["Profit"],
+                mode="markers",
+                name="Deficit (Negative Margin)",
+                marker=dict(size=6, color=DANGER_COLOR, opacity=0.65),
+                customdata=list(zip(
+                    neg_df.get("Order ID", neg_df.index),
+                    neg_df.get("Country", [""] * len(neg_df)),
+                    neg_df.get("Sub-Category", [""] * len(neg_df)),
+                    neg_df.get("Sales", [0.0] * len(neg_df)),
+                )),
+                hovertemplate=(
+                    "<b>Order ID:</b> %{customdata[0]}<br>"
+                    "<b>Territory:</b> %{customdata[1]} | <b>Line:</b> %{customdata[2]}<br>"
+                    "<b>Discount:</b> %{x:.1f}%<br>"
+                    "<b>Operating Profit:</b> $%{y:,.2f}<br>"
+                    "<b>Gross Sales:</b> $%{customdata[3]:,.2f}<extra></extra>"
+                ),
+            )
+        )
+
+    # Reference lines
+    fig.add_vline(
+        x=20.0,
+        line_dash="dash",
+        line_color="#E2E8F0",
+        annotation_text="20.0% Inversion Threshold",
+        annotation_position="top right",
+    )
+    fig.add_hline(
+        y=0.0,
+        line_dash="dot",
+        line_color="#94A3B8",
+        annotation_text="Break-Even ($0 Profit)",
+        annotation_position="bottom right",
+    )
+
+    fig.update_layout(
+        template=CHART_TEMPLATE,
+        title="Forensic Transaction Ledger: Discount Concession vs Net Operating Profit",
+        xaxis_title="Contractual Discount Rate (%)",
+        yaxis_title="Net Operating Profit ($ USD)",
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        margin=dict(l=40, r=40, t=60, b=40),
+    )
+    return fig
+
+
+def create_freight_absorption_chart(ship_df: pd.DataFrame) -> go.Figure:
+    """Create a bar chart of freight absorption ratio across shipping modes.
+
+    Visually demonstrates that Same Day (17.4%) and First Class (16.8%) absorb
+    more than double the freight cost percentage of Standard Class (8.1%).
+
+    Args:
+        ship_df: DataFrame summarized by Ship Mode.
+
+    Returns:
+        Plotly Figure.
+    """
+    if ship_df.empty:
+        return go.Figure()
+
+    sorted_df = ship_df.sort_values(by="Ship_Cost_Ratio", ascending=True)
+
+    colors = [
+        DANGER_COLOR if ratio > 15.0 else WARNING_COLOR if ratio > 10.0 else SUCCESS_COLOR
+        for ratio in sorted_df["Ship_Cost_Ratio"]
+    ]
+
+    fig = go.Figure()
+
+    # Freight cost ratio bar
+    fig.add_trace(
+        go.Bar(
+            x=sorted_df["Ship Mode"],
+            y=sorted_df["Ship_Cost_Ratio"],
+            name="Freight Cost Ratio (%)",
+            marker_color=colors,
+            text=[f"{r:.2f}%" for r in sorted_df["Ship_Cost_Ratio"]],
+            textposition="auto",
+        )
+    )
+
+    # Average shipping cost line (Secondary axis)
+    fig.add_trace(
+        go.Scatter(
+            x=sorted_df["Ship Mode"],
+            y=sorted_df["Avg_Shipping_Cost"],
+            name="Avg Shipping Cost ($)",
+            yaxis="y2",
+            mode="lines+markers+text",
+            text=[f"${c:.2f}" for c in sorted_df["Avg_Shipping_Cost"]],
+            textposition="top center",
+            line=dict(color=ACCENT_CYAN, width=2.5),
+            marker=dict(size=8, color=ACCENT_CYAN),
+        )
+    )
+
+    fig.update_layout(
+        template=CHART_TEMPLATE,
+        title="Freight Cost Absorption & Delivery Tier Subsidization",
+        xaxis_title="Logistics Delivery Tier (Ship Mode)",
+        yaxis=dict(title="Freight-to-Sales Ratio (%)", range=[0, max(sorted_df["Ship_Cost_Ratio"]) * 1.3]),
+        yaxis2=dict(
+            title="Avg Landed Freight Cost ($ USD)",
+            overlaying="y",
+            side="right",
+            showgrid=False,
+            range=[0, max(sorted_df["Avg_Shipping_Cost"]) * 1.3],
+        ),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        margin=dict(l=40, r=50, t=60, b=40),
+    )
+    return fig
+
+
+def create_region_margin_chart(reg_df: pd.DataFrame) -> go.Figure:
+    """Create horizontal bar chart of Operating Profit and Margin % across Sub-Regions.
+
+    Fills the Region-level drilldown exhibit gap in the Market -> Region -> Country hierarchy.
+
+    Args:
+        reg_df: DataFrame summarized by Region.
+
+    Returns:
+        Plotly Figure.
+    """
+    if reg_df.empty:
+        return go.Figure()
+
+    sorted_df = reg_df.sort_values(by="Profit", ascending=True)
+    colors = [SUCCESS_COLOR if p > 0 else DANGER_COLOR for p in sorted_df["Profit"]]
+
+    fig = go.Figure(
+        go.Bar(
+            x=sorted_df["Profit"],
+            y=sorted_df["Region"],
+            orientation="h",
+            marker_color=colors,
+            text=[f"${p:,.0f} ({m:.1f}%)" for p, m in zip(sorted_df["Profit"], sorted_df["Profit_Margin"])],
+            textposition="auto",
+        )
+    )
+
+    fig.update_layout(
+        template=CHART_TEMPLATE,
+        title="Operating Profit & Margin (%) Across 13 Geographic Sub-Regions",
+        xaxis_title="Operating Profit ($ USD)",
+        yaxis_title="Geographic Sub-Region",
+        margin=dict(l=40, r=60, t=60, b=40),
+    )
+    return fig
+
+
+def create_quarterly_seasonality_chart(quarterly_df: pd.DataFrame) -> go.Figure:
+    """Create grouped bar chart illustrating Q1-Q4 quarterly seasonality across fiscal years.
+
+    Visually validates that Q4 volume surges to ~35% of annual revenue.
+
+    Args:
+        quarterly_df: DataFrame from compute_quarterly_seasonality.
+
+    Returns:
+        Plotly Figure.
+    """
+    if quarterly_df.empty:
+        return go.Figure()
+
+    fig = px.bar(
+        quarterly_df,
+        x="Year",
+        y="Sales",
+        color="Quarter_Num",
+        barmode="group",
+        title="Intra-Year Quarterly Revenue Cadence (Q1–Q4 Seasonality Progression)",
+        labels={
+            "Sales": "Gross Sales ($ USD)",
+            "Year": "Fiscal Year",
+            "Quarter_Num": "Fiscal Quarter",
+        },
+        color_discrete_sequence=CHART_COLORWAY,
+        template=CHART_TEMPLATE,
+        text=quarterly_df.apply(
+            lambda r: f"${r['Sales']/1e3:,.0f}K<br>({r['Quarter_Share_Pct']:.1f}%)",
+            axis=1,
+        ),
+    )
+    fig.update_traces(textposition="outside")
+    fig.update_layout(
+        xaxis=dict(type="category"),
+        yaxis=dict(title="Invoiced Sales ($ USD)"),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        margin=dict(l=40, r=40, t=60, b=40),
+    )
+    return fig
+
+
+def create_segment_performance_chart(segment_df: pd.DataFrame) -> go.Figure:
+    """Create grouped bar and margin comparison chart for Customer Account Tiers.
+
+    Empirically proves that Consumer, Corporate, and Home Office tiers share
+    near-identical ~11.5% margins, ruling out customer classification as a root cause.
+
+    Args:
+        segment_df: DataFrame summarized by Customer Segment.
+
+    Returns:
+        Plotly Figure.
+    """
+    if segment_df.empty:
+        return go.Figure()
+
+    fig = go.Figure()
+
+    # Sales Bar
+    fig.add_trace(
+        go.Bar(
+            x=segment_df["Segment"],
+            y=segment_df["Sales"],
+            name="Gross Sales ($ USD)",
+            marker_color=PRIMARY_COLOR,
+            text=[f"${s/1e6:.2f}M" for s in segment_df["Sales"]],
+            textposition="auto",
+        )
+    )
+
+    # Profit Bar
+    fig.add_trace(
+        go.Bar(
+            x=segment_df["Segment"],
+            y=segment_df["Profit"],
+            name="Operating Profit ($ USD)",
+            marker_color=SUCCESS_COLOR,
+            text=[f"${p/1e3:.0f}K" for p in segment_df["Profit"]],
+            textposition="auto",
+        )
+    )
+
+    # Margin Line (Secondary axis)
+    fig.add_trace(
+        go.Scatter(
+            x=segment_df["Segment"],
+            y=segment_df["Profit_Margin"],
+            name="Operating Margin (%)",
+            yaxis="y2",
+            mode="lines+markers+text",
+            text=[f"{m:.2f}%" for m in segment_df["Profit_Margin"]],
+            textposition="top center",
+            line=dict(color=WARNING_COLOR, width=2.5),
+            marker=dict(size=9, color=WARNING_COLOR),
+        )
+    )
+
+    fig.update_layout(
+        template=CHART_TEMPLATE,
+        title="Customer Account Tier Performance: Structural Margin Uniformity",
+        barmode="group",
+        xaxis_title="Customer Purchasing Classification",
+        yaxis=dict(title="Financial Value ($ USD)"),
+        yaxis2=dict(
+            title="Operating Margin (%)",
+            overlaying="y",
+            side="right",
+            showgrid=False,
+            range=[0, 20],
+        ),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        margin=dict(l=40, r=50, t=60, b=40),
+    )
+    return fig
