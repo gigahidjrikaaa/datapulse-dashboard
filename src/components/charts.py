@@ -5,6 +5,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 from src.config import (
+    ACCENT_CYAN,
     CHART_COLORWAY,
     CHART_TEMPLATE,
     DANGER_COLOR,
@@ -12,6 +13,7 @@ from src.config import (
     SUCCESS_COLOR,
     WARNING_COLOR,
 )
+
 
 
 def create_yoy_growth_chart(yearly_df: pd.DataFrame) -> go.Figure:

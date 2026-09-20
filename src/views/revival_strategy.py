@@ -5,10 +5,12 @@ import streamlit as st
 
 from src.components.charts import create_ebitda_bridge_chart
 from src.components.metrics import render_kpi_card
+from src.components.narratives import render_data_dictionary_expander
 from src.services.analyzer import (
     compute_scenario_sensitivity_matrix,
     simulate_turnaround_impact,
 )
+
 
 
 def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
