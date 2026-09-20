@@ -19,6 +19,28 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
     )
     st.markdown("---")
 
+    # Formal Problem Formulation (Tasks 4 & 5)
+    with st.container(border=True):
+        st.markdown("### Formal Problem Formulation: Strategic Turnaround Optimization & Governance Architecture")
+        st.markdown(
+            r"""
+            **Context & Stakeholder Mandate (Tasks 4 & 5 Brief)**:
+            The Chief Strategy Officer and Analytics Taskforce are chartered by the Board of Directors to transition from forensic diagnostic to actionable turnaround execution.
+            The mandate requires solving a multi-variable corporate optimization problem:
+
+            1. **Turnaround Optimization Model**: Maximize net operating EBITDA while penalizing customer churn elasticity:
+               $$\max_{\delta_{\text{cap}}, \tau, s} \text{EBITDA} = \text{EBITDA}_{\text{base}} + \Delta \Pi_{\text{pricing}}(\delta_{\text{cap}}) + \Delta \Pi_{\text{geo}}(\tau) + \Delta \Pi_{\text{freight}}(s) - \text{ChurnDrag}(\epsilon)$$
+               - $\delta_{\text{cap}}$: Maximum allowable commercial discount ceiling (ERP hard cap).
+               - $\tau$: Binary restructuring vector converting deficit territories (Turkey, Nigeria) to 3PL distributor models.
+               - $s$: Dimensional freight surcharge ($/unit) levied on bulky merchandise lines (Tables).
+               - $\epsilon$: Price elasticity churn coefficient modeling customer attrition on repriced transactions.
+            2. **Executive Accountability & Governance Architecture**:
+               - Establish discrete C-suite and VP ownership for each intervention.
+               - Sequence operational milestones into a 6–12 month phased implementation roadmap.
+               - Deliver a cohesive 10-slide executive briefing deck calibrated for Board of Directors deliberation.
+            """
+        )
+
     render_data_dictionary_expander()
 
     if df is None or df.empty:
@@ -386,3 +408,26 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                   > *"We request immediate Board authorization to execute the 20% ERP discount lock and realign commercial sales compensation to gross margin contribution effective next fiscal quarter. Thank you, and we invite the Board's questions."*
                 """
             )
+
+    st.divider()
+
+    # Section 4 Proposed Solutions
+    with st.container(border=True):
+        st.markdown("### Section 4: Strategic Proposed Solutions & Board Action Charter")
+        st.markdown(
+            r"""
+            To achieve sustainable corporate revival within 6 to 12 months, the strategic taskforce submits three formal resolutions for Board authorization:
+
+            1. **Adopt the Base Case Turnaround Model (+\$684,000 Operating EBITDA Expansion)**:
+               - *Policy Package*: Formally authorize the Base Case turnaround parameters: 20.0% contractual discount ceiling, \$15/unit bulky table pass-through surcharge, and full bonded 3PL transition across Turkey and Nigeria, absorbing a conservative 5.0% customer churn friction buffer.
+               - *Financial Yield*: Expands consolidated operating profit from **\$1.47M to \$2.15M** (+46.5% earnings expansion) and elevates operating margin from **11.6% to 16.5%**.
+
+            2. **Authorize the 6–12 Month Phased Implementation Roadmap**:
+               - *Phase I (Months 1–3)*: Hardcode programmatic ERP discount locks (<15% standard sales rep discretion, 15–20% automated VP sign-off, >20% hard block) and transition sales scorecards to contribution margin.
+               - *Phase II (Months 3–6)*: Execute 3PL master distributor agreements in Turkey and Nigeria; transition fulfillment from cross-border air to localized bonded maritime distribution.
+               - *Phase III (Months 6–12)*: Implement dimensional freight surcharges across the Tables catalog and prune chronically negative-margin furniture SKUs.
+
+            3. **Charter the Board Turnaround Oversight Committee**:
+               - *Governance Mandate*: Establish a bi-weekly C-suite Turnaround Steering Committee chaired by the CSO and CFO to audit monthly operational scorecards (Discount Leakage Rate < 2.0%, Tables Operating Margin > +10%, Deficit Territory Break-Even).
+            """
+        )

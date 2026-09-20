@@ -20,6 +20,25 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
     # Global Data Dictionary & Financial Methodology
     render_data_dictionary_expander()
 
+    # Formal Problem Formulation
+    with st.container(border=True):
+        st.markdown("### Formal Problem Formulation: Executive Turnaround Diagnostic & Corporate Governance Inquiry")
+        st.markdown(
+            r"""
+            **Macro Strategic Inquiry for the Board of Directors**:
+            External market skepticism suggests that Global Superstore is facing structural commercial distress. The Board of Directors has commissioned a forensic diagnosis across the complete 51,290-transaction ledger (FY2011–FY2014) to resolve four fundamental governance questions:
+
+            1. **The Growth vs. Governance Paradox**: Has top-line demand stalled, or has unmonitored commercial expansion eroded profitability?
+               $$\text{Evaluate: } \text{CAGR}(\text{Sales}) \text{ vs. } \Delta \text{Operating Margin}$$
+            2. **Forensic Value Leakage Quantification**: Where does capital bleed across markets, product lines, and pricing structures?
+               $$\text{Quantify: } \sum_{i \in \text{Deficit}} |\text{Loss}_i| \quad \text{across Geography, Discount Bands, and SKUs}$$
+            3. **Root Mechanism of Value Destruction**: What specific commercial policy enabled \$920K+ in transaction losses?
+               $$\text{Identify: Threshold } d^* \text{ such that } \mathbb{E}[\text{Margin} \mid \text{Discount} > d^*] < 0$$
+            4. **EBITDA Turnaround & Capital Recovery Roadmap**: How can leadership recover operating earnings without impairing healthy customer relationships?
+               $$\text{Formulate: } \max \Delta \text{EBITDA} \quad \text{subject to customer retention constraints}$$
+            """
+        )
+
     if df.empty:
         st.warning("No data available under the current parameter selection.")
         return
@@ -181,3 +200,29 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
         )
         bridge_fig = create_ebitda_bridge_chart(sim_summary["bridge_components"])
         st.plotly_chart(bridge_fig, use_container_width=True)
+
+    st.divider()
+
+    # Executive Proposed Solutions & Turnaround Directive
+    with st.container(border=True):
+        st.markdown("### Executive Memorandum: Strategic Proposed Solutions & Turnaround Directive")
+        st.markdown(
+            r"""
+            To permanently reverse margin dilution and capture up to **+$920K in EBITDA recovery**, the Strategic Taskforce submits three immediate executive directives for Board ratification:
+
+            1. **Directive I: Institutionalize Automated Pricing Governance (The 20% Rule)**:
+               - Hardcode ERP price floor gating: standard maximum discretionary discount capped at 15%; 16%–20% requires Regional VP authorization; >20% strictly blocked at checkout.
+               - Re-align sales incentives from gross invoiced volume to Net Margin Contribution.
+               - *Projected EBITDA Impact*: **+\$450,000 to +\$600,000** annually.
+
+            2. **Directive II: Sovereign Channel Transformation (Turkey, Nigeria, Netherlands)**:
+               - Immediately cease direct cross-border corporate shipping to persistent deficit jurisdictions.
+               - Transition Turkey and Nigeria into local master distributor agreements or bonded 3PL logistics networks with local-currency indexation.
+               - *Projected EBITDA Impact*: **+\$220,000** in chronic loss elimination.
+
+            3. **Directive III: Bulky Freight Cost Recovery & Table SKU Rationalization**:
+               - Implement mandatory dimensional weight freight surcharges on high-cube furniture (Tables).
+               - Impose minimum order quantity (MOQ) hurdles and eliminate single-item express fulfillment for bulky freight.
+               - *Projected EBITDA Impact*: **+\$80,000**, lifting Tables from -\$64K deficit into positive margin contribution.
+            """
+        )

@@ -18,6 +18,21 @@ def render_data_explorer_view(df: pd.DataFrame) -> None:
     )
     st.markdown("---")
 
+    # Formal Problem Formulation (Audit & Governance)
+    with st.container(border=True):
+        st.markdown("### Formal Problem Formulation: Transaction-Level Auditability & Data Integrity Governance")
+        st.markdown(
+            r"""
+            **Forensic Inquiry & Verification Objective**:
+            Executive summaries and aggregated business intelligence visualizations often obscure micro-level transaction anomalies, isolated discounting abuses, and operational slippage. 
+            Corporate leadership, internal audit, and board committees require an un-aggregated, granular ledger interface to resolve three forensic governance questions:
+
+            1. **Transaction Verifiability**: Can every consolidated deficit be traced back to individual commercial contracts, order IDs, sales representatives, and shipping manifests?
+            2. **Exception Isolation**: Which specific commercial transactions breached standard margin, discount (> 20%), and freight absorption guidelines?
+            3. **Exportability & Independent Audit**: Can internal and external compliance teams extract filtered, reproducible transaction slices for statutory compliance, tax reconciliation, and audit scrutiny?
+            """
+        )
+
     render_data_dictionary_expander()
 
     if df.empty:
@@ -225,4 +240,24 @@ def render_data_explorer_view(df: pd.DataFrame) -> None:
             filtered[selected_display_cols].style.format(format_dict),
             use_container_width=True,
             height=500,
+        )
+
+    st.divider()
+
+    # Section 5 Proposed Solutions
+    with st.container(border=True):
+        st.markdown("### Section 5: Data Governance & Operational Integration Solutions")
+        st.markdown(
+            r"""
+            To bridge the gap between analytical forensics and day-to-day enterprise execution, the following data governance solutions are proposed:
+
+            1. **Real-Time ERP Transaction Interceptors**:
+               - Embed automated pre-settlement checks directly into the transactional order-entry engine (SAP/Salesforce/NetSuite). Any transaction breaching negative margin thresholds or the 20% discount ceiling must be programmatically flagged for immediate managerial sign-off before fulfillment.
+
+            2. **Automated Audit Exception Logging**:
+               - Establish automated daily exception feeds distributed to Regional Controllers and Internal Audit detailing all transactions where discount concessions exceeded 20% or where freight absorption exceeded product gross margin.
+
+            3. **Master Data Catalog & Landed Cost Model Standardization**:
+               - Standardize corporate master data catalogs, dimensional weight parameters, and landed cost models across all international operating entities to eliminate shipping cost misallocations and currency translation discrepancies.
+            """
         )

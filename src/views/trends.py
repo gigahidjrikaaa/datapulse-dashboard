@@ -23,6 +23,23 @@ def render_trends_view(df: pd.DataFrame) -> None:
     )
     st.markdown("---")
 
+    # Formal Problem Formulation (Task 3)
+    with st.container(border=True):
+        st.markdown("### Formal Problem Formulation: Unit Economics Breakdown & Root Cause Identification")
+        st.markdown(
+            r"""
+            **Context & Stakeholder Dilemma (Task 3 Brief)**:
+            The Taskforce must investigate the underlying operational mechanics driving negative margins on 12,544 order lines.
+            The Chief Strategy Officer requires a forensic inquiry utilizing iterative "5-Why" causal chaining to resolve three specific questions:
+
+            1. **The Contractual Pricing Threshold**: At what discount percentage $\delta^*$ does unit economics invert into structural operating losses?
+               $$\text{Unit Margin}(\delta) = \text{List Price} \times (1 - \delta) - \text{COGS} - \text{Shipping Cost} \lessgtr 0$$
+            2. **Logistics Cost Absorption & Service-Level Subsidization**:
+               $$\text{Freight Absorption Ratio} = \frac{\text{Landed Shipping Cost}}{\text{Invoiced Sales}}, \quad \text{Evaluate across Delivery Tiers and Fulfillment Priorities}$$
+            3. **Institutional & Governance Root Causes**: What organizational and architectural failures permitted 70% discounts and unchecked cross-border shipping deficits to persist across 4 fiscal years?
+            """
+        )
+
     render_data_dictionary_expander()
 
     if df.empty:
@@ -190,5 +207,28 @@ def render_trends_view(df: pd.DataFrame) -> None:
             | **Commercial Incentives** | Why were sales representatives authorized to offer 50% to 70% discounts? | Commercial compensation frameworks rewarded **gross top-line revenue**, with zero incentive alignment toward contribution margin or net profitability. |
             | **ERP System Controls** | Why does enterprise order entry software process transactions with 70% discounts? | Legacy IT architecture lacks programmatic validation controls, margin hurdle gates, or automated escalation workflows at point of order entry. |
             | **Institutional Root Cause** | **What is the foundational governance failure requiring Board intervention?** | **Absence of programmatic pricing controls, margin-aligned commercial incentives, and dimensional freight recovery mechanisms.** |
+            """
+        )
+
+    st.divider()
+
+    # Section 3 Proposed Solutions
+    with st.container(border=True):
+        st.markdown("### Section 3: Strategic Proposed Solutions")
+        st.markdown(
+            r"""
+            Based on the root cause diagnostic, the strategic taskforce proposes three programmatic interventions:
+
+            1. **Programmatic 20.0% Hard ERP Discount Ceiling**:
+               - *Governance Mechanism*: Hardcode automated validation gates into the enterprise ERP order processing pipeline. Hard-block transaction creation for any discount $> 20.0\%$. Mandate automated VP approval for concessions between $15.0\%$ and $20.0\%$.
+               - *Financial Quantification*: **Recovers +\$814,682 in destroyed operating profit**, eliminating 88.5% of enterprise deficit transactions.
+
+            2. **Dynamic Freight Pass-Through & Surcharge Recovery**:
+               - *Governance Mechanism*: Discontinue unhedged expedited shipping subsidies on Same Day (17.4% freight ratio) and First Class (16.8% freight ratio). Implement mandatory customer freight billing indexed to actual carrier surcharges, with free shipping restricted to orders exceeding \$250.
+               - *Financial Quantification*: Recovers **+\$110,000 in unabsorbed carrier fulfillment expenses**.
+
+            3. **Sales Incentive Recalibration (Margin-Weighted Commissions)**:
+               - *Governance Mechanism*: Replace top-line volume bonus plans with Gross Margin Contribution hurdles. Penalize transactions discounted above 15% with progressive commission clawbacks.
+               - *Impact*: Permanently aligns field commercial behavior with corporate shareholder return.
             """
         )

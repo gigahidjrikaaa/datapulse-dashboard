@@ -24,6 +24,23 @@ def render_overview_view(df: pd.DataFrame) -> None:
     )
     st.markdown("---")
 
+    # Formal Problem Formulation (Task 1)
+    with st.container(border=True):
+        st.markdown("### Formal Problem Formulation: Macro-Financial Audit & Rumor Testing")
+        st.markdown(
+            r"""
+            **Context & Stakeholder Dilemma (Task 1 Brief)**:
+            Persistent market rumors suggest that Global Superstore's commercial growth has stagnated and profitability is decaying. 
+            Corporate leadership requires a definitive mathematical audit of the 51,290-order ledger from fiscal years 2011 to 2014 to resolve three formal inquiries:
+
+            1. **Macro Growth Trajectory**: Does the historical time series exhibit revenue stagnation or profit decay?
+               $$\text{Test: } \Delta \text{Sales}_{t, t-1} \le 0 \quad \text{and} \quad \Delta \text{Profit}_{t, t-1} \le 0$$
+            2. **Operating Leverage & Margin Compression**: Is operating profit margin expanding with economies of scale, or diluting?
+               $$\text{Operating Margin}_t = \frac{\text{Profit}_t}{\text{Sales}_t}, \quad \text{Test: } \frac{d(\text{Margin})}{d(\text{Volume})} \gtrless 0$$
+            3. **Systemic vs. Isolated Underperformance**: Is underperformance pervasive across the entire enterprise portfolio, or confined to specific operational and geographic pockets?
+            """
+        )
+
     render_data_dictionary_expander()
 
     if df.empty:
@@ -163,4 +180,27 @@ def render_overview_view(df: pd.DataFrame) -> None:
                 }
             ),
             use_container_width=True,
+        )
+
+    st.divider()
+
+    # Section 1 Proposed Solutions
+    with st.container(border=True):
+        st.markdown("### Section 1: Strategic Proposed Solutions")
+        st.markdown(
+            r"""
+            Based on the empirical audit of historical multi-year performance, the strategic taskforce recommends three executive actions:
+
+            1. **Transition from Top-Line Volume to Net Contribution Scorecards**:
+               - *Operational Action*: Decommission commercial sales commission quotas based on gross booked revenue. Re-align compensation metrics to Gross Margin Contribution ($\text{Revenue} - \text{COGS} - \text{Landed Freight}$).
+               - *Expected Result*: Eliminates the perverse incentive to write unprofitable high-volume accounts to achieve gross volume quotas.
+
+            2. **Implement Pre-Q4 Capacity Hedging & Commercial Discount Freeze**:
+               - *Operational Action*: Because Q4 empirically generates ~35% of annual volume, negotiate committed carrier capacity contracts by August and enforce an automated promotional discount freeze from October 15 through December 31.
+               - *Expected Result*: Protects consolidated operating margins against spot-market carrier surcharges and year-end quota panic discounting.
+
+            3. **Corporate Operating Margin Hurdle Gate (12.5% Enterprise Floor)**:
+               - *Operational Action*: Configure automated ERP transaction validation requiring any commercial contract yielding < 10.0% operating margin to receive secondary approval from the VP of Commercial Operations.
+               - *Expected Result*: Restores operating leverage, allowing top-line growth (+23.9% CAGR) to expand margins above the historical 11.6% plateau toward the 14–16% industry benchmark.
+            """
         )

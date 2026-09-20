@@ -27,6 +27,24 @@ def render_eda_view(df: pd.DataFrame) -> None:
     )
     st.markdown("---")
 
+    # Formal Problem Formulation (Task 2)
+    with st.container(border=True):
+        st.markdown("### Formal Problem Formulation: Multi-Dimensional Margin Variance Deconstruction")
+        st.markdown(
+            r"""
+            **Context & Stakeholder Dilemma (Task 2 Brief)**:
+            Given that enterprise gross invoiced revenue expanded by +90.3%, corporate operating margin stagnation (stuck at 11.6%) implies severe internal profit dilution.
+            The Chief Strategy Officer requires an empirical deconstruction across three core operational dimensions to isolate the exact locus of capital destruction:
+
+            1. **Geographic Hierarchy Variance**: $\text{Market} \rightarrow \text{Region} \rightarrow \text{Country}$
+               $$\text{Identify sovereign jurisdictions } j \in J \text{ where } \text{Profit}_j < 0 \quad \text{and quantify aggregate deficit: } \sum_{j, \text{Profit}_j < 0} \text{Profit}_j$$
+            2. **Merchandise Portfolio Contribution**: $\text{Category} \rightarrow \text{Sub-Category}$
+               $$\text{Differentiate Volume Shortfalls vs. Margin Realization Failures: } \text{Identify lines where } \text{Sales} \gg 0 \text{ but } \frac{\text{Profit}}{\text{Sales}} < 0$$
+            3. **Customer Account Tier Homogeneity**: $\text{Segment} \in \{\text{Consumer}, \text{Corporate}, \text{Home Office}\}$
+               $$\text{Test hypothesis: } \text{Margin}_{\text{Consumer}} \approx \text{Margin}_{\text{Corporate}} \approx \text{Margin}_{\text{Home Office}}$$
+            """
+        )
+
     render_data_dictionary_expander()
 
     if df.empty:
@@ -400,3 +418,25 @@ def render_eda_view(df: pd.DataFrame) -> None:
                 file_name="global_superstore_negative_margin_transactions.csv",
                 mime="text/csv",
             )
+
+    st.divider()
+
+    # Section 2 Proposed Solutions
+    with st.container(border=True):
+        st.markdown("### Section 2: Strategic Proposed Solutions")
+        st.markdown(
+            r"""
+            Based on the multi-dimensional variance diagnostic, the strategic taskforce recommends three operational solutions:
+
+            1. **Restructure Sovereign Deficit Channels (Turkey, Nigeria, Netherlands, Honduras)**:
+               - *Operational Action*: Immediately terminate direct cross-border corporate fulfillment into Turkey (-\$98.4K deficit, -90.7% margin) and Nigeria (-\$80.8K deficit, -148.6% margin). Transition these accounts to bonded in-country third-party logistics (3PL) master distributors with wholesale transfer pricing indexed to hard currencies.
+               - *Financial Recovery*: **Eliminates +\$220,000 in persistent annual cash drain**.
+
+            2. **Merchandise Portfolio Turnaround: Tables Catalog Restructuring**:
+               - *Operational Action*: Tables represents a margin realization failure (-\$64K loss on \$757K sales), not a demand failure. Restructure the commercial furniture line: introduce mandatory dimensional freight surcharges, eliminate unapproved commercial discounts, and discontinue negative-margin SKUs.
+               - *Financial Recovery*: **+\$80,000 margin turnaround**, moving Tables from enterprise loss-maker to positive contribution margin.
+
+            3. **Preserve Customer Account Tier Segmentation Structure**:
+               - *Operational Action*: Retain the existing sales organizational alignment across Consumer, Corporate, and Home Office. The data confirms near-identical margins (~11.5%) across all three account tiers, demonstrating that account classification is commercially sound and not the cause of margin dilution.
+            """
+        )
