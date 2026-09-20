@@ -1,6 +1,5 @@
 """Section 5 View: Transaction Ledger & Forensic Data Explorer."""
 
-from typing import Any
 import pandas as pd
 import streamlit as st
 
@@ -221,23 +220,24 @@ def render_data_explorer_view(df: pd.DataFrame) -> None:
         if not selected_display_cols:
             selected_display_cols = available_cols
 
-        # Format mappings for clean executive presentation
-        format_dict: dict[str, Any] = {}
+        # Format columns using Streamlit column_config (no Pandas Styler cell-count limits)
+        col_config: dict = {}
         if "Sales" in selected_display_cols:
-            format_dict["Sales"] = "${:,.2f}"
+            col_config["Sales"] = st.column_config.NumberColumn("Sales", format="$%.2f")
         if "Profit" in selected_display_cols:
-            format_dict["Profit"] = "${:,.2f}"
+            col_config["Profit"] = st.column_config.NumberColumn("Profit", format="$%.2f")
         if "Shipping Cost" in selected_display_cols:
-            format_dict["Shipping Cost"] = "${:,.2f}"
+            col_config["Shipping Cost"] = st.column_config.NumberColumn("Shipping Cost", format="$%.2f")
         if "Discount" in selected_display_cols:
-            format_dict["Discount"] = "{:.1%}"
+            col_config["Discount"] = st.column_config.NumberColumn("Discount", format="%.1f%%")
         if "Quantity" in selected_display_cols:
-            format_dict["Quantity"] = "{:,}"
+            col_config["Quantity"] = st.column_config.NumberColumn("Quantity", format="%d")
         if "Profit_Margin" in selected_display_cols:
-            format_dict["Profit_Margin"] = "{:.2f}%"
+            col_config["Profit_Margin"] = st.column_config.NumberColumn("Profit Margin", format="%.2f%%")
 
         st.dataframe(
-            filtered[selected_display_cols].style.format(format_dict),
+            filtered[selected_display_cols],
+            column_config=col_config,
             use_container_width=True,
             height=500,
         )
