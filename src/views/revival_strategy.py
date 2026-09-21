@@ -251,8 +251,8 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                   - Global weighted-average discount rate (Target: < 12.0%)
                   - Sales division contribution margin (Target: > 15.0%)
                 * **Expected Financial Impact**:
-                  - **Recovers +\\$450,000 to +\\$600,000 in annualized operating profit**.
-                  - Eliminates 80.0% of negative-margin transactions within 90 days.
+                  - **Recovers +\\$1,032,488 in operating profit** by capping discounts at 20.0% across 11,328 transactions.
+                  - Eliminates 81.2% of negative-margin transactions (10,180 lines) and 88.5% of cumulative dollar loss drag.
                 """
             )
 
@@ -265,14 +265,14 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                 * **Executive Owner**: VP of Global Supply Chain & Regional Managing Directors.
                 * **Implementation Timeline**: Months 3 through 6.
                 * **Operational Mechanism**:
-                  - Discontinue direct cross-border expedited air fulfillment into Nigeria and Turkey.
-                  - Establish partnerships with in-country master distributors and bonded third-party logistics (3PL) warehousing providers.
-                  - Index localized pricing catalogs to hard currencies or dynamic local inflation benchmarks.
+                - Discontinue direct cross-border expedited air fulfillment into Nigeria and Turkey.
+                - Establish partnerships with in-country master distributors and bonded third-party logistics (3PL) warehousing providers.
+                - Index localized pricing catalogs to hard currencies or dynamic local inflation benchmarks.
                 * **Key Performance Indicators (KPIs)**:
                   - Country-level operating margin (Target: Break-even within 90 days; > 8.0% within 12 months)
                   - Landed freight cost ratio (Target: < 12.0% of invoiced sales)
                 * **Expected Financial Impact**:
-                  - **Eliminates -\\$220,000 in persistent annual cash drain**.
+                  - **Eliminates +\\$179,198 in chronic bilateral cash drain** across Turkey (-\\$98.4K) and Nigeria (-\\$80.8K).
                   - Restores regional operating margins in EMEA and Africa to institutional benchmarks.
                 """
             )
@@ -293,7 +293,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                   - Tables sub-category operating profit (Target: > +\\$50,000)
                   - Dimensional freight recovery compliance (Target: 100.0%)
                 * **Expected Financial Impact**:
-                  - **+\\$80,000 annualized margin turnaround on bulky merchandise**, converting Tables into a positive contributor.
+                  - **+\\$46,245 bulky freight recovery and +\\$80,000+ total turnaround**, converting Tables from a -\\$64,083 loss into positive contribution margin.
                 """
             )
 

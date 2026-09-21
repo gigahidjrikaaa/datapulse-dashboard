@@ -109,8 +109,9 @@ def render_trends_view(df: pd.DataFrame) -> None:
                 "resulting in direct cash burn on every item shipped. Transactions past 20.0% produced -\\$814,682 in cumulative losses."
             ),
             business_impact=(
-                "This empirical finding represents the primary driver of corporate margin stagnation: Global Superstore conceded \\$814,000 "
-                "in operating earnings through unmonitored commercial discounting. Eliminating discounts beyond 20.0% removes 88.5% of enterprise loss transactions."
+                "This empirical finding represents the primary driver of corporate margin stagnation: Global Superstore conceded \\$814,682 "
+                "in operating earnings through unmonitored commercial discounting. Eliminating discounts beyond 20.0% eradicates 88.5% of enterprise "
+                "cumulative dollar loss drag (-\\$814,682 out of -\\$920,646) and 81.2% of all deficit transactions (10,180 lines)."
             ),
             recommendation=(
                 "Mandate automated validation rules in the enterprise ERP software: block order creation for any transaction containing a discount > 20.0% "
@@ -229,7 +230,7 @@ def render_trends_view(df: pd.DataFrame) -> None:
 
             1. **Programmatic 20.0% Hard ERP Discount Ceiling**:
                - *Governance Mechanism*: Hardcode automated validation gates into the enterprise ERP order processing pipeline. Hard-block transaction creation for any discount $> 20.0\%$. Mandate automated VP approval for concessions between $15.0\%$ and $20.0\%$.
-               - *Financial Quantification*: **Recovers +\$814,682 in destroyed operating profit**, eliminating 88.5% of enterprise deficit transactions.
+               - *Financial Quantification*: **Recovers +\$814,682 in destroyed operating profit**, eradicating 88.5% of enterprise cumulative loss capital and 81.2% of all deficit transactions (10,180 out of 12,544 lines).
 
             2. **Dynamic Freight Pass-Through & Surcharge Recovery**:
                - *Governance Mechanism*: Discontinue unhedged expedited shipping subsidies on Same Day (17.4% freight ratio) and First Class (16.8% freight ratio). Implement mandatory customer freight billing indexed to actual carrier surcharges, with free shipping restricted to orders exceeding \$250.

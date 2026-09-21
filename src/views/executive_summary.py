@@ -61,7 +61,7 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
             * Gross invoiced sales expanded from **\\$2.26M (FY2011) to \\$4.30M (FY2014)**, reflecting a compound annual growth rate of **+23.9%** (+26.3% YoY in FY2014).
             * However, **24.5% of total order transactions (12,544 lines)** were executed below cost-to-serve, generating **\\$920,646 in cumulative negative margin drag** and depressing consolidated operating margin to **11.6%**.
             * The root causes are concentrated: **uncontrolled price concessions exceeding 20%** and unhedged freight subsidies in select overseas territories (Turkey, Nigeria, Netherlands).
-            * Enforcing automated pricing controls and regional logistics restructuring provides a clear operational path to recover **+\\$500,000 to +\\$920,000 in EBITDA (+62.7% net profit upside)** within 6 to 12 months.
+            * Enforcing automated pricing controls, sovereign 3PL restructuring, and dimensional freight recovery provides a verified operational bridge to capture **+\$1,233,804 in net EBITDA (+84.1% expansion to \$2.70M at 19.9% margin)** under base case parameters (with gross unburdened loss elimination potential of up to **+\$920,646 / +62.7%** across all 12,544 deficit lines).
             """
         )
 
@@ -110,7 +110,7 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
                 #### Pillar IV: EBITDA Recovery
                 * **Immediate Intervention**: Hardcode a 20% discount lock into order entry software; require executive authorization for discounts > 15%.
                 * **Channel Restructuring**: Transition underperforming international territories to third-party logistics (3PL) distributor models.
-                * **Value Creation**: Captures up to **+\\$920K in operating earnings**.
+                * **Value Creation**: Unlocks **+\\$1.23M in Net EBITDA uplift** (+84.1% expansion), lifting operating margin from 11.6% to 19.9%.
                 """
             )
 
@@ -126,14 +126,14 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
                 """
                 1. **The 20% Discount Inversion Threshold**:
                    - Transactions discounted between 0% and 20% generate strong operating margins (**+9.9% to +25.3%**).
-                   - Once discount rates exceed 20%, unit contribution collapses into steep deficits (**-5.5% to -196.1%**), generating **-\\$814,682 in cumulative net losses**.
+                   - Once discount rates exceed 20%, unit contribution collapses into steep deficits (**-5.5% to -111.0%**), generating **-\\$814,682 in cumulative net losses**.
                    - Sales teams utilized up to 70% discounts to achieve top-line quota targets without margin hurdle requirements.
                 
                 2. **Territorial Deficit Concentration**:
-                   - Four sovereign jurisdictions—**Turkey (-\\$98.4K)**, **Nigeria (-\\$80.8K)**, **Netherlands (-\\$41.1K)**, and **Honduras (-\\$29.5K)**—account for nearly **\\$250K in operating deficits** due to high baseline discounting and direct international shipping costs.
+                   - Four sovereign jurisdictions—**Turkey (-\\$98.4K)**, **Nigeria (-\\$80.8K)**, **Netherlands (-\\$41.1K)**, and **Honduras (-\\$29.5K)**—account for nearly **\\$250K in operating deficits** (55.8% of all sovereign losses) due to high baseline discounting and direct international shipping costs.
                    
                 3. **Tables Merchandise Portfolio Mispricing**:
-                   - Across all 17 portfolio sub-categories, **Tables** represents the sole net deficit line (**-\\$64,083 cumulative loss** on \\$757K revenue, -8.5% margin), caused by heavy packaging dimensions, cross-border freight intensity, and 29% average price concessions.
+                   - Across all 17 portfolio sub-categories, **Tables** represents the sole net deficit line (**-\\$64,083 cumulative loss** on \\$757K revenue, -8.5% margin), caused by heavy packaging dimensions, cross-border freight intensity, and 29.1% average price concessions.
                 """
             )
 
@@ -144,15 +144,15 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
                 """
                 1. **Institutionalize Pricing Governance and Order Entry Controls**:
                    - *Policy*: Establish a standard discount cap at 15%. Mandate Vice President approval for concessions between 16% and 20%. Programmatically restrict order processing for discounts > 20%.
-                   - *Financial Recovery*: **+\\$450,000 to +\\$600,000 in annualized operating profit**.
+                   - *Financial Recovery*: **+\\$1,032,488 EBITDA recovery** by capping concessions at 20.0% across 11,328 transactions.
                    
                 2. **Restructure Deficit International Operating Channels**:
                    - *Policy*: Terminate direct corporate fulfillment into Turkey and Nigeria. Transition accounts to in-country master distributors and bonded 3PL logistics networks with local currency indexing.
-                   - *Financial Recovery*: **+\\$220,000 in annual deficit elimination**.
+                   - *Financial Recovery*: **+\\$179,198 in sovereign deficit elimination** (and up to +\\$250K across all 4 key deficit territories).
                    
                 3. **Implement Bulky Freight Pass-Through and Table Portfolio Rationalization**:
                    - *Policy*: Restructure commercial furniture contracts to include mandatory dimensional weight surcharges and minimum order volume commitments.
-                   - *Financial Recovery*: **+\\$80,000 margin turnaround**, moving Tables from deficit to positive contribution.
+                   - *Financial Recovery*: **+\\$46,245 bulky freight recovery and +\\$80,000+ margin turnaround**, moving Tables from deficit to positive contribution.
                 """
             )
 
@@ -208,21 +208,21 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
         st.markdown("### Executive Memorandum: Strategic Proposed Solutions & Turnaround Directive")
         st.markdown(
             r"""
-            To permanently reverse margin dilution and capture up to **+$920K in EBITDA recovery**, the Strategic Taskforce submits three immediate executive directives for Board ratification:
+            To permanently reverse margin dilution and capture **+\$1,233,804 in net EBITDA recovery (+84.1% expansion to \$2.70M at 19.9% margin)**, the Strategic Taskforce submits three immediate executive directives for Board ratification:
 
             1. **Directive I: Institutionalize Automated Pricing Governance (The 20% Rule)**:
                - Hardcode ERP price floor gating: standard maximum discretionary discount capped at 15%; 16%–20% requires Regional VP authorization; >20% strictly blocked at checkout.
                - Re-align sales incentives from gross invoiced volume to Net Margin Contribution.
-               - *Projected EBITDA Impact*: **+\$450,000 to +\$600,000** annually.
+               - *Projected EBITDA Impact*: **+\$1,032,488** through automated 20.0% order entry ceiling across 11,328 transactions.
 
             2. **Directive II: Sovereign Channel Transformation (Turkey, Nigeria, Netherlands)**:
                - Immediately cease direct cross-border corporate shipping to persistent deficit jurisdictions.
                - Transition Turkey and Nigeria into local master distributor agreements or bonded 3PL logistics networks with local-currency indexation.
-               - *Projected EBITDA Impact*: **+\$220,000** in chronic loss elimination.
+               - *Projected EBITDA Impact*: **+\$179,198** in bilateral deficit elimination (Turkey -\$98.4K and Nigeria -\$80.8K).
 
             3. **Directive III: Bulky Freight Cost Recovery & Table SKU Rationalization**:
                - Implement mandatory dimensional weight freight surcharges on high-cube furniture (Tables).
                - Impose minimum order quantity (MOQ) hurdles and eliminate single-item express fulfillment for bulky freight.
-               - *Projected EBITDA Impact*: **+\$80,000**, lifting Tables from -\$64K deficit into positive margin contribution.
+               - *Projected EBITDA Impact*: **+\$46,245**, lifting Tables from -\$64K deficit into positive margin contribution.
             """
         )

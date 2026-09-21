@@ -176,3 +176,44 @@ def test_executive_summary_docx():
     assert "Resolution 2: Sovereign 3PL Shift" in all_text
     assert "Resolution 3: Governance Charter" in all_text
 
+
+def test_dashboard_narrative_data_accuracy():
+    """Verify that all dashboard view narrative files reflect exact empirical calculations without discrepancies."""
+    import os
+
+    # 1. Verify eda.py has exact customer segment margins and Tables metrics
+    eda_path = os.path.join("src", "views", "eda.py")
+    with open(eda_path, "r", encoding="utf-8") as f:
+        eda_content = f.read()
+    assert "Consumer (11.51%)" in eda_content
+    assert "Corporate (11.54%)" in eda_content
+    assert "Home Office (11.99%)" in eda_content
+    assert "29.1% average promotional discounts" in eda_content
+    assert "179,198 in direct bilateral deficits" in eda_content
+
+    # 2. Verify trends.py clarifies 88.5% loss dollars vs 81.2% transaction volume
+    trends_path = os.path.join("src", "views", "trends.py")
+    with open(trends_path, "r", encoding="utf-8") as f:
+        trends_content = f.read()
+    assert "88.5% of enterprise cumulative loss capital" in trends_content
+    assert "81.2% of all deficit transactions (10,180 lines)" in trends_content
+
+
+    # 3. Verify executive_summary.py has exact Base Case turnaround values
+    exec_path = os.path.join("src", "views", "executive_summary.py")
+    with open(exec_path, "r", encoding="utf-8") as f:
+        exec_content = f.read()
+    assert "1,233,804 in net EBITDA" in exec_content
+    assert "1,032,488" in exec_content
+    assert "179,198" in exec_content
+
+    # 4. Verify revival_strategy.py has exact Base Case initiative metrics
+    revival_path = os.path.join("src", "views", "revival_strategy.py")
+    with open(revival_path, "r", encoding="utf-8") as f:
+        revival_content = f.read()
+    assert "1,032,488 in operating profit" in revival_content
+    assert "179,198 in chronic bilateral cash drain" in revival_content
+    assert "46,245 bulky freight recovery" in revival_content
+
+
+

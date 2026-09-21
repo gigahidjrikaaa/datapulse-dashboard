@@ -287,7 +287,7 @@ def render_eda_view(df: pd.DataFrame) -> None:
                 ),
                 business_impact=(
                     "Tables is an operational pricing failure. Heavy dimensional packaging elevates freight-to-value ratios. "
-                    "Granting 29.0% average promotional discounts on bulky merchandise systematically eliminates unit gross margin."
+                    "Granting 29.1% average promotional discounts on bulky merchandise systematically eliminates unit gross margin."
                 ),
                 recommendation=(
                     "Restructure the Tables commercial catalog: introduce mandatory dimensional freight surcharges on commercial deliveries, "
@@ -367,8 +367,8 @@ def render_eda_view(df: pd.DataFrame) -> None:
                 title="Customer Account Tier Uniformity (Non-Explanatory Factor)",
                 what_it_shows="Financial performance across Consumer, Corporate, and Home Office purchasing classifications.",
                 key_takeaway=(
-                    "All three customer account tiers display near-identical operating margins: Consumer (11.83%), Corporate (11.45%), "
-                    "and Home Office (11.41%), with average discount rates clustered between 14.1% and 14.4%."
+                    "All three customer account tiers display near-identical operating margins: Consumer (11.51%), Corporate (11.54%), "
+                    "and Home Office (11.99%), with average discount rates clustered tightly between 14.1% and 14.4%."
                 ),
                 business_impact=(
                     "This finding confirms that enterprise underperformance is not driven by customer segmentation. "
@@ -430,11 +430,11 @@ def render_eda_view(df: pd.DataFrame) -> None:
 
             1. **Restructure Sovereign Deficit Channels (Turkey, Nigeria, Netherlands, Honduras)**:
                - *Operational Action*: Immediately terminate direct cross-border corporate fulfillment into Turkey (-\$98.4K deficit, -90.7% margin) and Nigeria (-\$80.8K deficit, -148.6% margin). Transition these accounts to bonded in-country third-party logistics (3PL) master distributors with wholesale transfer pricing indexed to hard currencies.
-               - *Financial Recovery*: **Eliminates +\$220,000 in persistent annual cash drain**.
+               - *Financial Recovery*: **Eliminates +\$179,198 in direct bilateral deficits** (and up to +\$249,750 across all top-4 deficit territories).
 
             2. **Merchandise Portfolio Turnaround: Tables Catalog Restructuring**:
                - *Operational Action*: Tables represents a margin realization failure (-\$64K loss on \$757K sales), not a demand failure. Restructure the commercial furniture line: introduce mandatory dimensional freight surcharges, eliminate unapproved commercial discounts, and discontinue negative-margin SKUs.
-               - *Financial Recovery*: **+\$80,000 margin turnaround**, moving Tables from enterprise loss-maker to positive contribution margin.
+               - *Financial Recovery*: **+\$46,245 bulky freight recovery and +\$80,000+ margin turnaround**, converting Tables from enterprise loss-maker into positive contribution margin.
 
             3. **Preserve Customer Account Tier Segmentation Structure**:
                - *Operational Action*: Retain the existing sales organizational alignment across Consumer, Corporate, and Home Office. The data confirms near-identical margins (~11.5%) across all three account tiers, demonstrating that account classification is commercially sound and not the cause of margin dilution.
