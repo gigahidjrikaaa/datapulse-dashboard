@@ -314,104 +314,104 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
 
     st.divider()
 
-    # 3. Presentation Deck Outline (8-10 Slides)
-    with st.container(border=True):
-        st.markdown("### Board of Directors Presentation Deck Outline (10-Minute Executive Session)")
-        st.markdown(
-            "Structured slide-by-slide executive briefing designed for a formal 10-minute board presentation followed by 5 minutes of strategic Q&A:"
-        )
+    # # 3. Presentation Deck Outline (8-10 Slides)
+    # with st.container(border=True):
+    #     st.markdown("### Board of Directors Presentation Deck Outline (10-Minute Executive Session)")
+    #     st.markdown(
+    #         "Structured slide-by-slide executive briefing designed for a formal 10-minute board presentation followed by 5 minutes of strategic Q&A:"
+    #     )
 
-        with st.expander("Executive Deck Architecture: Slide Content, Visual Evidence & Presenter Notes", expanded=True):
-            st.markdown(
-                """
-                #### Slide 1: Executive Title & Diagnostic Scope
-                * **Slide Title**: *Global Superstore: Strategic Performance Evaluation & Turnaround Plan*
-                * **Subtitle**: *Unlocking \\$920,000 in Operating EBITDA Through Commercial Discipline & Operating Model Restructuring*
-                * **Presenters**: Special Strategy & Operations Taskforce
-                * **Visual**: Institutional executive title card with FY2011–FY2014 headline audit metrics.
-                * **Presenter Notes (1.0 minute)**:
-                  > *"Members of the Board, external speculation regarding Global Superstore's revenue stagnation is empirically disproven by transaction data. Our commercial demand engine is robust, but operating earnings are diluted by an internal pricing governance failure. Today, we present conclusive audit evidence and an operational roadmap to unlock up to \\$920,000 in bottom-line operating profit."*
+    #     with st.expander("Executive Deck Architecture: Slide Content, Visual Evidence & Presenter Notes", expanded=True):
+    #         st.markdown(
+    #             """
+    #             #### Slide 1: Executive Title & Diagnostic Scope
+    #             * **Slide Title**: *Global Superstore: Strategic Performance Evaluation & Turnaround Plan*
+    #             * **Subtitle**: *Unlocking \\$920,000 in Operating EBITDA Through Commercial Discipline & Operating Model Restructuring*
+    #             * **Presenters**: Special Strategy & Operations Taskforce
+    #             * **Visual**: Institutional executive title card with FY2011–FY2014 headline audit metrics.
+    #             * **Presenter Notes (1.0 minute)**:
+    #               > *"Members of the Board, external speculation regarding Global Superstore's revenue stagnation is empirically disproven by transaction data. Our commercial demand engine is robust, but operating earnings are diluted by an internal pricing governance failure. Today, we present conclusive audit evidence and an operational roadmap to unlock up to \\$920,000 in bottom-line operating profit."*
 
-                ---
+    #             ---
 
-                #### Slide 2: Multi-Year Revenue Audit (Refuting Market Rumors)
-                * **Slide Title**: *Top-Line Performance: Revenue Expanded +90.3% to \\$4.30M*
-                * **Visual**: Multi-year revenue and operating profit progression chart (FY2011–FY2014) with annual growth indicators.
-                * **Data Evidence**: Sales scaled from \\$2.26M to \\$4.30M (+26.3% YoY in FY2014); operating profit expanded from \\$249K to \\$504K.
-                * **Presenter Notes (1.0 minute)**:
-                  > *"Over the past four fiscal years, Global Superstore added more than \\$2.0 million in top-line revenue, expanding annual order volume from 4,440 to 8,531 orders. However, consolidated operating margin remained constrained at 11.6%, failing to capture operating leverage benefits as fixed overhead scaled."*
+    #             #### Slide 2: Multi-Year Revenue Audit (Refuting Market Rumors)
+    #             * **Slide Title**: *Top-Line Performance: Revenue Expanded +90.3% to \\$4.30M*
+    #             * **Visual**: Multi-year revenue and operating profit progression chart (FY2011–FY2014) with annual growth indicators.
+    #             * **Data Evidence**: Sales scaled from \\$2.26M to \\$4.30M (+26.3% YoY in FY2014); operating profit expanded from \\$249K to \\$504K.
+    #             * **Presenter Notes (1.0 minute)**:
+    #               > *"Over the past four fiscal years, Global Superstore added more than \\$2.0 million in top-line revenue, expanding annual order volume from 4,440 to 8,531 orders. However, consolidated operating margin remained constrained at 11.6%, failing to capture operating leverage benefits as fixed overhead scaled."*
 
-                ---
+    #             ---
 
-                #### Slide 3: The True Vulnerability: \\$920,000 in Margin Dilution
-                * **Slide Title**: *Capital Erosion: 24.5% of Transaction Volume Executed at an Operating Loss*
-                * **Visual**: Financial bridge chart: Gross Profitable Contribution (\\$2.39M) minus Negative Margin Drag (-\\$920K) = Reported Operating Profit (\\$1.47M).
-                * **Data Evidence**: 12,544 order transactions executed below cost-to-serve, destroying \\$920,646 in earnings.
-                * **Presenter Notes (1.0 minute)**:
-                  > *"This is the central vulnerability of our operating model: our profitable core generated \\$2.39 million in operating profit. However, 24.5% of order lines were executed at negative margins, destroying \\$920,000 in capital. Management has focused on gross revenue volume while permitting unmonitored profit leakage."*
+    #             #### Slide 3: The True Vulnerability: \\$920,000 in Margin Dilution
+    #             * **Slide Title**: *Capital Erosion: 24.5% of Transaction Volume Executed at an Operating Loss*
+    #             * **Visual**: Financial bridge chart: Gross Profitable Contribution (\\$2.39M) minus Negative Margin Drag (-\\$920K) = Reported Operating Profit (\\$1.47M).
+    #             * **Data Evidence**: 12,544 order transactions executed below cost-to-serve, destroying \\$920,646 in earnings.
+    #             * **Presenter Notes (1.0 minute)**:
+    #               > *"This is the central vulnerability of our operating model: our profitable core generated \\$2.39 million in operating profit. However, 24.5% of order lines were executed at negative margins, destroying \\$920,000 in capital. Management has focused on gross revenue volume while permitting unmonitored profit leakage."*
 
-                ---
+    #             ---
 
-                #### Slide 4: Territorial Variance Analysis (Concentration of Deficits)
-                * **Slide Title**: *Geographic Deficits: Four Sovereign Jurisdictions Account for \\$250K in Losses*
-                * **Visual**: Horizontal bar chart ranking operating deficits across sovereign territories (Turkey, Nigeria, Netherlands, Honduras).
-                * **Data Evidence**: Turkey (-\\$98.4K loss, -90.7% margin), Nigeria (-\\$80.8K loss, -148.6% margin).
-                * **Presenter Notes (1.0 minute)**:
-                  > *"Operating deficits are concentrated geographically. Turkey and Nigeria alone destroyed \\$179,000 in capital. In both territories, sales teams offered 60% to 70% baseline discounts to meet volume targets, while the corporate center absorbed cross-border logistics and customs duties in volatile currency environments."*
+    #             #### Slide 4: Territorial Variance Analysis (Concentration of Deficits)
+    #             * **Slide Title**: *Geographic Deficits: Four Sovereign Jurisdictions Account for \\$250K in Losses*
+    #             * **Visual**: Horizontal bar chart ranking operating deficits across sovereign territories (Turkey, Nigeria, Netherlands, Honduras).
+    #             * **Data Evidence**: Turkey (-\\$98.4K loss, -90.7% margin), Nigeria (-\\$80.8K loss, -148.6% margin).
+    #             * **Presenter Notes (1.0 minute)**:
+    #               > *"Operating deficits are concentrated geographically. Turkey and Nigeria alone destroyed \\$179,000 in capital. In both territories, sales teams offered 60% to 70% baseline discounts to meet volume targets, while the corporate center absorbed cross-border logistics and customs duties in volatile currency environments."*
 
-                ---
+    #             ---
 
-                #### Slide 5: Merchandise Portfolio Diagnostic (The Tables Anomaly)
-                * **Slide Title**: *Portfolio Contribution: 16 Profitable Merchandise Lines vs. 1 Net Deficit Sub-Category*
-                * **Visual**: Diverging bar chart displaying net operating contribution across all 17 portfolio sub-categories.
-                * **Data Evidence**: Copiers (+\\$258.6K) and Phones (+\\$216.7K) deliver strong returns; Tables generated a cumulative deficit of -\\$64,083 on \\$757K in sales.
-                * **Presenter Notes (1.0 minute)**:
-                  > *"Sixteen out of seventeen merchandise sub-categories are highly profitable. Tables is the sole net deficit line. This is an operational pricing failure: tables generate high freight costs due to package dimensions. Applying 29% average discounts while subsidizing freight guarantees negative unit economics."*
+    #             #### Slide 5: Merchandise Portfolio Diagnostic (The Tables Anomaly)
+    #             * **Slide Title**: *Portfolio Contribution: 16 Profitable Merchandise Lines vs. 1 Net Deficit Sub-Category*
+    #             * **Visual**: Diverging bar chart displaying net operating contribution across all 17 portfolio sub-categories.
+    #             * **Data Evidence**: Copiers (+\\$258.6K) and Phones (+\\$216.7K) deliver strong returns; Tables generated a cumulative deficit of -\\$64,083 on \\$757K in sales.
+    #             * **Presenter Notes (1.0 minute)**:
+    #               > *"Sixteen out of seventeen merchandise sub-categories are highly profitable. Tables is the sole net deficit line. This is an operational pricing failure: tables generate high freight costs due to package dimensions. Applying 29% average discounts while subsidizing freight guarantees negative unit economics."*
 
-                ---
+    #             ---
 
-                #### Slide 6: Root Cause Diagnostic: The 20% Discount Inversion Bound
-                * **Slide Title**: *Unit Economics Inversion: Operating Margins Collapse Past 20% Discount*
-                * **Visual**: Operating margin distribution across discount brackets (0% to >50%), highlighting the break-even threshold.
-                * **Data Evidence**: Orders discounted ≤20% generate +9.9% to +25.3% margin; orders discounted >20% destroyed -\\$814,682.
-                * **Presenter Notes (1.5 minutes)**:
-                  > *"This is the definitive empirical finding of our audit: our gross product margin prior to discounting is 25% to 30%. Concessions up to 20% preserve positive returns. However, the moment discount rates exceed 20%, unit economics invert completely, producing cash burn on every shipment. Over \\$814,000 in profit was conceded through unmonitored discounting past this threshold."*
+    #             #### Slide 6: Root Cause Diagnostic: The 20% Discount Inversion Bound
+    #             * **Slide Title**: *Unit Economics Inversion: Operating Margins Collapse Past 20% Discount*
+    #             * **Visual**: Operating margin distribution across discount brackets (0% to >50%), highlighting the break-even threshold.
+    #             * **Data Evidence**: Orders discounted ≤20% generate +9.9% to +25.3% margin; orders discounted >20% destroyed -\\$814,682.
+    #             * **Presenter Notes (1.5 minutes)**:
+    #               > *"This is the definitive empirical finding of our audit: our gross product margin prior to discounting is 25% to 30%. Concessions up to 20% preserve positive returns. However, the moment discount rates exceed 20%, unit economics invert completely, producing cash burn on every shipment. Over \\$814,000 in profit was conceded through unmonitored discounting past this threshold."*
 
-                ---
+    #             ---
 
-                #### Slide 7: Operational Blind Spots: Freight Cost Absorption & System Controls
-                * **Slide Title**: *Operational Gaps: Unrecovered Expedited Freight & Missing IT Controls*
-                * **Visual**: Freight absorption ratios across logistics fulfillment tiers (Same Day at 17.4% vs Standard Class at 8.1%) and governance hierarchy.
-                * **Presenter Notes (1.0 minute)**:
-                  > *"Our legacy ERP architecture lacks automated margin validation controls, allowing sales representatives to enter transactions with 70% discounts and free expedited delivery without managerial review. We have subsidized premium carrier delivery without recovering freight surcharges."*
+    #             #### Slide 7: Operational Blind Spots: Freight Cost Absorption & System Controls
+    #             * **Slide Title**: *Operational Gaps: Unrecovered Expedited Freight & Missing IT Controls*
+    #             * **Visual**: Freight absorption ratios across logistics fulfillment tiers (Same Day at 17.4% vs Standard Class at 8.1%) and governance hierarchy.
+    #             * **Presenter Notes (1.0 minute)**:
+    #               > *"Our legacy ERP architecture lacks automated margin validation controls, allowing sales representatives to enter transactions with 70% discounts and free expedited delivery without managerial review. We have subsidized premium carrier delivery without recovering freight surcharges."*
 
-                ---
+    #             ---
 
-                #### Slide 8: The Three-Pillar Turnaround Framework
-                * **Slide Title**: *Turnaround Strategy: Three Prioritized Interventions for Immediate Execution*
-                * **Visual**: Structured three-pillar framework (Pricing Governance, Channel Restructuring, Bulky Freight Recovery).
-                * **Presenter Notes (1.5 minutes)**:
-                  > *"We propose three actionable initiatives: First, establish an institutional discount ceiling at 15% with a hard 20% ERP block. Second, restructure Turkey and Nigeria into third-party distributor models. Third, implement dimensional freight surcharges across the Tables portfolio."*
+    #             #### Slide 8: The Three-Pillar Turnaround Framework
+    #             * **Slide Title**: *Turnaround Strategy: Three Prioritized Interventions for Immediate Execution*
+    #             * **Visual**: Structured three-pillar framework (Pricing Governance, Channel Restructuring, Bulky Freight Recovery).
+    #             * **Presenter Notes (1.5 minutes)**:
+    #               > *"We propose three actionable initiatives: First, establish an institutional discount ceiling at 15% with a hard 20% ERP block. Second, restructure Turkey and Nigeria into third-party distributor models. Third, implement dimensional freight surcharges across the Tables portfolio."*
 
-                ---
+    #             ---
 
-                #### Slide 9: Commercial Value Creation & EBITDA Bridge
-                * **Slide Title**: *Financial Valuation Model: +\\$920K in EBITDA Recovery Potential*
-                * **Visual**: Financial bridge model showing operating margin expansion from 11.6% (\\$1.47M) to >15.5% (\\$2.39M).
-                * **Presenter Notes (1.0 minute)**:
-                  > *"By halting value-destructive transactions, the company does not require top-line expansion to accelerate profitability. We recapture \\$500,000 to \\$920,000 in bottom-line operating earnings, expanding operating margins from 11.6% to over 15.5% and substantially lifting return on invested capital."*
+    #             #### Slide 9: Commercial Value Creation & EBITDA Bridge
+    #             * **Slide Title**: *Financial Valuation Model: +\\$920K in EBITDA Recovery Potential*
+    #             * **Visual**: Financial bridge model showing operating margin expansion from 11.6% (\\$1.47M) to >15.5% (\\$2.39M).
+    #             * **Presenter Notes (1.0 minute)**:
+    #               > *"By halting value-destructive transactions, the company does not require top-line expansion to accelerate profitability. We recapture \\$500,000 to \\$920,000 in bottom-line operating earnings, expanding operating margins from 11.6% to over 15.5% and substantially lifting return on invested capital."*
 
-                ---
+    #             ---
 
-                #### Slide 10: Governance Roadmap & Board Action Items
-                * **Slide Title**: *Execution Milestones & Governance Authorizations Requested*
-                * **Visual**: 12-month phased implementation roadmap and formal Board resolution checklist.
-                * **Presenter Notes (1.0 minute)**:
-                  > *"We request immediate Board authorization to execute the 20% ERP discount lock and realign commercial sales compensation to gross margin contribution effective next fiscal quarter. Thank you, and we invite the Board's questions."*
-                """
-            )
+    #             #### Slide 10: Governance Roadmap & Board Action Items
+    #             * **Slide Title**: *Execution Milestones & Governance Authorizations Requested*
+    #             * **Visual**: 12-month phased implementation roadmap and formal Board resolution checklist.
+    #             * **Presenter Notes (1.0 minute)**:
+    #               > *"We request immediate Board authorization to execute the 20% ERP discount lock and realign commercial sales compensation to gross margin contribution effective next fiscal quarter. Thank you, and we invite the Board's questions."*
+    #             """
+    #         )
 
-    st.divider()
+    # st.divider()
 
     # Section 4 Proposed Solutions
     with st.container(border=True):
