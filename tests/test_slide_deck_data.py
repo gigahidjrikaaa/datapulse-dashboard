@@ -96,3 +96,44 @@ def test_html_slide_no_typo_symbol():
             content = f.read()
         assert "$-64K" not in content, "Found '$-64K' typo in board_deck.html"
         assert "-$64K" in content, "Expected '-$64K' in board_deck.html"
+
+
+def test_slide2_operating_profit_visual_and_legend():
+    """Verify Slide 2 includes Operating Profit visual points, legend, and volume card."""
+    html_path = os.path.join("presentation", "board_deck.html")
+    with open(html_path, "r", encoding="utf-8") as f:
+        content = f.read()
+    assert "$249K" in content
+    assert "$504K" in content
+    assert "Operating profit (line)" in content
+    assert "Order volume (+92.1%)" in content
+    assert "Avg order value (flat, -0.9%)" in content
+
+
+def test_slide7_and_8_legends_and_colors():
+    """Verify Slide 7 has discount margin legend and Slide 8 uses var(--rule) matching legend."""
+    html_path = os.path.join("presentation", "board_deck.html")
+    with open(html_path, "r", encoding="utf-8") as f:
+        content = f.read()
+    assert "Profitable margin (&le;20% discount)" in content
+    assert "Operating deficit (&gt;20% discount)" in content
+    # In slide 8, Same Day and First Class should have fill="var(--rule)"
+    assert 'fill="var(--rule)"/><text class="sv-val" x="717" y="220" text-anchor="start">17.4%</text>' in content
+
+
+def test_dashboard_priority_chart_and_discount_cliff_legend(global_df):
+    """Verify create_priority_freight_chart and create_discount_cliff_chart have traces with legends."""
+    from src.services.analyzer import analyze_discount_impact, analyze_shipping_and_priority
+    from src.components.charts import create_discount_cliff_chart, create_priority_freight_chart
+
+    disc_df = analyze_discount_impact(global_df)
+    cliff_fig = create_discount_cliff_chart(disc_df)
+    assert len(cliff_fig.data) == 2
+    assert "Profitable Tier" in cliff_fig.data[0].name
+    assert "Deficit Tier" in cliff_fig.data[1].name
+
+    _, priority_df = analyze_shipping_and_priority(global_df)
+    priority_fig = create_priority_freight_chart(priority_df)
+    assert len(priority_fig.data) == 2 # Bar and line
+    assert "Freight Cost Ratio (%)" in priority_fig.data[0].name
+    assert "Avg Shipping Cost ($)" in priority_fig.data[1].name

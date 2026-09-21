@@ -7,6 +7,7 @@ from src.components.charts import (
     create_discount_cliff_chart,
     create_discount_profit_scatter,
     create_freight_absorption_chart,
+    create_priority_freight_chart,
 )
 from src.components.narratives import render_chart_story_card, render_data_dictionary_expander
 from src.services.analyzer import (
@@ -133,13 +134,18 @@ def render_trends_view(df: pd.DataFrame) -> None:
         st.markdown("### 2. Freight Absorption Ratios and Fulfillment Service Levels")
         ship_df, priority_df = analyze_shipping_and_priority(df)
 
-        # Priority 2: Visual Freight Absorption Exhibit
-        freight_chart = create_freight_absorption_chart(ship_df)
-        st.plotly_chart(freight_chart, use_container_width=True)
+        # Freight Absorption Exhibits: Delivery Tiers & Fulfillment Priorities
+        tab_tier, tab_prio = st.tabs(
+            [
+                "🚚 Logistics Delivery Tiers (Ship Mode)",
+                "⚡ Fulfillment Priority Levels (Order Priority)",
+            ]
+        )
 
-        c1, c2 = st.columns(2)
-        with c1:
-            st.markdown("#### Performance by Delivery Tier")
+        with tab_tier:
+            freight_chart = create_freight_absorption_chart(ship_df)
+            st.plotly_chart(freight_chart, use_container_width=True)
+            st.markdown("#### Performance Metrics: Delivery Tiers")
             st.dataframe(
                 ship_df.style.format(
                     {
@@ -155,8 +161,10 @@ def render_trends_view(df: pd.DataFrame) -> None:
                 use_container_width=True,
             )
 
-        with c2:
-            st.markdown("#### Performance by Fulfillment Priority")
+        with tab_prio:
+            priority_chart = create_priority_freight_chart(priority_df)
+            st.plotly_chart(priority_chart, use_container_width=True)
+            st.markdown("#### Performance Metrics: Fulfillment Priorities")
             st.dataframe(
                 priority_df.style.format(
                     {

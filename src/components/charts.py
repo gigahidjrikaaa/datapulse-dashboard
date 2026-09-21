@@ -134,7 +134,7 @@ def create_monthly_trend_chart(monthly_df: pd.DataFrame) -> go.Figure:
 
 
 def create_discount_cliff_chart(disc_df: pd.DataFrame) -> go.Figure:
-    """Create bar chart demonstrating unit economics across discount tiers.
+    """Create bar chart demonstrating unit economics across discount tiers with explicit legend.
 
     Args:
         disc_df: DataFrame aggregated by Discount_Bucket.
@@ -145,32 +145,50 @@ def create_discount_cliff_chart(disc_df: pd.DataFrame) -> go.Figure:
     if disc_df.empty:
         return go.Figure()
 
-    colors = [
-        SUCCESS_COLOR if row["Profit_Margin"] > 0 else DANGER_COLOR
-        for _, row in disc_df.iterrows()
-    ]
+    pos_df = disc_df[disc_df["Profit_Margin"] >= 0]
+    neg_df = disc_df[disc_df["Profit_Margin"] < 0]
 
     fig = go.Figure()
 
-    fig.add_trace(
-        go.Bar(
-            x=disc_df["Discount_Bucket"].astype(str),
-            y=disc_df["Profit_Margin"],
-            marker_color=colors,
-            text=[f"{m:.1f}%" for m in disc_df["Profit_Margin"]],
-            textposition="auto",
-            name="Operating Margin (%)",
+    if not pos_df.empty:
+        fig.add_trace(
+            go.Bar(
+                x=pos_df["Discount_Bucket"].astype(str),
+                y=pos_df["Profit_Margin"],
+                marker_color=SUCCESS_COLOR,
+                text=[f"+{m:.1f}%" for m in pos_df["Profit_Margin"]],
+                textposition="auto",
+                name="Profitable Tier (Margin >= 0%)",
+            )
         )
-    )
+
+    if not neg_df.empty:
+        fig.add_trace(
+            go.Bar(
+                x=neg_df["Discount_Bucket"].astype(str),
+                y=neg_df["Profit_Margin"],
+                marker_color=DANGER_COLOR,
+                text=[f"{m:.1f}%" for m in neg_df["Profit_Margin"]],
+                textposition="auto",
+                name="Deficit Tier (Negative Margin)",
+            )
+        )
 
     # Reference break-even threshold line
-    fig.add_hline(y=0, line_dash="dash", line_color="#94A3B8", annotation_text="Break-Even Threshold (0.0% Margin)")
+    fig.add_hline(
+        y=0,
+        line_dash="dash",
+        line_color="#94A3B8",
+        annotation_text="Break-Even Threshold (0.0% Margin)",
+        annotation_position="bottom right",
+    )
 
     fig.update_layout(
         template=CHART_TEMPLATE,
         title="Operating Margin by Discount Bracket: Unit Economics Inversion Threshold",
         xaxis_title="Contractual Discount Bracket",
         yaxis_title="Operating Profit Margin (%)",
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         margin=dict(l=40, r=40, t=60, b=40),
     )
     return fig
@@ -546,6 +564,75 @@ def create_freight_absorption_chart(ship_df: pd.DataFrame) -> go.Figure:
         template=CHART_TEMPLATE,
         title="Freight Cost Absorption & Delivery Tier Subsidization",
         xaxis_title="Logistics Delivery Tier (Ship Mode)",
+        yaxis=dict(title="Freight-to-Sales Ratio (%)", range=[0, max(sorted_df["Ship_Cost_Ratio"]) * 1.3]),
+        yaxis2=dict(
+            title="Avg Landed Freight Cost ($ USD)",
+            overlaying="y",
+            side="right",
+            showgrid=False,
+            range=[0, max(sorted_df["Avg_Shipping_Cost"]) * 1.3],
+        ),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        margin=dict(l=40, r=50, t=60, b=40),
+    )
+    return fig
+
+
+def create_priority_freight_chart(priority_df: pd.DataFrame) -> go.Figure:
+    """Create a bar chart of freight absorption ratio across fulfillment priority levels.
+
+    Visually demonstrates that Critical priority orders (23.8%) and High priority orders (13.4%)
+    absorb significantly higher freight cost percentages relative to Standard/Low tiers.
+
+    Args:
+        priority_df: DataFrame summarized by Order Priority.
+
+    Returns:
+        Plotly Figure.
+    """
+    if priority_df.empty:
+        return go.Figure()
+
+    sorted_df = priority_df.sort_values(by="Ship_Cost_Ratio", ascending=True)
+
+    colors = [
+        DANGER_COLOR if ratio > 20.0 else WARNING_COLOR if ratio > 10.0 else SUCCESS_COLOR
+        for ratio in sorted_df["Ship_Cost_Ratio"]
+    ]
+
+    fig = go.Figure()
+
+    # Freight cost ratio bar
+    fig.add_trace(
+        go.Bar(
+            x=sorted_df["Order Priority"],
+            y=sorted_df["Ship_Cost_Ratio"],
+            name="Freight Cost Ratio (%)",
+            marker_color=colors,
+            text=[f"{r:.2f}%" for r in sorted_df["Ship_Cost_Ratio"]],
+            textposition="auto",
+        )
+    )
+
+    # Average shipping cost line (Secondary axis)
+    fig.add_trace(
+        go.Scatter(
+            x=sorted_df["Order Priority"],
+            y=sorted_df["Avg_Shipping_Cost"],
+            name="Avg Shipping Cost ($)",
+            yaxis="y2",
+            mode="lines+markers+text",
+            text=[f"${c:.2f}" for c in sorted_df["Avg_Shipping_Cost"]],
+            textposition="top center",
+            line=dict(color=ACCENT_CYAN, width=2.5),
+            marker=dict(size=8, color=ACCENT_CYAN),
+        )
+    )
+
+    fig.update_layout(
+        template=CHART_TEMPLATE,
+        title="Freight Cost Absorption by Fulfillment Priority (Critical vs Standard)",
+        xaxis_title="Fulfillment Priority Tier",
         yaxis=dict(title="Freight-to-Sales Ratio (%)", range=[0, max(sorted_df["Ship_Cost_Ratio"]) * 1.3]),
         yaxis2=dict(
             title="Avg Landed Freight Cost ($ USD)",
