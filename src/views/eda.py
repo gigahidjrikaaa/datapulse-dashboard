@@ -61,13 +61,13 @@ def render_eda_view(df: pd.DataFrame) -> None:
               - **Territories with the Largest Operating Deficits**:
                 1. **Turkey**: **-\\$98,447 net operating deficit** on \\$108.5K sales (**-90.73% margin**, average discount rate: 60.0%).
                 2. **Nigeria**: **-\\$80,751 net operating deficit** on \\$54.4K sales (**-148.57% margin**, average discount rate: 70.0%).
-                3. **Netherlands**: **-\\$41,070 net operating deficit** on \\$77.5K sales (**-52.98% margin**, average discount rate: 48.0%).
-                4. **Honduras**: **-\\$29,482 net operating deficit** on \\$90.1K sales (**-32.71% margin**, average discount rate: 41.0%).
+                3. **Netherlands**: **-\\$41,070 net operating deficit** on \\$77.5K sales (**-52.98% margin**, average discount rate: 48.2%).
+                4. **Honduras**: **-\\$29,482 net operating deficit** on \\$90.1K sales (**-32.71% margin**, average discount rate: 40.7%).
             * **Which merchandise divisions and sub-categories generate structural deficits? Is this a volume shortfall or a margin realization failure?**
               - **Tables** constitutes the **sole net deficit sub-category** within the global merchandise portfolio, incurring **-\\$64,083 in cumulative losses** on \\$757,042 in sales (-8.46% margin).
-              - **This is strictly a margin realization failure, not a volume deficiency**: Tables generated strong commercial volume (\\$757K revenue, 12,414 units delivered). Uncontrolled promotional discounting (averaging 29.0%) combined with high freight packaging volume produced negative unit contribution on each sale.
+              - **This is strictly a margin realization failure, not a volume deficiency**: Tables generated strong commercial volume (\\$757K revenue, 3,083 units across 861 order lines). Uncontrolled promotional discounting (averaging 29.1%) combined with high freight packaging volume produced negative unit contribution on each sale.
             * **Where are enterprise operating losses concentrated?**
-              - The top 10 deficit territories account for over **-\\$335,000 in net cash drain**.
+              - The top 10 deficit territories account for over **-\\$355,000 in net cash drain**.
             """
         )
 

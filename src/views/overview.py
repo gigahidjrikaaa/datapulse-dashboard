@@ -158,7 +158,7 @@ def render_overview_view(df: pd.DataFrame) -> None:
             title="Empirical Validation of Q4 Commercial Volume Concentration",
             what_it_shows="Grouped bar distribution of sales volume and annual revenue contribution (%) across quarters Q1 through Q4 from 2011 to 2014.",
             key_takeaway=(
-                "Transaction data confirms that Q4 consistently generates between 34.0% and 36.5% of annual revenue across all four operating years, "
+                "Transaction data confirms that Q4 consistently generates between 31.5% and 36.8% of annual revenue across all four operating years, "
                 "representing more than double the volume realized in Q1 (~15%)."
             ),
             business_impact=(

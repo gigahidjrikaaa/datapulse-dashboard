@@ -420,9 +420,9 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
             r"""
             To achieve sustainable corporate revival within 6 to 12 months, the strategic taskforce submits three formal resolutions for Board authorization:
 
-            1. **Adopt the Base Case Turnaround Model (+\$684,000 Operating EBITDA Expansion)**:
+            1. **Adopt the Base Case Turnaround Model (+\$1,234,000 Operating EBITDA Expansion)**:
                - *Policy Package*: Formally authorize the Base Case turnaround parameters: 20.0% contractual discount ceiling, \$15/unit bulky table pass-through surcharge, and full bonded 3PL transition across Turkey and Nigeria, absorbing a conservative 5.0% customer churn friction buffer.
-               - *Financial Yield*: Expands consolidated operating profit from **\$1.47M to \$2.15M** (+46.5% earnings expansion) and elevates operating margin from **11.6% to 16.5%**.
+               - *Financial Yield*: Expands consolidated operating profit from **\$1.47M to \$2.70M** (+84.1% earnings expansion) and elevates operating margin from **11.6% to 19.9%**.
 
             2. **Authorize the 6–12 Month Phased Implementation Roadmap**:
                - *Phase I (Months 1–3)*: Hardcode programmatic ERP discount locks (<15% standard sales rep discretion, 15–20% automated VP sign-off, >20% hard block) and transition sales scorecards to contribution margin.
