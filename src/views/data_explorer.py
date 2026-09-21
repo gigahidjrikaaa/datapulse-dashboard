@@ -11,24 +11,70 @@ def render_data_explorer_view(df: pd.DataFrame) -> None:
     """Render Section 5: Full Transaction Ledger & Forensic Data Explorer."""
     st.markdown("## Section 5: Transaction Ledger & Forensic Data Explorer")
     st.markdown(
-        "**Audit & Forensic Objective**: Provide institutional transparency and direct transaction-level access "
-        "across the complete global order ledger (51,290 records) with multi-criteria filtering, text search, "
-        "column configuration, and raw CSV export."
+        "**Purpose**: Sections 1–4 proved the problem at an *aggregate* level — \$920K in losses, 12,544 "
+        "deficit orders, a 20% discount cliff, two toxic territories. This section lets you go one level "
+        "deeper: see the individual transactions behind those numbers, isolate the specific orders that "
+        "caused the damage, and verify every finding row-by-row."
     )
     st.markdown("---")
 
-    # Formal Problem Formulation (Audit & Governance)
+    # Story: Why This Section Exists
     with st.container(border=True):
-        st.markdown("### Formal Problem Formulation: Transaction-Level Auditability & Data Integrity Governance")
+        st.markdown("### The Story Behind This Section")
+        st.markdown(
+            """
+            The previous sections established four structural findings from the aggregate data:
+
+            | Finding | What the Data Shows |
+            | :--- | :--- |
+            | **Discount cliff at 20%** | Orders discounted >20% collectively destroyed **-\\$814,682**. But *which specific orders* crossed that line? |
+            | **Turkey & Nigeria deficits** | These two territories generated **-\\$179K** in combined losses. But which customers and products drove that? |
+            | **Tables sub-category loss** | Tables generated **-\\$64K** net loss on \\$757K revenue. But are all Table orders unprofitable, or just certain markets? |
+            | **24.5% of orders lose money** | 12,544 individual order lines ran at a loss. Which ones? Can we trace them to specific reps, dates, or ship modes? |
+
+            **This explorer is the audit trail.** Use the filters below to isolate and verify each of these findings 
+            at the individual transaction level — the way an internal auditor, external compliance reviewer, or 
+            board committee would before authorizing action.
+            """
+        )
+
+    # Formal Problem Formulation
+    with st.container(border=True):
+        st.markdown("### Formal Problem Formulation: Transaction-Level Verification & Audit Traceability")
         st.markdown(
             r"""
-            **Forensic Inquiry & Verification Objective**:
-            Executive summaries and aggregated business intelligence visualizations often obscure micro-level transaction anomalies, isolated discounting abuses, and operational slippage. 
-            Corporate leadership, internal audit, and board committees require an un-aggregated, granular ledger interface to resolve three forensic governance questions:
+            Aggregate dashboards summarize the *what* — they cannot prove the *where* and *who*.
+            For a turnaround decision of this magnitude (renegotiating distributor contracts, blocking 
+            ERP discount codes, restructuring territory coverage), the Board requires **transaction-level evidence**:
 
-            1. **Transaction Verifiability**: Can every consolidated deficit be traced back to individual commercial contracts, order IDs, sales representatives, and shipping manifests?
-            2. **Exception Isolation**: Which specific commercial transactions breached standard margin, discount (> 20%), and freight absorption guidelines?
-            3. **Exportability & Independent Audit**: Can internal and external compliance teams extract filtered, reproducible transaction slices for statutory compliance, tax reconciliation, and audit scrutiny?
+            1. **Traceability**: Every aggregate loss figure must resolve to verifiable Order IDs, customer names, 
+               and dates — not just summary statistics.
+            2. **Exception Isolation**: Management must be able to extract a definitive list of offending transactions 
+               (discount > 20%, profit < \$0, territory = Turkey/Nigeria) as documentary evidence for corrective action.
+            3. **Independent Verification**: External auditors and statutory compliance teams must be able to 
+               reproduce any filtered result set and export it for cross-referencing against ERP systems, 
+               carrier invoices, and revenue recognition records.
+            """
+        )
+
+    # Guided Forensic Walkthrough
+    with st.container(border=True):
+        st.markdown("### Guided Forensic Walkthrough: Suggested Audit Queries")
+        st.markdown(
+            """
+            Use the filter console below to reproduce the key findings from this report. Try these in order:
+
+            1. **Reproduce the discount cliff**: Check ✅ *"Strict Discount Leakage (Discount > 20%)"* + ✅ *"Negative-Margin Records Only"*. 
+               You will see the exact orders driving the -\\$814K loss. Try filtering further by Market to see which regions are worst.
+
+            2. **Inspect the Turkey & Nigeria deficits**: Set *Filter by Sovereign Territory* to **Turkey** or **Nigeria**. 
+               The KPI cards above the table will immediately show their operating margin and total loss — confirming the -$179K figure.
+
+            3. **Isolate the Tables anomaly**: Set *Filter by Sub-Category* to **Tables**. 
+               Sort the Profit column ascending to find the worst individual orders. Check whether high-discount + Same Day shipping is the common pattern.
+
+            4. **Validate the full loss universe**: Check ✅ *"Negative-Margin Records Only"* with no other filters. 
+               The *Matching Transactions* KPI card should read ~12,544 rows — the exact count cited in the executive report.
             """
         )
 
@@ -246,18 +292,31 @@ def render_data_explorer_view(df: pd.DataFrame) -> None:
 
     # Section 5 Proposed Solutions
     with st.container(border=True):
-        st.markdown("### Section 5: Data Governance & Operational Integration Solutions")
+        st.markdown("### Section 5: Proposed Actions — From Evidence to Execution")
         st.markdown(
             r"""
-            To bridge the gap between analytical forensics and day-to-day enterprise execution, the following data governance solutions are proposed:
+            The transaction explorer does more than verify findings — it is itself a governance tool.
+            Once the Board authorizes the turnaround initiatives, the same filter console becomes the 
+            operational instrument for monitoring whether the interventions are working:
 
-            1. **Real-Time ERP Transaction Interceptors**:
-               - Embed automated pre-settlement checks directly into the transactional order-entry engine (SAP/Salesforce/NetSuite). Any transaction breaching negative margin thresholds or the 20% discount ceiling must be programmatically flagged for immediate managerial sign-off before fulfillment.
+            1. **Monitor the 20% Discount Block (Week-over-Week)**:
+               - After the ERP discount ceiling is enforced, use the *"Strict Discount Leakage"* filter each week. 
+                 The result count should trend toward zero. If new high-discount orders appear, they represent 
+                 policy violations requiring immediate escalation.
 
-            2. **Automated Audit Exception Logging**:
-               - Establish automated daily exception feeds distributed to Regional Controllers and Internal Audit detailing all transactions where discount concessions exceeded 20% or where freight absorption exceeded product gross margin.
+            2. **Track Territory Recovery (Monthly)**:
+               - Filter by **Turkey** and **Nigeria** monthly. The *Operating Contribution* KPI card should 
+                 move from negative toward breakeven as 3PL distributor agreements replace direct corporate shipping. 
+                 This single number tells management whether the channel restructuring is working.
 
-            3. **Master Data Catalog & Landed Cost Model Standardization**:
-               - Standardize corporate master data catalogs, dimensional weight parameters, and landed cost models across all international operating entities to eliminate shipping cost misallocations and currency translation discrepancies.
+            3. **Tables Portfolio Rehabilitation (Quarterly)**:
+               - Filter by Sub-Category = **Tables** and toggle *"Negative-Margin Records Only"*. 
+                 As dimensional weight surcharges are applied and MOQ policies enforced, the deficit order count 
+                 should shrink each quarter. Export the CSV quarterly as the audit evidence trail for the Board.
+
+            4. **Clean Ledger Export for Statutory Compliance**:
+               - For end-of-period statutory audit submissions, use the filter console to produce the 
+                 exact filtered transaction slice required (by date, territory, or category), then use 
+                 *"Export Records (CSV)"* to generate a reproducible, timestamped audit extract.
             """
         )
