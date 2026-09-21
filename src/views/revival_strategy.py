@@ -323,9 +323,10 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
             "All quantitative metrics, financial bridge models, and policy levers are 100% synchronized with the transaction ledger and policy simulator above:"
         )
 
-        dl_col1, dl_col2 = st.columns(2)
+        dl_col1, dl_col2, dl_col3 = st.columns(3)
         pptx_path = "presentation/board_deck.pptx"
         pdf_path = "presentation/board_deck.pdf"
+        docx_path = "presentation/Global_Superstore_Executive_Summary.docx"
         if os.path.exists(pptx_path):
             with open(pptx_path, "rb") as f:
                 dl_col1.download_button(
@@ -342,6 +343,15 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                     data=f.read(),
                     file_name="Global_Superstore_Revival_Strategy_Board_Deck.pdf",
                     mime="application/pdf",
+                    use_container_width=True,
+                )
+        if os.path.exists(docx_path):
+            with open(docx_path, "rb") as f:
+                dl_col3.download_button(
+                    label="📑 Download Executive Summary (.docx)",
+                    data=f.read(),
+                    file_name="Global_Superstore_Executive_Summary.docx",
+                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                     use_container_width=True,
                 )
 

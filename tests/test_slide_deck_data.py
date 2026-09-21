@@ -137,3 +137,42 @@ def test_dashboard_priority_chart_and_discount_cliff_legend(global_df):
     assert len(priority_fig.data) == 2 # Bar and line
     assert "Freight Cost Ratio (%)" in priority_fig.data[0].name
     assert "Avg Shipping Cost ($)" in priority_fig.data[1].name
+
+
+def test_executive_summary_docx():
+    """Verify that the 1-page executive summary docx exists and contains all strategic findings and metrics."""
+    import os
+    docx_path = os.path.join("presentation", "Global_Superstore_Executive_Summary.docx")
+    assert os.path.exists(docx_path), "Executive summary .docx file must exist"
+    assert os.path.getsize(docx_path) > 10_000, "Executive summary .docx should be non-empty"
+
+    try:
+        import docx
+        doc = docx.Document(docx_path)
+        all_text = " ".join([p.text for p in doc.paragraphs])
+        for t in doc.tables:
+            for row in t.rows:
+                for cell in row.cells:
+                    all_text += " " + cell.text
+    except ImportError:
+        import zipfile
+        import xml.etree.ElementTree as ET
+        with zipfile.ZipFile(docx_path) as z:
+            xml_content = z.read("word/document.xml")
+            tree = ET.fromstring(xml_content)
+            all_text = " ".join(tree.itertext())
+
+    assert "$4.30M" in all_text
+    assert "11.6%" in all_text
+    assert "-$920,646" in all_text
+    assert "$1,233,804" in all_text or "+$1.23M" in all_text
+    assert "20% Discount Inversion Cliff" in all_text
+    assert "Turkey -$98.4K" in all_text
+    assert "Tables Anomaly" in all_text
+    assert "Pillar 1: Pricing Governance" in all_text
+    assert "Pillar 2: Channel Restructuring" in all_text
+    assert "Pillar 3: Freight Surcharges" in all_text
+    assert "Resolution 1: ERP Pricing Lock" in all_text
+    assert "Resolution 2: Sovereign 3PL Shift" in all_text
+    assert "Resolution 3: Governance Charter" in all_text
+
