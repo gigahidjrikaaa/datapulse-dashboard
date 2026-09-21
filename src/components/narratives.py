@@ -25,7 +25,7 @@ def render_data_dictionary_expander() -> None:
     """Render a formal Data Dictionary & Financial Accounting Methodology expander."""
     with st.expander("Data Dictionary and Financial Accounting Methodology", expanded=False):
         st.markdown(
-            """
+            r"""
             ### Transaction Ledger Dimensions (51,290 Records across 147 Countries)
             | Field Name | Domain | Data Type | Analytical Scope & Operational Relevance |
             | :--- | :--- | :--- | :--- |
@@ -51,19 +51,19 @@ def render_data_dictionary_expander() -> None:
 
             ### Financial Metrics and Valuation Formulas
             * **Operating Profit Margin (%)**:
-              $$\\text{Operating Margin} = \\frac{\\text{Net Operating Profit}}{\\text{Gross Sales}} \\times 100\\%$$
+              $$\text{Operating Margin} = \frac{\text{Net Operating Profit}}{\text{Gross Sales}} \times 100\%$$
               - Measures net commercial conversion per dollar of revenue. Target institutional benchmark: **12.0% to 15.0%**.
             * **Negative Margin Loss Drag (USD)**:
-              $$\\text{Loss Drag} = \\sum |\\text{Profit}| \\quad \\forall \\; \\text{Transactions where Profit} < 0$$
-              - Quantifies the gross capital dilution destroyed by the 24.5% of order lines executed below cost-to-serve.
+              $$\text{Loss Drag} = \sum_{i \in \{i \mid \text{Profit}_i < 0\}} |\text{Profit}_i| = \$920,646.16$$
+              - Quantifies the gross capital dilution destroyed by the 24.5% of order lines executed below cost-to-serve (12,544 lines).
             * **Gross Profitable Contribution (USD)**:
-              $$\\text{Profitable Contribution} = \\sum \\text{Profit} \\quad \\forall \\; \\text{Transactions where Profit} \\ge 0$$
-              - Reflects the unburdened earning power of the company's core profitable business (\\$2.39M).
+              $$\text{Profitable Contribution} = \sum_{i \in \{i \mid \text{Profit}_i \ge 0\}} \text{Profit}_i = \$2,388,103.45$$
+              - Reflects the unburdened earning power of the company's core profitable business (\$2.39M).
             * **Shipping Cost Absorption Ratio (%)**:
-              $$\\text{Shipping Absorption} = \\frac{\\text{Shipping Cost}}{\\text{Gross Sales}} \\times 100\\%$$
+              $$\text{Shipping Absorption} = \frac{\text{Shipping Cost}}{\text{Gross Sales}} \times 100\%$$
               - Evaluates freight intensity. Absorption ratios exceeding 15.0% without freight pass-through surcharges systematically impair unit contribution.
             * **Unit Economics Inversion Bound (The 20% Discount Threshold)**:
-              - Transactions discounted **below 20.0%** yield positive operating margins (+9.9% to +25.3%). Transactions discounted **at or above 20.0%** generate structural operating deficits (-5.5% to -196.1%).
+              - Transactions discounted **below 20.0%** yield positive operating margins (+9.9% to +25.3%). Transactions discounted **at or above 20.0%** generate structural operating deficits (-5.5% to -111.0%).
             """
         )
 

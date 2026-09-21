@@ -11,10 +11,10 @@ def render_data_explorer_view(df: pd.DataFrame) -> None:
     """Render Section 5: Full Transaction Ledger & Forensic Data Explorer."""
     st.markdown("## Section 5: Transaction Ledger & Forensic Data Explorer")
     st.markdown(
-        "**Purpose**: Sections 1–4 proved the problem at an *aggregate* level — \$920K in losses, 12,544 "
-        "deficit orders, a 20% discount cliff, two toxic territories. This section lets you go one level "
-        "deeper: see the individual transactions behind those numbers, isolate the specific orders that "
-        "caused the damage, and verify every finding row-by-row."
+        r"**Purpose**: Sections 1–4 proved the problem at an *aggregate* level — \$920K in losses, 12,544 "
+        r"deficit orders, a 20% discount cliff, two toxic territories. This section lets you go one level "
+        r"deeper: see the individual transactions behind those numbers, isolate the specific orders that "
+        r"caused the damage, and verify every finding row-by-row."
     )
     st.markdown("---")
 
@@ -22,14 +22,14 @@ def render_data_explorer_view(df: pd.DataFrame) -> None:
     with st.container(border=True):
         st.markdown("### The Story Behind This Section")
         st.markdown(
-            """
+            r"""
             The previous sections established four structural findings from the aggregate data:
 
             | Finding | What the Data Shows |
             | :--- | :--- |
-            | **Discount cliff at 20%** | Orders discounted >20% collectively destroyed **-\\$814,682**. But *which specific orders* crossed that line? |
-            | **Turkey & Nigeria deficits** | These two territories generated **-\\$179K** in combined losses. But which customers and products drove that? |
-            | **Tables sub-category loss** | Tables generated **-\\$64K** net loss on \\$757K revenue. But are all Table orders unprofitable, or just certain markets? |
+            | **Discount cliff at 20%** | Orders discounted >20% collectively destroyed **-\$814,682**. But *which specific orders* crossed that line? |
+            | **Turkey & Nigeria deficits** | These two territories generated **-\$179K** in combined losses. But which customers and products drove that? |
+            | **Tables sub-category loss** | Tables generated **-\$64K** net loss on \$757K revenue. But are all Table orders unprofitable, or just certain markets? |
             | **24.5% of orders lose money** | 12,544 individual order lines ran at a loss. Which ones? Can we trace them to specific reps, dates, or ship modes? |
 
             **This explorer is the audit trail.** Use the filters below to isolate and verify each of these findings 

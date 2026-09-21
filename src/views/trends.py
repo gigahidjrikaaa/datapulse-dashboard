@@ -54,7 +54,7 @@ def render_trends_view(df: pd.DataFrame) -> None:
             * **How does contractual price discounting influence unit profitability? Is there an identifiable threshold beyond which orders become structurally unprofitable?**
               - **Yes: The Unit Economics Inversion Threshold occurs at precisely 20.0% discount.**
               - Orders discounted between **0.0% and 20.0%** consistently deliver positive operating margins ranging from **+9.9% to +25.3%**.
-              - Once price concessions exceed **20.0%**, operating margins invert into deep deficits: **-5.5% (at 20–30% discount)**, **-45.3% (at 40–50%)**, and **-111.0% (at >50%)**.
+              - Once price concessions exceed **20.0%**, operating margins invert into deep deficits: **-5.5% (at 20–30% discount)**, **-23.7% (at 30–40%)**, **-45.3% (at 40–50%)**, and **-111.0% (at >50%)**.
               - Price concessions exceeding 20.0% single-handedly destroyed **-\\$814,682 in operating profit**.
             * **Do logistics fulfillment expenses erode operating contribution in specific operating territories?**
               - **Yes.** In volatile currency jurisdictions (Turkey, Nigeria), standard cross-border freight costs combined with heavy discounts generate landed costs that exceed invoiced customer revenue.

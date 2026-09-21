@@ -38,3 +38,7 @@ htmlcov/
 
 # Logs
 *.log
+
+# Presentation render scratch
+presentation/pages*/
+presentation/pptx_check/
