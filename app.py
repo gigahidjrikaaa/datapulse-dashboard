@@ -97,7 +97,7 @@ def main() -> None:
         [
             st.Page(
                 view_executive_summary,
-                title="Executive Memorandum: Strategic Diagnostic",
+                title="Global Superstore Case | Executive Summary",
                 default=True,
             ),
             st.Page(

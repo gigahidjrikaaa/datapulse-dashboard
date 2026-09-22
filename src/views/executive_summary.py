@@ -11,10 +11,20 @@ from src.services.analyzer import compute_overview_kpis, simulate_turnaround_imp
 
 def render_executive_summary_view(df: pd.DataFrame) -> None:
     """Render the one-page executive memorandum for the Board of Directors."""
-    st.markdown("# Executive Memorandum: Strategic Performance Diagnostic")
+    st.markdown("# Global Superstore Case | Executive Summary")
     st.markdown(
-        "**Board of Directors Advisory** | Prepared by the Special Strategy & Operations Taskforce"
+        "**Prepared by Class A Syndicate 6**"
     )
+    st.markdown("""
+        Members:
+        - Giga Hidjrika Aura Adkhy (388)
+        - Safia Aisyah Nur Savanah (364)
+        - Adiva Fitri Khalishah (377)
+        - Azka Ghossani Amin (357)
+        - Nurul Aulia Rahmawati (359)
+        - Cindy Monica Manurung (384)
+        - Louis Alessandro (356)
+    """)
     st.markdown("---")
 
     # Global Data Dictionary & Financial Methodology
