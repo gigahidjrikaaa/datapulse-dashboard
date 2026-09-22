@@ -20,22 +20,22 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
     # Global Data Dictionary & Financial Methodology
     render_data_dictionary_expander()
 
-    # Formal Problem Formulation
+    # Core Business Problem & Questions
     with st.container(border=True):
-        st.markdown("### Formal Problem Formulation: Executive Turnaround Diagnostic & Corporate Governance Inquiry")
+        st.markdown("### Core Business Problem & Questions for the Board")
         st.markdown(
-            r"""
-            **Macro Strategic Inquiry for the Board of Directors**:
-            External market skepticism suggests that Global Superstore is facing structural commercial distress. The Board of Directors has commissioned a forensic diagnosis across the complete 51,290-transaction ledger (FY2011–FY2014) to resolve four fundamental governance questions:
+            """
+            **What leadership needs to know**:
+            There has been persistent concern that Global Superstore is facing commercial distress. To get to the bottom of this, we analyzed all 51,290 customer orders from 2011 through 2014 to answer four fundamental business questions:
 
-            1. **The Growth vs. Governance Paradox**: Has top-line demand stalled, or has unmonitored commercial expansion eroded profitability?
-               $$\text{Evaluate: } \text{CAGR}(\text{Sales}) \text{ vs. } \Delta \text{Operating Margin}$$
-            2. **Forensic Value Leakage Quantification**: Where does capital bleed across markets, product lines, and pricing structures?
-               $$\text{Quantify: } \sum_{i \in \text{Deficit}} |\text{Loss}_i| \quad \text{across Geography, Discount Bands, and SKUs}$$
-            3. **Root Mechanism of Value Destruction**: What specific commercial policy enabled \$920K+ in transaction losses?
-               $$\text{Identify: Threshold } d^* \text{ such that } \mathbb{E}[\text{Margin} \mid \text{Discount} > d^*] < 0$$
-            4. **EBITDA Turnaround & Capital Recovery Roadmap**: How can leadership recover operating earnings without impairing healthy customer relationships?
-               $$\text{Formulate: } \max \Delta \text{EBITDA} \quad \text{subject to customer retention constraints}$$
+            1. **Are sales actually slowing down, or are we giving away our profits?**
+               Did customer demand stall, or did rapid expansion without price controls eat away at profitability?
+            2. **Where is money leaking out of the business?**
+               Which specific countries, product categories, and discount levels are draining cash?
+            3. **What is the exact tipping point where sales lose money?**
+               At what discount percentage does a sale stop making a profit and start costing the company money?
+            4. **How do we fix it and recover the profit?**
+               What practical steps can management take to recapture over $1.2M in profit without hurting good customer relationships?
             """
         )
 
@@ -53,32 +53,35 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
 
     # 1. Executive Board Takeaway Callout
     with st.container(border=True):
-        st.markdown("### Executive Takeaway for the Board of Directors")
+        st.markdown("### Key Takeaway for Leadership")
         st.markdown(
             """
-            **Global Superstore is experiencing a commercial governance and margin dilution crisis, rather than a top-line growth failure.**
+            **Global Superstore does not have a sales problem — it has a pricing and discount problem.**
             
-            * Gross invoiced sales expanded from **\\$2.26M (FY2011) to \\$4.30M (FY2014)**, reflecting a compound annual growth rate of **+23.9%** (+26.3% YoY in FY2014).
-            * However, **24.5% of total order transactions (12,544 lines)** were executed below cost-to-serve, generating **\\$920,646 in cumulative negative margin drag** and depressing consolidated operating margin to **11.6%**.
-            * The root causes are concentrated: **uncontrolled price concessions exceeding 20%** and unhedged freight subsidies in select overseas territories (Turkey, Nigeria, Netherlands).
-            * Enforcing automated pricing controls, sovereign 3PL restructuring, and dimensional freight recovery provides a verified operational bridge to capture **+\$1,233,804 in net EBITDA (+84.1% expansion to \$2.70M at 19.9% margin)** under base case parameters (with gross unburdened loss elimination potential of up to **+\$920,646 / +62.7%** across all 12,544 deficit lines).
+            * **Sales are growing rapidly**: Total revenue almost doubled from **\\$2.26M in 2011 to \\$4.30M in 2014**, growing at an average of **+23.9% per year** (+26.3% in 2014 alone).
+            * **Profits are being drained by money-losing sales**: Nearly **1 in 4 orders (12,544 orders, or 24.5%) was sold at a loss**, wiping out **\\$920,646 in potential profit** and pulling the overall profit margin down to **11.6%**.
+            * **The root causes are simple and concentrated**:
+              1. **Discounts above 20%**: Sales teams offered steep discounts (up to 70%) to hit top-line quotas, losing money on every unit shipped.
+              2. **Subsidized shipping to expensive overseas markets**: High discounts paired with expensive direct international shipping caused severe cash drain in countries like Turkey, Nigeria, and the Netherlands.
+              3. **Bulky furniture**: Tables were heavily discounted while shipping costs ate up the remaining margin.
+            * **The path to recovery**: By capping discounts at 20% at checkout, switching to local distribution partners in loss-making countries, and charging oversized shipping fees on bulky items, the company can capture **+\\$1,233,804 in net EBITDA (+84.1% expansion to \$2.70M at 19.9% margin)**.
             """
         )
 
     st.divider()
 
-    # 2. Executive Diagnostic Summary: Four Pillars of Commercial Performance
-    st.markdown("### Executive Diagnostic Summary: Four Pillars of Commercial Performance")
+    # 2. Executive Diagnostic Summary: Four Pillars of Performance
+    st.markdown("### Executive Summary: The Four Pillars of Performance")
     p1, p2, p3, p4 = st.columns(4)
 
     with p1:
         with st.container(border=True):
             st.markdown(
                 """
-                #### Pillar I: Top-Line Expansion
-                * **Market Rumor**: Revenue stagnation and loss of competitive positioning.
-                * **Forensic Audit**: Sales grew **+90.3%** across the 4-year audit period, with annual order volume expanding from 4,440 to 8,531 orders.
-                * **Diagnosis**: Top-line demand is strong, but corporate management rewarded gross sales without margin accountability.
+                #### 1. Sales Growth
+                * **The Concern**: Rumors that revenue has stalled and customers are leaving.
+                * **What the Data Shows**: Sales surged **+90.3%** over 4 years, and annual orders jumped from 4,440 to 8,531.
+                * **Takeaway**: Customer demand is strong. The issue is how sales reps price those orders.
                 """
             )
 
@@ -86,10 +89,10 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
         with st.container(border=True):
             st.markdown(
                 """
-                #### Pillar II: Profit Dilution
-                * **Core Finding**: Nearly 1 in 4 transactions (24.5%) was sold at an operating loss.
-                * **Financial Quantification**: Profitable orders contributed **\\$2.39M** in gross operating profit, which was depleted by **-\\$920K in losses**.
-                * **Consolidated Result**: Reported operating profit stood at **\\$1.47M**, masking severe margin leakage.
+                #### 2. Hidden Profit Leaks
+                * **The Concern**: Why is the profit margin stuck at ~11% despite doubling sales?
+                * **What the Data Shows**: Profitable orders generated **\\$2.39M**, but **-\\$920K was wiped out** by orders sold at a loss.
+                * **Takeaway**: Nearly 1 in 4 orders lost money, dragging total reported profit down to **\\$1.47M**.
                 """
             )
 
@@ -97,9 +100,9 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
         with st.container(border=True):
             st.markdown(
                 """
-                #### Pillar III: Structural Drivers
-                * **Driver 1 (The 20% Discount Bound)**: Transactions with discounts > 20% destroyed **-\\$814K**, as price concessions exceeded gross margin.
-                * **Driver 2 (Territorial Deficits)**: Turkey (-\\$98K) and Nigeria (-\\$81K) generated heavy cash burn via cross-border freight into currency-devalued markets.
+                #### 3. Why It Happened
+                * **The 20% Discount Cliff**: Orders with discounts over 20% destroyed **-\\$814K** because price cuts exceeded product profit margins.
+                * **High-Loss Countries**: Turkey (-\\$98K) and Nigeria (-\\$81K) bled money due to heavy discounts plus expensive cross-border shipping.
                 """
             )
 
@@ -107,10 +110,10 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
         with st.container(border=True):
             st.markdown(
                 """
-                #### Pillar IV: EBITDA Recovery
-                * **Immediate Intervention**: Hardcode a 20% discount lock into order entry software; require executive authorization for discounts > 15%.
-                * **Channel Restructuring**: Transition underperforming international territories to third-party logistics (3PL) distributor models.
-                * **Value Creation**: Unlocks **+\\$1.23M in Net EBITDA uplift** (+84.1% expansion), lifting operating margin from 11.6% to 19.9%.
+                #### 4. How to Fix It
+                * **Immediate Rule**: Cap discounts at 20% at checkout; require manager approval for anything above 15%.
+                * **Partner Locally**: Move high-cost foreign markets to local distribution partners.
+                * **Value Created**: Unlocks **+\\$1.23M in profit** (+84.1% boost), lifting profit margin from 11.6% to 19.9%.
                 """
             )
 
@@ -121,38 +124,39 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
 
     with col_findings:
         with st.container(border=True):
-            st.markdown("### Three Key Empirical Findings")
+            st.markdown("### Three Key Findings")
             st.markdown(
                 """
-                1. **The 20% Discount Inversion Threshold**:
-                   - Transactions discounted between 0% and 20% generate strong operating margins (**+9.9% to +25.3%**).
-                   - Once discount rates exceed 20%, unit contribution collapses into steep deficits (**-5.5% to -111.0%**), generating **-\\$814,682 in cumulative net losses**.
-                   - Sales teams utilized up to 70% discounts to achieve top-line quota targets without margin hurdle requirements.
+                1. **The 20% Discount Cliff (Where Profit Disappears)**:
+                   - Orders discounted between 0% and 20% make healthy profits (**+9.9% to +25.3% margins**).
+                   - Once discounts exceed 20%, margins collapse into steep losses (**-5.5% down to -111.0%**), creating **-\\$814,682 in total losses**.
+                   - Sales reps gave discounts as high as 70% to hit revenue targets because their commissions did not depend on profit.
                 
-                2. **Territorial Deficit Concentration**:
-                   - Four sovereign jurisdictions—**Turkey (-\\$98.4K)**, **Nigeria (-\\$80.8K)**, **Netherlands (-\\$41.1K)**, and **Honduras (-\\$29.5K)**—account for nearly **\\$250K in operating deficits** (55.8% of all sovereign losses) due to high baseline discounting and direct international shipping costs.
+                2. **Four Countries Drive Over Half the Losses**:
+                   - Four countries—**Turkey (-\\$98.4K)**, **Nigeria (-\\$80.8K)**, **Netherlands (-\\$41.1K)**, and **Honduras (-\\$29.5K)**—account for nearly **\\$250K in total losses** (55.8% of all country losses) due to huge discounts combined with expensive overseas shipping.
                    
-                3. **Tables Merchandise Portfolio Mispricing**:
-                   - Across all 17 portfolio sub-categories, **Tables** represents the sole net deficit line (**-\\$64,083 cumulative loss** on \\$757K revenue, -8.5% margin), caused by heavy packaging dimensions, cross-border freight intensity, and 29.1% average price concessions.
+                3. **Tables Is the Only Product Line in the Red**:
+                   - Across all 17 product lines, **Tables** is the only one losing money (**-\\$64,083 loss** on \\$757K in sales, -8.5% margin).
+                   - Large packaging dimensions, high shipping costs, and an average discount of 29.1% make every table sale an automatic loss.
                 """
             )
 
     with col_recs:
         with st.container(border=True):
-            st.markdown("### Three Strategic Turnaround Initiatives")
+            st.markdown("### Three Actionable Fixes")
             st.markdown(
                 """
-                1. **Institutionalize Pricing Governance and Order Entry Controls**:
-                   - *Policy*: Establish a standard discount cap at 15%. Mandate Vice President approval for concessions between 16% and 20%. Programmatically restrict order processing for discounts > 20%.
-                   - *Financial Recovery*: **+\\$1,032,488 EBITDA recovery** by capping concessions at 20.0% across 11,328 transactions.
+                1. **Lock In Checkout Pricing Controls**:
+                   - *Action*: Set standard discounts at 15% or lower. Require Vice President approval for 16% to 20%. Automatically block any discount over 20% in the checkout system.
+                   - *Profit Recovered*: **+\\$1,032,488** by capping discounts at 20% across 11,328 orders.
                    
-                2. **Restructure Deficit International Operating Channels**:
-                   - *Policy*: Terminate direct corporate fulfillment into Turkey and Nigeria. Transition accounts to in-country master distributors and bonded 3PL logistics networks with local currency indexing.
-                   - *Financial Recovery*: **+\\$179,198 in sovereign deficit elimination** (and up to +\\$250K across all 4 key deficit territories).
+                2. **Switch to Local Distribution Partners in High-Loss Countries**:
+                   - *Action*: Stop shipping individual packages directly into Turkey and Nigeria. Partner with local distributors and warehouses that handle domestic delivery with local currency pricing.
+                   - *Profit Recovered*: **+\\$179,198 saved** in Turkey and Nigeria (and up to +\\$250K across all four high-loss markets).
                    
-                3. **Implement Bulky Freight Pass-Through and Table Portfolio Rationalization**:
-                   - *Policy*: Restructure commercial furniture contracts to include mandatory dimensional weight surcharges and minimum order volume commitments.
-                   - *Financial Recovery*: **+\\$46,245 bulky freight recovery and +\\$80,000+ margin turnaround**, moving Tables from deficit to positive contribution.
+                3. **Charge Oversized Shipping Fees on Heavy Furniture**:
+                   - *Action*: Update furniture pricing to include standard oversized handling fees, stop offering free express shipping on bulky items, and drop the most unprofitable table models.
+                   - *Profit Recovered*: **+\\$46,245 in recovered freight and +\\$80,000+ total turnaround**, turning Tables back into a moneymaker.
                 """
             )
 
@@ -160,33 +164,33 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
 
     # 4. Financial Opportunity Waterfall Callout
     with st.container(border=True):
-        st.markdown("### Commercial Value Recovery Model")
+        st.markdown("### Profit Recovery Breakdown")
         st.markdown(
-            "Executive financial summary of baseline earnings, recoverable negative margin drag, and adjusted earnings potential."
+            "Overview of current profits, money lost on unprofitable orders, and what the business could earn with disciplined pricing."
         )
         c1, c2, c3 = st.columns(3)
         with c1:
             st.metric(
-                "Reported Operating Profit",
+                "Current Operating Profit",
                 f"${kpis['total_profit']:,.0f}",
-                f"{kpis['profit_margin']:.1f}% Operating Margin",
-                help="Current actual earnings after absorbing operating losses.",
+                f"{kpis['profit_margin']:.1f}% Profit Margin",
+                help="Actual profit earned after absorbing all money-losing sales.",
             )
         with c2:
             st.metric(
-                "Recoverable Negative Margin Drag",
+                "Money Lost on Unprofitable Sales",
                 f"+${kpis['profit_loss_drag']:,.0f}",
-                f"Wiped out by {kpis['loss_order_pct']:.1f}% of order lines",
-                help="Cumulative dollar loss from transactions executed below cost-to-serve.",
+                f"Lost across {kpis['loss_order_pct']:.1f}% of orders",
+                help="Total dollars lost from selling items below actual cost.",
             )
         with c3:
             potential_profit = kpis["total_profit"] + kpis["profit_loss_drag"]
             potential_margin = (potential_profit / kpis["total_sales"] * 100.0) if kpis["total_sales"] > 0 else 0
             st.metric(
-                "Adjusted Operating Profit Potential",
+                "Potential Profit (If Losses Stopped)",
                 f"${potential_profit:,.0f}",
                 f"{potential_margin:.1f}% Margin (+62.7% Upside)",
-                help="Unburdened operating earnings potential under strict pricing governance.",
+                help="What operating profit would be if loss-making transactions were eliminated.",
             )
 
         st.markdown("<br>", unsafe_allow_html=True)
@@ -205,24 +209,24 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
 
     # Executive Proposed Solutions & Turnaround Directive
     with st.container(border=True):
-        st.markdown("### Executive Memorandum: Strategic Proposed Solutions & Turnaround Directive")
+        st.markdown("### Recommended Action Plan for the Board")
         st.markdown(
             r"""
-            To permanently reverse margin dilution and capture **+\$1,233,804 in net EBITDA recovery (+84.1% expansion to \$2.70M at 19.9% margin)**, the Strategic Taskforce submits three immediate executive directives for Board ratification:
+            To permanently stop profit erosion and unlock **+\$1,233,804 in net profit (+84.1% increase to \$2.70M at a 19.9% margin)**, the strategy taskforce recommends three immediate actions for Board approval:
 
-            1. **Directive I: Institutionalize Automated Pricing Governance (The 20% Rule)**:
-               - Hardcode ERP price floor gating: standard maximum discretionary discount capped at 15%; 16%–20% requires Regional VP authorization; >20% strictly blocked at checkout.
-               - Re-align sales incentives from gross invoiced volume to Net Margin Contribution.
-               - *Projected EBITDA Impact*: **+\$1,032,488** through automated 20.0% order entry ceiling across 11,328 transactions.
+            1. **Action 1: Enforce the 20% Discount Cap in the Ordering System**:
+               - Program the checkout system: standard sales rep discounts capped at 15%; 16%–20% requires Regional VP sign-off; discounts over 20% are completely blocked.
+               - Shift sales commissions from total revenue booked to actual gross profit generated.
+               - *Expected Impact*: **+\$1,032,488** in recovered profit across 11,328 orders.
 
-            2. **Directive II: Sovereign Channel Transformation (Turkey, Nigeria, Netherlands)**:
-               - Immediately cease direct cross-border corporate shipping to persistent deficit jurisdictions.
-               - Transition Turkey and Nigeria into local master distributor agreements or bonded 3PL logistics networks with local-currency indexation.
-               - *Projected EBITDA Impact*: **+\$179,198** in bilateral deficit elimination (Turkey -\$98.4K and Nigeria -\$80.8K).
+            2. **Action 2: Switch to Local Distribution Partners in Turkey and Nigeria**:
+               - Stop shipping direct cross-border packages into chronic loss-making countries.
+               - Partner with local in-country distributors and third-party logistics (3PL) warehouses with local currency pricing.
+               - *Expected Impact*: **+\$179,198** in direct loss elimination across Turkey (-\$98.4K) and Nigeria (-\$80.8K).
 
-            3. **Directive III: Bulky Freight Cost Recovery & Table SKU Rationalization**:
-               - Implement mandatory dimensional weight freight surcharges on high-cube furniture (Tables).
-               - Impose minimum order quantity (MOQ) hurdles and eliminate single-item express fulfillment for bulky freight.
-               - *Projected EBITDA Impact*: **+\$46,245**, lifting Tables from -\$64K deficit into positive margin contribution.
+            3. **Action 3: Add Oversized Shipping Fees and Fix Table Pricing**:
+               - Add mandatory oversized shipping surcharges on heavy, bulky furniture like Tables.
+               - Require minimum order sizes for bulky deliveries and eliminate free express shipping on large items.
+               - *Expected Impact*: **+\$46,245 in shipping fees recovered**, lifting Tables from a -\$64K loss into solid profitability.
             """
         )

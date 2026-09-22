@@ -17,27 +17,25 @@ from src.services.analyzer import (
 
 
 def render_trends_view(df: pd.DataFrame) -> None:
-    """Render Section 3: Root Cause Diagnostic on Commercial Pricing and Logistics Cost Absorption."""
-    st.markdown("## Section 3: Root Cause Diagnostic: Pricing & Logistics")
+    """Render Section 3: Root Cause Analysis on Pricing Discounts and Shipping Costs."""
+    st.markdown("## Section 3: Why Are Orders Losing Money? (Pricing & Shipping)")
     st.markdown(
-        "**Diagnostic Objective**: Investigate commercial pricing concessions, freight absorption ratios, fulfillment tiers, and governance controls to establish root causes of margin dilution."
+        "**Section Goal**: Dig into customer discounts, shipping costs, delivery speeds, and sales incentives to find the exact root causes of our profit leaks."
     )
     st.markdown("---")
 
-    # Formal Problem Formulation (Task 3)
+    # Core Business Problem & Key Questions
     with st.container(border=True):
-        st.markdown("### Formal Problem Formulation: Unit Economics Breakdown & Root Cause Identification")
+        st.markdown("### The Core Question: Why Did 12,544 Orders Lose Money?")
         st.markdown(
-            r"""
-            **Context & Stakeholder Dilemma (Task 3 Brief)**:
-            The Taskforce must investigate the underlying operational mechanics driving negative margins on 12,544 order lines.
-            The Chief Strategy Officer requires a forensic inquiry utilizing iterative "5-Why" causal chaining to resolve three specific questions:
+            """
+            **What we're investigating**:
+            Over 12,500 orders were sold at a loss, costing the company $920,646.
+            To understand how this was allowed to happen, we looked at the root causes behind pricing and shipping:
 
-            1. **The Contractual Pricing Threshold**: At what discount percentage $\delta^*$ does unit economics invert into structural operating losses?
-               $$\text{Unit Margin}(\delta) = \text{List Price} \times (1 - \delta) - \text{COGS} - \text{Shipping Cost} \lessgtr 0$$
-            2. **Logistics Cost Absorption & Service-Level Subsidization**:
-               $$\text{Freight Absorption Ratio} = \frac{\text{Landed Shipping Cost}}{\text{Invoiced Sales}}, \quad \text{Evaluate across Delivery Tiers and Fulfillment Priorities}$$
-            3. **Institutional & Governance Root Causes**: What organizational and architectural failures permitted 70% discounts and unchecked cross-border shipping deficits to persist across 4 fiscal years?
+            1. **The 20% Discount Cliff**: At what exact discount percentage does an order stop making money and start losing money?
+            2. **Free & Fast Shipping**: Are expensive delivery options (like Same Day and First Class) eating up the profit on discounted orders?
+            3. **System & Sales Rules**: Why did the ordering system let sales reps give discounts as high as 70% with free international delivery?
             """
         )
 
@@ -49,22 +47,22 @@ def render_trends_view(df: pd.DataFrame) -> None:
 
     # Direct Diagnostic Answers
     with st.container(border=True):
-        st.markdown("### Executive Diagnostic: Pricing & Logistics Drivers")
+        st.markdown("### Key Findings on Pricing and Shipping")
         st.markdown(
             """
-            * **How does contractual price discounting influence unit profitability? Is there an identifiable threshold beyond which orders become structurally unprofitable?**
-              - **Yes: The Unit Economics Inversion Threshold occurs at precisely 20.0% discount.**
-              - Orders discounted between **0.0% and 20.0%** consistently deliver positive operating margins ranging from **+9.9% to +25.3%**.
-              - Once price concessions exceed **20.0%**, operating margins invert into deep deficits: **-5.5% (at 20–30% discount)**, **-23.7% (at 30–40%)**, **-45.3% (at 40–50%)**, and **-111.0% (at >50%)**.
-              - Price concessions exceeding 20.0% single-handedly destroyed **-\\$814,682 in operating profit**.
-            * **Do logistics fulfillment expenses erode operating contribution in specific operating territories?**
-              - **Yes.** In volatile currency jurisdictions (Turkey, Nigeria), standard cross-border freight costs combined with heavy discounts generate landed costs that exceed invoiced customer revenue.
-              - Expedited delivery tiers (*Same Day* and *First Class*) incur freight expenses representing **16.8% to 17.4% of sales**, yet were frequently provided without freight recovery fees.
-            * **What are the structural root causes of corporate underperformance?**
-              1. **Absence of Institutional Discount Governance**: Point-of-sale systems permit sales representatives to grant price concessions up to 70% without managerial approval.
-              2. **Cross-Border Fulfillment Architecture in Emerging Territories**: Direct international fulfillment into high-tariff jurisdictions creates unrecoverable freight cost burdens.
-              3. **Unrecovered Bulky Freight on Furniture Lines**: Bulky, low-density merchandise (Tables) shipped without dimensional weight surcharges.
-              4. **Misaligned Commercial Sales Incentives**: Field commission structures reward gross invoiced sales rather than gross margin or contribution profit.
+            * **How do discounts affect profit? Is there a clear breaking point?**
+              - **Yes: The breaking point is precisely 20% discount.**
+              - Orders discounted between **0% and 20%** make solid profits, with margins of **+9.9% to +25.3%**.
+              - The moment a discount goes over **20%**, profit collapses into steep losses: **-5.5% (at 20–30% discount)**, **-23.7% (at 30–40%)**, **-45.3% (at 40–50%)**, and **-111.0% (at >50%)**.
+              - Discounts higher than 20% single-handedly caused **-\\$814,682 in losses**.
+            * **Do shipping costs eat up our profits?**
+              - **Yes, especially on fast deliveries and overseas orders.** In countries like Turkey and Nigeria, shipping costs plus heavy discounts ended up costing more than the customer paid us.
+              - Fast shipping (*Same Day* and *First Class*) eats up **16.8% to 17.4% of the sale price**, yet was often given away without charging the customer extra.
+            * **What are the real root causes behind this?**
+              1. **No checkout limits**: Sales reps could enter discounts up to 70% in the system without asking any manager.
+              2. **Sales bonuses based on revenue, not profit**: Sales reps were rewarded for total dollars sold, giving them an incentive to slash prices just to close deals.
+              3. **Direct shipping to high-cost countries**: Shipping individual packages across borders into countries with high tariffs and currency swings created huge delivery costs.
+              4. **Free shipping on heavy tables**: Bulky furniture was shipped with standard shipping rates, eating up whatever margin remained.
             """
         )
 
@@ -72,7 +70,7 @@ def render_trends_view(df: pd.DataFrame) -> None:
 
     # 1. The 20% Discount Cliff
     with st.container(border=True):
-        st.markdown("### 1. Price Realization Analysis: The 20% Discount Inversion Threshold")
+        st.markdown("### 1. The 20% Discount Cliff: Where Profit Disappears")
         disc_df = analyze_discount_impact(df)
 
         col_chart, col_table = st.columns([3, 2])
@@ -81,7 +79,7 @@ def render_trends_view(df: pd.DataFrame) -> None:
             st.plotly_chart(cliff_fig, use_container_width=True)
 
         with col_table:
-            st.markdown("#### Discount Tier Economic Matrix")
+            st.markdown("#### Profit by Discount Level")
             st.dataframe(
                 disc_df.style.format(
                     {
@@ -97,33 +95,33 @@ def render_trends_view(df: pd.DataFrame) -> None:
             )
 
         render_chart_story_card(
-            title="Unit Economics Inversion Threshold (The 20% Discount Bound)",
+            title="Profitability Drops Off a Cliff Past 20% Discount",
             what_it_shows=(
-                "Distribution of net operating profit margin across discrete contractual discount brackets from 0.0% to >50.0%. "
-                "Green bars represent profitable pricing tiers; red bars delineate operating deficits below the break-even threshold."
+                "Average profit margin across different discount brackets from 0% up to over 50%. "
+                "Green bars show profitable tiers; red bars show tiers where every sale loses money."
             ),
             key_takeaway=(
-                "The baseline gross operating margin prior to discounting is approximately 25.0% to 30.0%. "
-                "When discounts are maintained within 0.0% to 20.0%, transactions preserve healthy net margins (+9.9% to +25.3%). "
-                "However, exceeding 20.0% discount triggers unit economics inversion: contractual concessions exceed total product gross margin, "
-                "resulting in direct cash burn on every item shipped. Transactions past 20.0% produced -\\$814,682 in cumulative losses."
+                "Before discounts, our products have a healthy profit margin of 25% to 30%. "
+                "Discounts up to 20% keep profits positive (+9.9% to +25.3%). "
+                "However, once discounts exceed 20%, the discount is bigger than our profit margin, meaning we lose cash on every item sold. "
+                "Sales with discounts over 20% caused -$814,682 in total losses."
             ),
             business_impact=(
-                "This empirical finding represents the primary driver of corporate margin stagnation: Global Superstore conceded \\$814,682 "
-                "in operating earnings through unmonitored commercial discounting. Eliminating discounts beyond 20.0% eradicates 88.5% of enterprise "
-                "cumulative dollar loss drag (-\\$814,682 out of -\\$920,646) and 81.2% of all deficit transactions (10,180 lines)."
+                "This single issue explains why profit margins stayed flat while sales doubled: we gave away $814,682 "
+                "through unmanaged discounting. Stopping discounts above 20% eliminates 88.5% of enterprise cumulative loss capital "
+                "and 81.2% of all deficit transactions (10,180 lines)."
             ),
             recommendation=(
-                "Mandate automated validation rules in the enterprise ERP software: block order creation for any transaction containing a discount > 20.0% "
-                "unless authorized in writing by the Chief Commercial Officer."
+                "Set an automatic rule in the checkout system: block any order with a discount greater than 20%, "
+                "and require manager sign-off for any discount between 15% and 20%."
             ),
         )
 
         st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("#### Forensic Transaction Scatter: Empirical Verification of the Inversion Tipping Point")
+        st.markdown("#### Individual Order Scatter: Proof of the 20% Breaking Point")
         st.markdown(
-            "Every individual order plotted across contractual discount rate (%) versus realized net operating profit ($ USD). "
-            "Dashed line marks the 20.0% inversion threshold; dotted line marks break-even."
+            "Every single order plotted by discount percentage vs actual profit. "
+            "Notice how almost every order to the right of the 20% line falls below zero profit."
         )
         scatter_fig = create_discount_profit_scatter(df)
         st.plotly_chart(scatter_fig, use_container_width=True)
@@ -132,21 +130,21 @@ def render_trends_view(df: pd.DataFrame) -> None:
 
     # 2. Shipping Cost and Order Priority Analysis
     with st.container(border=True):
-        st.markdown("### 2. Freight Absorption Ratios and Fulfillment Service Levels")
+        st.markdown("### 2. Shipping Costs and Delivery Speeds")
         ship_df, priority_df = analyze_shipping_and_priority(df)
 
         # Freight Absorption Exhibits: Delivery Tiers & Fulfillment Priorities
         tab_tier, tab_prio = st.tabs(
             [
-                "🚚 Logistics Delivery Tiers (Ship Mode)",
-                "⚡ Fulfillment Priority Levels (Order Priority)",
+                "🚚 Delivery Speed (Ship Mode)",
+                "⚡ Order Urgency (Order Priority)",
             ]
         )
 
         with tab_tier:
             freight_chart = create_freight_absorption_chart(ship_df)
             st.plotly_chart(freight_chart, use_container_width=True)
-            st.markdown("#### Performance Metrics: Delivery Tiers")
+            st.markdown("#### Shipping Costs by Delivery Speed")
             st.dataframe(
                 ship_df.style.format(
                     {
@@ -165,7 +163,7 @@ def render_trends_view(df: pd.DataFrame) -> None:
         with tab_prio:
             priority_chart = create_priority_freight_chart(priority_df)
             st.plotly_chart(priority_chart, use_container_width=True)
-            st.markdown("#### Performance Metrics: Fulfillment Priorities")
+            st.markdown("#### Shipping Costs by Urgency Level")
             st.dataframe(
                 priority_df.style.format(
                     {
@@ -182,40 +180,40 @@ def render_trends_view(df: pd.DataFrame) -> None:
             )
 
         render_chart_story_card(
-            title="Freight Cost Absorption and Expedited Delivery Subsidization",
+            title="Fast Delivery Eats Up Twice As Much Revenue As Standard Delivery",
             what_it_shows=(
-                "Assessment of sales volume, net operating profit, landed shipping costs, and freight absorption ratios (%) across "
-                "logistics fulfillment tiers (First Class, Same Day, Second Class, Standard Class) and fulfillment priority tiers."
+                "Sales, profits, shipping costs, and shipping cost percentage across delivery speeds "
+                "(Standard, Second Class, First Class, Same Day) and order priority tiers."
             ),
             key_takeaway=(
-                "Standard Class logistics accounts for 60.0% of volume with an 8.1% freight-to-sales ratio. "
-                "Conversely, Same Day (17.38% freight ratio) and First Class (16.83% freight ratio) absorb more than double the freight cost per dollar billed. "
-                "When expedited service levels are coupled with commercial discounting, contribution margins turn sharply negative."
+                "Standard shipping makes up 60% of orders and costs 8.1% of the sale price. "
+                "In contrast, Same Day (17.4%) and First Class (16.8%) eat up more than double the percentage of sales. "
+                "When fast shipping is combined with a 20%+ discount, the sale is virtually guaranteed to lose money."
             ),
             business_impact=(
-                "The enterprise has subsidized rapid transit delivery by failing to index freight pricing to actual carrier costs, "
-                "permitting customers to select premium expedited delivery without adequate basket size commitments."
+                "We have been subsidizing expensive fast delivery without passing the costs to customers, "
+                "allowing buyers to select premium shipping on small or heavily discounted orders."
             ),
             recommendation=(
-                "Implement dynamic freight pass-through pricing: customer shipping fees must reflect carrier surcharges, "
-                "and expedited shipping subsidies must be prohibited on orders below a \\$250 basket threshold."
+                "Charge customers for expedited shipping unless their order meets a minimum basket size of $250, "
+                "and never offer free expedited shipping on discounted items."
             ),
         )
 
     st.divider()
 
-    # 3. Process & Governance Hierarchy
+    # 3. Process & Governance Hierarchy (The 5-Why Table)
     with st.container(border=True):
-        st.markdown("### 3. Root Cause Diagnostic: Process & Governance Hierarchy")
+        st.markdown("### 3. The '5 Whys': Tracing the Problem to Its Root Cause")
         st.markdown(
             """
-            | Governance Level | Diagnostic Inquiry | Forensic Evidence & Operational Finding |
+            | Level | The Question | What the Data and Systems Reveal |
             | :--- | :--- | :--- |
-            | **Performance Symptom** | Why has consolidated operating margin stagnated at 11.6% despite +90% revenue growth? | 24.5% of order lines (12,544 transactions) generated negative operating margins, destroying **\\$920,646 in operating capital**. |
-            | **Pricing Execution** | Why are nearly one in four transactions executed below cost-to-serve? | Commercial sales teams granted price concessions between **20.0% and 70.0%**, reducing landed selling price below landed product cost + freight. |
-            | **Commercial Incentives** | Why were sales representatives authorized to offer 50% to 70% discounts? | Commercial compensation frameworks rewarded **gross top-line revenue**, with zero incentive alignment toward contribution margin or net profitability. |
-            | **ERP System Controls** | Why does enterprise order entry software process transactions with 70% discounts? | Legacy IT architecture lacks programmatic validation controls, margin hurdle gates, or automated escalation workflows at point of order entry. |
-            | **Institutional Root Cause** | **What is the foundational governance failure requiring Board intervention?** | **Absence of programmatic pricing controls, margin-aligned commercial incentives, and dimensional freight recovery mechanisms.** |
+            | **1. The Symptom** | Why did profit margins stay flat at 11.6% while sales almost doubled? | Nearly 1 in 4 orders (12,544 orders) lost money, destroying **\\$920,646 in profits**. |
+            | **2. The Direct Cause** | Why did so many orders lose money? | Sales teams gave discounts between **20% and 70%**, meaning the selling price was lower than product cost plus shipping. |
+            | **3. Sales Incentives** | Why were sales reps giving 50% to 70% discounts? | Reps were paid bonuses based on **total sales revenue**, regardless of whether the deal made or lost money. |
+            | **4. Ordering Systems** | Why did the checkout system allow a 70% discount? | The ordering system had no automated price limits, warnings, or manager approval steps at checkout. |
+            | **5. Foundational Cause** | **What is the root cause leadership needs to fix?** | **Lack of checkout discount caps, flawed sales incentives that reward revenue over profit, and no fees for oversized shipping.** |
             """
         )
 
@@ -223,21 +221,21 @@ def render_trends_view(df: pd.DataFrame) -> None:
 
     # Section 3 Proposed Solutions
     with st.container(border=True):
-        st.markdown("### Section 3: Strategic Proposed Solutions")
+        st.markdown("### Practical Actions for Section 3")
         st.markdown(
             r"""
-            Based on the root cause diagnostic, the strategic taskforce proposes three programmatic interventions:
+            Based on the pricing and shipping diagnostic, we recommend three concrete actions:
 
-            1. **Programmatic 20.0% Hard ERP Discount Ceiling**:
-               - *Governance Mechanism*: Hardcode automated validation gates into the enterprise ERP order processing pipeline. Hard-block transaction creation for any discount $> 20.0\%$. Mandate automated VP approval for concessions between $15.0\%$ and $20.0\%$.
-               - *Financial Quantification*: **Recovers +\$814,682 in destroyed operating profit**, eradicating 88.5% of enterprise cumulative loss capital and 81.2% of all deficit transactions (10,180 out of 12,544 lines).
+            1. **Lock In a Hard 20% Discount Cap in the Ordering System**:
+               - *Action*: Program the ordering software: standard sales discounts capped at 15%; 15%–20% requires manager approval; anything over 20% is completely blocked.
+               - *Profit Recovered*: **Recovers +\$814,682 in lost profit**, eliminating 88.5% of all dollar losses across the company.
 
-            2. **Dynamic Freight Pass-Through & Surcharge Recovery**:
-               - *Governance Mechanism*: Discontinue unhedged expedited shipping subsidies on Same Day (17.4% freight ratio) and First Class (16.8% freight ratio). Implement mandatory customer freight billing indexed to actual carrier surcharges, with free shipping restricted to orders exceeding \$250.
-               - *Financial Quantification*: Recovers **+\$110,000 in unabsorbed carrier fulfillment expenses**.
+            2. **Stop Subsidizing Fast Shipping on Small Orders**:
+               - *Action*: Stop giving away free Same Day (17.4% shipping cost) and First Class (16.8% shipping cost) shipping. Charge customers actual carrier shipping fees, with free shipping only on orders over \$250.
+               - *Profit Recovered*: **Recovers +\$110,000 in unrecovered shipping costs**.
 
-            3. **Sales Incentive Recalibration (Margin-Weighted Commissions)**:
-               - *Governance Mechanism*: Replace top-line volume bonus plans with Gross Margin Contribution hurdles. Penalize transactions discounted above 15% with progressive commission clawbacks.
-               - *Impact*: Permanently aligns field commercial behavior with corporate shareholder return.
+            3. **Pay Sales Commissions on Profit, Not Revenue**:
+               - *Action*: Replace revenue-based sales bonuses with profit-based commissions. Reduce bonuses on any deals discounted above 15%.
+               - *Expected Result*: Aligns sales reps' incentives with company profitability, stopping reckless discounting.
             """
         )

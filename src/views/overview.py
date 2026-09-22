@@ -18,26 +18,27 @@ from src.services.analyzer import (
 
 def render_overview_view(df: pd.DataFrame) -> None:
     """Render Section 1: Multi-Year Financial Performance Audit (2011–2014)."""
-    st.markdown("## Section 1: Multi-Year Financial Performance Audit")
+    st.markdown("## Section 1: Multi-Year Financial Performance Overview")
     st.markdown(
-        "**Audit Objective**: Evaluate historical financial performance (FY2011–FY2014), calculate compound growth rates, and test market rumors regarding top-line stagnation."
+        "**Section Goal**: Review how the business performed from 2011 to 2014, calculate year-over-year growth, and see if the rumors of slowing sales are true."
     )
     st.markdown("---")
 
-    # Formal Problem Formulation (Task 1)
+    # Core Business Problem & Key Questions
     with st.container(border=True):
-        st.markdown("### Formal Problem Formulation: Macro-Financial Audit & Rumor Testing")
+        st.markdown("### The Core Question: Are Sales Stalling or Growing?")
         st.markdown(
-            r"""
-            **Context & Stakeholder Dilemma (Task 1 Brief)**:
-            Persistent market rumors suggest that Global Superstore's commercial growth has stagnated and profitability is decaying. 
-            Corporate leadership requires a definitive mathematical audit of the 51,290-order ledger from fiscal years 2011 to 2014 to resolve three formal inquiries:
+            """
+            **What we're investigating**:
+            There have been rumors that Global Superstore is losing steam and running out of steam financially. 
+            To test whether that's true, we looked at all 51,290 orders between 2011 and 2014 to answer three practical questions:
 
-            1. **Macro Growth Trajectory**: Does the historical time series exhibit revenue stagnation or profit decay?
-               $$\text{Test: } \Delta \text{Sales}_{t, t-1} \le 0 \quad \text{and} \quad \Delta \text{Profit}_{t, t-1} \le 0$$
-            2. **Operating Leverage & Margin Compression**: Is operating profit margin expanding with economies of scale, or diluting?
-               $$\text{Operating Margin}_t = \frac{\text{Profit}_t}{\text{Sales}_t}, \quad \text{Test: } \frac{d(\text{Margin})}{d(\text{Volume})} \gtrless 0$$
-            3. **Systemic vs. Isolated Underperformance**: Is underperformance pervasive across the entire enterprise portfolio, or confined to specific operational and geographic pockets?
+            1. **Are sales actually dropping, or is revenue growing?**
+               Did the business stop growing, or are sales still heading upward?
+            2. **Why didn't profit margins improve as the business got bigger?**
+               Normally, when a company doubles in size, costs per order drop and profit margins go up. Why did our margin stay flat at ~11.6%?
+            3. **Is the problem everywhere, or just in a few spots?**
+               Are we losing money across the whole company, or is the damage coming from just a handful of countries and products?
             """
         )
 
@@ -47,18 +48,18 @@ def render_overview_view(df: pd.DataFrame) -> None:
         st.warning("No data available under the current parameter selection.")
         return
 
-    # Formal Audit Inquiries Callout
+    # Direct Answers to the Key Questions
     with st.container(border=True):
-        st.markdown("### Executive Audit Findings: Board Inquiries")
+        st.markdown("### Key Findings from the 4-Year Numbers")
         st.markdown(
             """
-            * **Are sales and operating profit expanding, flat, or declining?**
-              - **Sales and profit demonstrate strong, sustained expansion.** Annual revenue grew from **\\$2,259,451 in FY2011** to **\\$4,299,866 in FY2014**, representing cumulative top-line growth of **+90.3%** (+26.3% YoY in FY2014).
-              - Operating profit expanded in parallel from **\\$248,941 (FY2011)** to **\\$504,166 (FY2014)**, reflecting a cumulative increase of **+102.5%**.
-            * **Is the operating profit margin improving or deteriorating?**
-              - **Operating margin is stagnant.** Margin performance remained constrained within a narrow band of **11.02% (FY2011)**, **11.48% (FY2012)**, **11.95% (FY2013)**, and **11.73% (FY2014)**. Despite doubling commercial order volume, the business failed to capture operating leverage benefits due to compounding discounting concessions.
-            * **Is underperformance pervasive across the enterprise or confined to specific operating units?**
-              - **Underperformance is structurally isolated.** The core enterprise is fundamentally sound: 75.5% of transaction volume delivers **\\$2.39M in gross operating profit**. Value destruction is concentrated in four international territories (Turkey, Nigeria, Netherlands, Honduras) and one merchandise line (Tables).
+            * **Are sales and profits going up, flat, or declining?**
+              - **Both sales and profits grew impressively.** Annual sales jumped from **\\$2,259,451 in 2011** to **\\$4,299,866 in 2014** — an overall growth of **+90.3%** (+26.3% in 2014 alone).
+              - Operating profit more than doubled in the same period, growing from **\\$248,941 (2011)** to **\\$504,166 (2014)**, an increase of **+102.5%**.
+            * **Is our profit margin getting better or worse?**
+              - **The profit margin is completely flat.** It hovered in a narrow range of **11.0% (2011)**, **11.5% (2012)**, **12.0% (2013)**, and **11.7% (2014)**. Even though order volume doubled, the company didn't become more profitable per dollar of sales because price discounts ate up the gains.
+            * **Is the whole business struggling, or just a few areas?**
+              - **The problem is isolated to specific areas.** Most of the business is healthy: 75.5% of orders made money, delivering **\\$2.39M in profit**. The losses come from just four countries (Turkey, Nigeria, Netherlands, Honduras) and one product line (Tables).
             """
         )
 
@@ -68,33 +69,32 @@ def render_overview_view(df: pd.DataFrame) -> None:
     yoy_df = compute_yoy_growth(df)
 
     with st.container(border=True):
-        st.markdown("### Year-over-Year (YoY) Financial Performance Progression (FY2011–FY2014)")
+        st.markdown("### Year-over-Year Growth (2011–2014)")
         yoy_chart = create_yoy_growth_chart(yoy_df)
         st.plotly_chart(yoy_chart, use_container_width=True)
 
         render_chart_story_card(
-            title="Annual Revenue Expansion vs Operating Margin Stagnation",
+            title="Sales Doubled, but Profit Margins Stayed Flat",
             what_it_shows=(
-                "Dual-axis evaluation of annual gross invoiced sales (Blue Bars), net operating profit (Green Bars), and operating margin % "
-                "(Yellow Line) across 51,290 commercial transaction lines from fiscal years 2011 through 2014."
+                "Annual sales (blue bars), operating profit (green bars), and profit margin percentage "
+                "(yellow line) across all 51,290 orders from 2011 through 2014."
             ),
             key_takeaway=(
-                "Top-line invoiced sales accelerated across the audit period (+18.5% in FY2012, +27.2% in FY2013, and +26.3% in FY2014). "
-                "Operating profit scaled from $249K to $504K. However, operating margin remained flat at approximately 11.6% to 11.9%, "
-                "indicating that scale expansion did not yield expected economies of scale or fixed-cost absorption advantages."
+                "Sales grew steadily every single year (+18.5% in 2012, +27.2% in 2013, +26.3% in 2014). "
+                "Profits grew from $249K to $504K. But profit margin stayed stubbornly flat at around 11.6% to 11.9%. "
+                "As the business got bigger, it failed to reap the benefits of scale because discounts ate up the extra profit."
             ),
             business_impact=(
-                "External rumors of revenue stagnation are refuted by transaction data. The true strategic concern is gross-to-net margin dilution: "
-                "as annual transaction volume scaled from 4,440 to 8,531 orders, commercial pricing discipline eroded, allowing discounted transactions "
-                "to offset gains realized by high-performing product lines."
+                "Rumors that revenue has stalled are completely false. The real challenge is that as orders doubled from "
+                "4,440 to 8,531 per year, sales teams gave away more and more discounts, canceling out the profit gains."
             ),
             recommendation=(
-                "The Board should transition commercial performance scorecards from gross top-line bookings to contribution margin targets, "
-                "penalizing unapproved price concessions."
+                "Reward sales teams based on the profit they bring in, rather than just total revenue booked. "
+                "This stops reps from giving huge discounts just to hit sales targets."
             ),
         )
 
-        st.markdown("#### Annual Performance Summary Matrix")
+        st.markdown("#### Annual Performance Numbers")
         formatted_yoy = yoy_df.copy()
         st.dataframe(
             formatted_yoy.style.format(
@@ -118,57 +118,55 @@ def render_overview_view(df: pd.DataFrame) -> None:
 
     # Monthly / Quarterly Seasonality
     with st.container(border=True):
-        st.markdown("### Intra-Year Seasonality and Revenue Trajectory")
+        st.markdown("### Monthly Sales and Profit Trends")
         st.markdown(
-            "Analysis of monthly order cadence demonstrates pronounced fourth-quarter concentration, driven by corporate procurement deadlines and retail commercial cycles."
+            "Looking at orders month by month shows that sales surge in the fourth quarter (October to December), driven by holiday shopping and year-end corporate buying."
         )
         monthly_df = compute_monthly_trend(df)
         trend_chart = create_monthly_trend_chart(monthly_df)
         st.plotly_chart(trend_chart, use_container_width=True)
 
         render_chart_story_card(
-            title="Intra-Year Monthly Revenue Trajectory & Operating Seasonality",
+            title="Monthly Sales Patterns and Year-End Surges",
             what_it_shows=(
-                "Continuous 48-month longitudinal trend of monthly invoiced sales (Blue area) and net operating profit (Green line), "
-                "capturing multi-year cyclical patterns and fulfillment volatility."
+                "A month-by-month look at total sales (blue area) and profit (green line) over the full 48-month period, "
+                "showing regular seasonal cycles."
             ),
             key_takeaway=(
-                "Each fiscal year exhibits consistent cyclicality: Q1 operates at reduced capacity following year-end adjustments, "
-                "Q2/Q3 sustain steady acceleration, and Q4 experiences extreme volume surges, generating approximately 35% of full-year revenue."
+                "Every single year follows the exact same pattern: Q1 starts slow, Q2 and Q3 pick up speed, and Q4 experiences "
+                "a massive rush, generating about 35% of the entire year's sales."
             ),
             business_impact=(
-                "During Q4 volume peaks, field sales teams faced acute quota pressures, leading to unauthorized promotional discounting. "
-                "Simultaneously, logistics distribution networks encountered peak carrier surcharges, causing severe margin contraction during the highest-volume periods."
+                "During the year-end rush, sales reps rush to hit their annual targets and hand out heavy discounts. "
+                "At the same time, shipping carriers charge peak holiday rates, squeezing profit margins right when sales volume is highest."
             ),
             recommendation=(
-                "Establish institutional discount boundaries in advance of Q4 and secure committed carrier contract pricing prior to the annual September volume surge."
+                "Set clear discount limits before Q4 starts and lock in shipping rates with carriers by August to protect year-end profits."
             ),
         )
 
-        st.markdown("#### Quarterly Seasonality Breakdown (Q1–Q4 Volume Concentration)")
+        st.markdown("#### Quarterly Breakdown (Q1–Q4 Comparison)")
         st.markdown(
-            "Empirical verification of fourth-quarter demand concentration across all audited fiscal years. "
-            "Bars annotate gross sales and percentage share of full-year revenue."
+            "This table and chart show how much of each year's sales happened in each quarter."
         )
         quarterly_df = compute_quarterly_seasonality(df)
         q_chart = create_quarterly_seasonality_chart(quarterly_df)
         st.plotly_chart(q_chart, use_container_width=True)
 
         render_chart_story_card(
-            title="Empirical Validation of Q4 Commercial Volume Concentration",
-            what_it_shows="Grouped bar distribution of sales volume and annual revenue contribution (%) across quarters Q1 through Q4 from 2011 to 2014.",
+            title="Q4 Consistently Accounts for Over One-Third of Annual Sales",
+            what_it_shows="Sales dollars and percentage share of total revenue for each quarter (Q1 to Q4) from 2011 to 2014.",
             key_takeaway=(
-                "Transaction data confirms that Q4 consistently generates between 31.5% and 36.8% of annual revenue across all four operating years, "
-                "representing more than double the volume realized in Q1 (~15%)."
+                "Q4 consistently generates between 31.5% and 36.8% of the company's annual revenue — more than double what is sold in Q1 (~15%)."
             ),
             business_impact=(
-                "The severe seasonality creates acute operational strain: field sales teams discount aggressively in November/December to achieve annual quota bonuses, "
-                "while freight networks absorb peak spot-market carrier surcharges, eroding full-year operating margins."
+                "The year-end rush puts serious pressure on operations: aggressive discounting combined with peak holiday shipping fees "
+                "erodes the profits that the business worked all year to build."
             ),
-            recommendation="Enforce strict ERP discount ceilings ahead of the Q4 volume surge and pre-book fourth-quarter logistics capacity in Q2/Q3.",
+            recommendation="Lock in shipping capacity in advance and restrict discretionary sales discounts during November and December.",
         )
 
-        st.markdown("##### Quarterly Performance Summary Matrix")
+        st.markdown("##### Quarterly Performance Table")
         st.dataframe(
             quarterly_df.style.format(
                 {
@@ -186,21 +184,21 @@ def render_overview_view(df: pd.DataFrame) -> None:
 
     # Section 1 Proposed Solutions
     with st.container(border=True):
-        st.markdown("### Section 1: Strategic Proposed Solutions")
+        st.markdown("### Practical Actions for Section 1")
         st.markdown(
             r"""
-            Based on the empirical audit of historical multi-year performance, the strategic taskforce recommends three executive actions:
+            Based on the 4-year trend analysis, we recommend three practical steps:
 
-            1. **Transition from Top-Line Volume to Net Contribution Scorecards**:
-               - *Operational Action*: Decommission commercial sales commission quotas based on gross booked revenue. Re-align compensation metrics to Gross Margin Contribution ($\text{Revenue} - \text{COGS} - \text{Landed Freight}$).
-               - *Expected Result*: Eliminates the perverse incentive to write unprofitable high-volume accounts to achieve gross volume quotas.
+            1. **Pay Sales Teams for Profit, Not Just Revenue**:
+               - *Action*: Stop basing sales bonuses solely on total sales volume. Tie commissions to actual profit (Sales minus Product Cost minus Shipping).
+               - *Expected Result*: Stops reps from closing money-losing deals just to hit their sales quotas.
 
-            2. **Implement Pre-Q4 Capacity Hedging & Commercial Discount Freeze**:
-               - *Operational Action*: Because Q4 empirically generates ~35% of annual volume, negotiate committed carrier capacity contracts by August and enforce an automated promotional discount freeze from October 15 through December 31.
-               - *Expected Result*: Protects consolidated operating margins against spot-market carrier surcharges and year-end quota panic discounting.
+            2. **Lock In Shipping Rates and Discount Limits Ahead of Q4**:
+               - *Action*: Since Q4 brings in ~35% of all annual sales, negotiate shipping rates with freight carriers by August, and restrict special discounts from mid-October through December.
+               - *Expected Result*: Protects profits against last-minute panic discounting and expensive holiday shipping surcharges.
 
-            3. **Corporate Operating Margin Hurdle Gate (12.5% Enterprise Floor)**:
-               - *Operational Action*: Configure automated ERP transaction validation requiring any commercial contract yielding < 10.0% operating margin to receive secondary approval from the VP of Commercial Operations.
-               - *Expected Result*: Restores operating leverage, allowing top-line growth (+23.9% CAGR) to expand margins above the historical 11.6% plateau toward the 14–16% industry benchmark.
+            3. **Set a Minimum Profit Standard (10% Floor)**:
+               - *Action*: Require special manager approval for any large order that yields less than a 10% profit margin.
+               - *Expected Result*: Ensures that healthy sales growth (+23.9% a year) actually translates into higher profit margins.
             """
         )

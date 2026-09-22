@@ -15,32 +15,25 @@ from src.services.analyzer import (
 
 
 def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
-    """Render Section 4: Strategic Turnaround Framework, What-If Policy Simulator, and Board Presentation Deck."""
-    st.markdown("## Section 4: Strategic Turnaround Framework & Board Presentation Deck")
+    """Render Section 4: Turnaround Strategy, What-If Simulator, and Board Presentation Deck."""
+    st.markdown("## Section 4: How We Turn Things Around (Strategy & Presentation)")
     st.markdown(
-        "**Strategic Objective**: Formulate three prioritized turnaround initiatives with executive ownership, implementation timelines, KPIs, and financial recovery models, alongside an interactive what-if policy simulator and an 8–10 slide presentation deck structured for the Board of Directors."
+        "**Section Goal**: Lay out three prioritized turnaround steps with executive owners, timelines, and measurable goals — plus an interactive policy simulator and a 10-slide briefing deck for leadership."
     )
     st.markdown("---")
 
-    # Formal Problem Formulation (Tasks 4 & 5)
+    # Core Business Problem & Key Questions
     with st.container(border=True):
-        st.markdown("### Formal Problem Formulation: Strategic Turnaround Optimization & Governance Architecture")
+        st.markdown("### The Core Question: How Do We Recapture Over $1.2M in Profit?")
         st.markdown(
-            r"""
-            **Context & Stakeholder Mandate (Tasks 4 & 5 Brief)**:
-            The Chief Strategy Officer and Analytics Taskforce are chartered by the Board of Directors to transition from forensic diagnostic to actionable turnaround execution.
-            The mandate requires solving a multi-variable corporate optimization problem:
+            """
+            **What leadership needs to decide**:
+            Having identified that discounts over 20%, expensive shipping to Turkey and Nigeria, and unrecovered freight on tables are draining our profits, 
+            the board now needs an actionable, risk-managed turnaround plan:
 
-            1. **Turnaround Optimization Model**: Maximize net operating EBITDA while penalizing customer churn elasticity:
-               $$\max_{\delta_{\text{cap}}, \tau, s} \text{EBITDA} = \text{EBITDA}_{\text{base}} + \Delta \Pi_{\text{pricing}}(\delta_{\text{cap}}) + \Delta \Pi_{\text{geo}}(\tau) + \Delta \Pi_{\text{freight}}(s) - \text{ChurnDrag}(\epsilon)$$
-               - $\delta_{\text{cap}}$: Maximum allowable commercial discount ceiling (ERP hard cap).
-               - $\tau$: Binary restructuring vector converting deficit territories (Turkey, Nigeria) to 3PL distributor models.
-               - $s$: Dimensional freight surcharge ($/unit) levied on bulky merchandise lines (Tables).
-               - $\epsilon$: Price elasticity churn coefficient modeling customer attrition on repriced transactions.
-            2. **Executive Accountability & Governance Architecture**:
-               - Establish discrete C-suite and VP ownership for each intervention.
-               - Sequence operational milestones into a 6–12 month phased implementation roadmap.
-               - Deliver a cohesive 10-slide executive briefing deck calibrated for Board of Directors deliberation.
+            1. **The Policy Simulator**: How much profit can we recover by capping discounts, partnering locally in high-loss markets, and charging oversized shipping fees — even if a few price-sensitive customers leave?
+            2. **Who Owns What**: Which executives are responsible for executing each change, and what are their specific deadlines?
+            3. **The Board Presentation**: How do we clearly communicate this evidence-backed turnaround story to directors and stakeholders in a concise 10-minute briefing?
             """
         )
 
@@ -51,48 +44,48 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
 
     # Primary Feature: Interactive What-If Turnaround Policy Simulator & EBITDA Bridge
     if df is not None and not df.empty:
-        st.markdown("### Interactive What-If Turnaround Policy Simulator & EBITDA Bridge")
+        st.markdown("### Interactive What-If Simulator: Test Your Turnaround Levers")
         st.markdown(
-            "Dynamic decision modeling engine evaluating the bottom-line financial impact of key turnaround policy levers against historical transaction baselines. "
-            "Adjust pricing governance ceilings, international distribution models, freight surcharges, and customer churn elasticity to evaluate simulated operating EBITDA."
+            "Use the controls below to see how different management decisions would impact overall profit. "
+            "Adjust discount limits, test local partnerships in high-cost countries, add shipping fees for bulky items, and model potential customer drop-off."
         )
 
         with st.container():
             sim_col1, sim_col2 = st.columns(2)
 
             with sim_col1:
-                st.markdown("#### Commercial Pricing & Elasticity Levers")
+                st.markdown("#### Pricing & Customer Retention Levers")
                 max_discount_cap_pct = st.slider(
-                    "Contractual Discount Ceiling (%)",
+                    "Maximum Discount Allowed at Checkout (%)",
                     min_value=10.0,
                     max_value=30.0,
                     value=20.0,
                     step=1.0,
-                    help="Programmatic ERP cap on maximum allowable commercial discounts. Transactions exceeding this threshold are repriced at the ceiling rate.",
+                    help="Orders with discounts higher than this ceiling will be capped at this maximum rate.",
                 )
                 volume_attrition_rate_pct = st.slider(
-                    "Customer Churn Friction Sensitivity (%)",
+                    "Estimated Customer Drop-off (%)",
                     min_value=0.0,
                     max_value=20.0,
                     value=5.0,
                     step=1.0,
-                    help="Simulated percentage order attrition among commercial accounts affected by discount capping due to price elasticity.",
+                    help="Estimate of orders we might lose from price-sensitive customers who refuse to buy without steep discounts.",
                 )
 
             with sim_col2:
-                st.markdown("#### Logistics & Operational Restructuring Levers")
+                st.markdown("#### Shipping & Distribution Levers")
                 table_freight_surcharge = st.slider(
-                    "Tables Dimensional Freight Surcharge ($/Unit)",
+                    "Tables Oversized Shipping Fee ($/unit)",
                     min_value=0.0,
                     max_value=50.0,
                     value=15.0,
                     step=5.0,
-                    help="Mandatory carrier freight pass-through surcharge levied on bulky table units to recover packaging and volumetric freight deficits.",
+                    help="A standard fee charged to customers to cover the actual cost of shipping large, heavy tables.",
                 )
                 restructure_deficit_territories = st.toggle(
-                    "Restructure Sovereign Deficit Territories (Turkey & Nigeria 3PL Model)",
+                    "Partner with Local Distributors in Turkey & Nigeria",
                     value=True,
-                    help="Transition volatile, high-tariff international operations (Turkey and Nigeria) to localized bonded 3PL master distributor models, eliminating structural cross-border delivery subsidies.",
+                    help="Switch from direct overseas shipping to local distribution partners in Turkey and Nigeria, stopping chronic shipping losses.",
                 )
 
         sim_results = simulate_turnaround_impact(
@@ -144,61 +137,61 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
         st.plotly_chart(w_chart, use_container_width=True)
 
         render_chart_story_card(
-            title="Strategic EBITDA Bridge: Financial Value Creation Dynamics",
+            title="Step-by-Step Profit Recovery Waterfall",
             what_it_shows=(
-                "Plotly Waterfall chart illustrating step-by-step EBITDA bridge progression: starting from historical baseline operating profit, "
-                "adding pricing discipline recovery, international 3PL restructuring, and bulky freight recovery, "
-                "deducting simulated customer volume churn friction, and arriving at projected turnaround EBITDA."
+                "A waterfall chart showing how we build from our current profit up to our new turnaround profit: "
+                "adding profit from discount caps, savings from local partnerships in Turkey and Nigeria, "
+                "adding recovered fees on bulky tables, subtracting potential lost orders, and reaching the final projected profit."
             ),
             key_takeaway=(
-                f"Under the selected configuration (Discount Cap: {max_discount_cap_pct:.0f}%, Churn Friction: {volume_attrition_rate_pct:.0f}%, "
-                f"Table Surcharge: ${table_freight_surcharge:.0f}, 3PL Restructuring: {'Enabled' if restructure_deficit_territories else 'Disabled'}), "
-                f"Global Superstore unlocks +${sim_results['net_ebitda_uplift']:,.0f} in operating profit, expanding operating margin from "
+                f"With the selected settings (Discount Cap: {max_discount_cap_pct:.0f}%, Customer Drop-off: {volume_attrition_rate_pct:.0f}%, "
+                f"Table Fee: ${table_freight_surcharge:.0f}, Local Partners: {'Enabled' if restructure_deficit_territories else 'Disabled'}), "
+                f"the company unlocks +${sim_results['net_ebitda_uplift']:,.0f} in new profit, raising profit margin from "
                 f"{sim_results['baseline_margin']:.1f}% to {sim_results['projected_margin']:.1f}%."
             ),
             business_impact=(
-                "Crucially, the financial model proves that turnaround viability does not require risky top-line revenue acceleration. "
-                "Eliminating structural pricing leakage and logistics subsidies captures immediate earnings expansion even when factoring "
-                "in customer volume churn penalties."
+                "Most importantly, this proves that turning the company around does not require risky new sales campaigns. "
+                "Simply stopping money-losing sales and shipping subsidies produces an immediate jump in earnings, "
+                "even after accounting for customers who leave."
             ),
             recommendation=(
-                "Present this sensitivity bridge to the Board of Directors as empirical justification for enforcing the 20% discount lock "
-                "and renegotiating international distributor agreements."
+                "Present this recovery waterfall to the Board to justify locking in the 20% discount limit "
+                "and setting up local distributor agreements."
             ),
         )
 
-        st.markdown("#### Turnaround Financial Bridge Breakdown")
+        st.markdown("#### Profit Recovery Breakdown Table")
         bridge_df = pd.DataFrame(
             [
                 {
-                    "Strategic Value Driver": "1. Baseline Historical Operating Profit",
+                    "Turnaround Lever": "1. Current Operating Profit",
                     "Impact ($ USD)": sim_results["baseline_profit"],
-                    "Mechanism": "Reported enterprise operating earnings prior to intervention.",
+                    "How It Works": "Actual company operating earnings before any changes.",
                 },
                 {
-                    "Strategic Value Driver": f"2. Pricing Governance Recovery (Cap at {max_discount_cap_pct:.0f}%)",
+                    "Turnaround Lever": f"2. Capping Discounts at {max_discount_cap_pct:.0f}%",
                     "Impact ($ USD)": sim_results["pricing_recovery"],
-                    "Mechanism": f"Re-pricing {sim_results['affected_orders_count']:,} transactions where discounts exceeded {max_discount_cap_pct:.0f}%.",
+                    "How It Works": f"Repricing {sim_results['affected_orders_count']:,} orders where discounts were higher than {max_discount_cap_pct:.0f}%.",
                 },
                 {
-                    "Strategic Value Driver": "3. Sovereign 3PL Restructuring (Turkey & Nigeria)",
+                    "Turnaround Lever": "3. Local Distribution in Turkey & Nigeria",
                     "Impact ($ USD)": sim_results["territory_recovery"],
-                    "Mechanism": "Transition to local in-country master distributors, eliminating cross-border delivery deficits.",
+                    "How It Works": "Switching to in-country distribution partners, eliminating expensive cross-border shipping losses.",
                 },
                 {
-                    "Strategic Value Driver": f"4. Bulky Merchandise Freight Pass-Through (${table_freight_surcharge:.0f}/unit)",
+                    "Turnaround Lever": f"4. Oversized Shipping Fee on Tables (${table_freight_surcharge:.0f}/unit)",
                     "Impact ($ USD)": sim_results["table_freight_recovery"],
-                    "Mechanism": "Dimensional freight surcharge on Tables to recover carrier oversized shipping expenses.",
+                    "How It Works": "Charging customers for the actual cost of shipping bulky furniture boxes.",
                 },
                 {
-                    "Strategic Value Driver": f"5. Customer Volume Churn Elasticity Drag ({volume_attrition_rate_pct:.0f}%)",
+                    "Turnaround Lever": f"5. Potential Customer Drop-off ({volume_attrition_rate_pct:.0f}%)",
                     "Impact ($ USD)": -sim_results["attrition_drag"],
-                    "Mechanism": "Conservative allowance for customer attrition among accounts losing discount privileges.",
+                    "How It Works": "Conservative allowance for price-sensitive buyers who walk away when discounts are limited.",
                 },
                 {
-                    "Strategic Value Driver": "6. Net Simulated Operating EBITDA",
+                    "Turnaround Lever": "6. Projected Operating Profit",
                     "Impact ($ USD)": sim_results["projected_profit"],
-                    "Mechanism": f"Target operating profit under modeled turnaround policy (Margin: {sim_results['projected_margin']:.2f}%).",
+                    "How It Works": f"New expected profit under this turnaround policy (Margin: {sim_results['projected_margin']:.2f}%).",
                 },
             ]
         )
@@ -230,7 +223,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
     st.divider()
 
     # 1. The Three Priority Actions
-    st.markdown("### Three Prioritized Turnaround Initiatives")
+    st.markdown("### Three Actionable Turnaround Priorities")
 
     action_col1, action_col2, action_col3 = st.columns(3)
 
@@ -238,21 +231,21 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
         with st.container(border=True):
             st.markdown(
                 """
-                #### Initiative 1: Pricing Governance
-                * **Underlying Root Cause**: Unregulated price concessions exceeding the 20.0% threshold, causing -\\$814,682 in operating losses.
-                * **Executive Owner**: Chief Commercial Officer (CCO) & VP of Global Sales Operations.
-                * **Implementation Timeline**: Months 1 through 3.
-                * **Operational Mechanism**:
-                  - Configure ERP software to reject discounts > 15.0% without automated VP authorization.
-                  - Programmatically lock transaction processing for discounts > 20.0%.
-                  - Restructure commercial sales incentive scorecards to reward Gross Margin Contribution rather than gross top-line volume.
-                * **Key Performance Indicators (KPIs)**:
-                  - Share of orders with discount > 15.0% (Target: < 2.0%)
-                  - Global weighted-average discount rate (Target: < 12.0%)
-                  - Sales division contribution margin (Target: > 15.0%)
-                * **Expected Financial Impact**:
-                  - **Recovers +\\$1,032,488 in operating profit** by capping discounts at 20.0% across 11,328 transactions.
-                  - Eliminates 81.2% of negative-margin transactions (10,180 lines) and 88.5% of cumulative dollar loss drag.
+                #### Action 1: Enforce the 20% Discount Cap
+                * **The Problem**: Sales reps gave away discounts up to 70%, causing -\\$814,682 in losses.
+                * **Executive Owner**: Chief Commercial Officer & VP of Sales.
+                * **Timeline**: Months 1 to 3.
+                * **How It Works**:
+                  - Require manager approval for discounts between 15% and 20%.
+                  - Automatically block discounts above 20% at checkout.
+                  - Pay sales bonuses based on actual profit, not gross revenue.
+                * **Targets to Watch**:
+                  - Orders with discount > 15% (Target: < 2%)
+                  - Overall average discount (Target: < 12%)
+                  - Sales team profit margin (Target: > 15%)
+                * **Expected Profit**:
+                  - **Recovers +\\$1,032,488 in operating profit** by capping discounts on 11,328 orders.
+                  - Eliminates 88.5% of all dollar losses across the company.
                 """
             )
 
@@ -260,20 +253,19 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
         with st.container(border=True):
             st.markdown(
                 """
-                #### Initiative 2: Regional Logistics Restructuring
-                * **Underlying Root Cause**: Cross-border fulfillment expenses exceeding realized net revenue in volatile, high-tariff jurisdictions (Turkey, Nigeria).
-                * **Executive Owner**: VP of Global Supply Chain & Regional Managing Directors.
-                * **Implementation Timeline**: Months 3 through 6.
-                * **Operational Mechanism**:
-                - Discontinue direct cross-border expedited air fulfillment into Nigeria and Turkey.
-                - Establish partnerships with in-country master distributors and bonded third-party logistics (3PL) warehousing providers.
-                - Index localized pricing catalogs to hard currencies or dynamic local inflation benchmarks.
-                * **Key Performance Indicators (KPIs)**:
-                  - Country-level operating margin (Target: Break-even within 90 days; > 8.0% within 12 months)
-                  - Landed freight cost ratio (Target: < 12.0% of invoiced sales)
-                * **Expected Financial Impact**:
+                #### Action 2: Local Partners in Turkey & Nigeria
+                * **The Problem**: Shipping directly across borders into volatile currency countries cost more than customers paid us.
+                * **Executive Owner**: VP of Global Supply Chain & Regional Directors.
+                * **Timeline**: Months 3 to 6.
+                * **How It Works**:
+                  - Stop direct air shipping of individual orders into Turkey and Nigeria.
+                  - Partner with local in-country distributors and local warehouses.
+                  - Set catalog prices in stable currencies or index to local inflation.
+                * **Targets to Watch**:
+                  - Country profit margin (Target: Break even in 90 days; > 8% in 12 months)
+                  - Shipping cost ratio (Target: < 12% of sales)
+                * **Expected Profit**:
                   - **Eliminates +\\$179,198 in chronic bilateral cash drain** across Turkey (-\\$98.4K) and Nigeria (-\\$80.8K).
-                  - Restores regional operating margins in EMEA and Africa to institutional benchmarks.
                 """
             )
 
@@ -281,19 +273,19 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
         with st.container(border=True):
             st.markdown(
                 """
-                #### Initiative 3: Bulky Freight Pass-Through
-                * **Underlying Root Cause**: Tables portfolio deficit (-\\$64,083 loss) driven by dimensional packaging volume and unrecovered freight.
-                * **Executive Owner**: Head of Product Merchandising & Director of Logistics Pricing.
-                * **Implementation Timeline**: Months 6 through 12.
-                * **Operational Mechanism**:
-                  - Discontinue negative-contribution SKUs within the Tables and bulky Furniture line.
-                  - Implement mandatory dimensional freight surcharges: pass oversize carrier handling expenses to commercial B2B buyers.
-                  - Introduce flat-pack product alternatives to reduce volumetric shipping footprint.
-                * **Key Performance Indicators (KPIs)**:
-                  - Tables sub-category operating profit (Target: > +\\$50,000)
-                  - Dimensional freight recovery compliance (Target: 100.0%)
-                * **Expected Financial Impact**:
-                  - **+\\$46,245 bulky freight recovery and +\\$80,000+ total turnaround**, converting Tables from a -\\$64,083 loss into positive contribution margin.
+                #### Action 3: Oversized Shipping on Tables
+                * **The Problem**: Tables lost -\\$64,083 because heavy box sizes incurred huge shipping fees that were never billed to customers.
+                * **Executive Owner**: Head of Merchandising & Director of Logistics.
+                * **Timeline**: Months 6 to 12.
+                * **How It Works**:
+                  - Stop selling the most unprofitable table models.
+                  - Add standard oversized shipping fees on bulky deliveries.
+                  - Offer flat-pack furniture alternatives that cost less to ship.
+                * **Targets to Watch**:
+                  - Tables category profit (Target: > +\\$50,000)
+                  - Oversized shipping fee compliance (Target: 100%)
+                * **Expected Profit**:
+                  - **+\\$46,245 bulky freight recovery and +\\$80,000+ total turnaround**, turning Tables into a profitable category.
                 """
             )
 
@@ -301,15 +293,15 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
 
     # 2. 6-12 Month Implementation Milestones
     with st.container(border=True):
-        st.markdown("### 6–12 Month Strategic Implementation Roadmap")
+        st.markdown("### 6–12 Month Implementation Roadmap")
         st.markdown(
             """
-            | Implementation Phase | Milestone / Operational Deliverable | Target Timeline | Governance Target |
+            | Phase | What Gets Done | Timeline | Target Milestone |
             | :--- | :--- | :--- | :--- |
-            | **Phase 1: Commercial Control & Contract Alignment** | Implement programmatic 20% discount lock in ERP software. Transition commercial commission contracts to Gross Margin Contribution. | Months 1–2 | Zero unapproved orders processed with discount > 20.0%. |
-            | **Phase 2: International Distribution Restructuring** | Suspend unhedged standard discounting in Turkey and Nigeria. RFP local 3PL warehousing and in-country master distributor partners. | Months 3–4 | Regional operating losses reduced by 70.0%; freight expense reduced by \\$150K. |
-            | **Phase 3: Merchandise Pricing & Freight Recovery** | Reprice Tables and bulky Furniture; enforce dimensional freight pass-through surcharges on commercial deliveries. | Months 5–7 | Tables sub-category achieves monthly operating break-even. |
-            | **Phase 4: Institutional Review & Margin Optimization** | Conduct comprehensive quarterly margin audits across all 147 operating territories. Institutionalize corporate pricing committee. | Months 8–12 | Consolidated enterprise operating margin expands from 11.6% to **> 15.5%**. |
+            | **Phase 1: Pricing Controls & Sales Pay** | Put the 20% discount lock into the checkout software. Switch sales bonuses to profit contribution. | Months 1–2 | Zero unapproved orders processed with discount > 20%. |
+            | **Phase 2: Local Distribution in Turkey & Nigeria** | Stop direct overseas shipping. Partner with local distributors and warehouses. | Months 3–4 | Turkey and Nigeria losses cut by 70%; save \\$150K in shipping. |
+            | **Phase 3: Tables Pricing & Shipping Fees** | Add oversized shipping fees for bulky furniture; drop money-losing table models. | Months 5–7 | Tables sub-category reaches break-even. |
+            | **Phase 4: Quarterly Review & Optimization** | Conduct quarterly profit reviews across all 147 countries. Keep pricing disciplined. | Months 8–12 | Overall company profit margin expands from 11.6% to **over 15.5%**. |
             """
         )
 
@@ -450,21 +442,21 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
 
     # Section 4 Proposed Solutions
     with st.container(border=True):
-        st.markdown("### Section 4: Strategic Proposed Solutions & Board Action Charter")
+        st.markdown("### Practical Actions & Board Resolutions for Section 4")
         st.markdown(
             r"""
-            To achieve sustainable corporate revival within 6 to 12 months, the strategic taskforce submits three formal resolutions for Board authorization:
+            To put this turnaround into motion over the next 6 to 12 months, we recommend three formal board resolutions:
 
-            1. **Adopt the Base Case Turnaround Model (+\$1,234,000 Operating EBITDA Expansion)**:
-               - *Policy Package*: Formally authorize the Base Case turnaround parameters: 20.0% contractual discount ceiling, \$15/unit bulky table pass-through surcharge, and full bonded 3PL transition across Turkey and Nigeria, absorbing a conservative 5.0% customer churn friction buffer.
-               - *Financial Yield*: Expands consolidated operating profit from **\$1.47M to \$2.70M** (+84.1% earnings expansion) and elevates operating margin from **11.6% to 19.9%**.
+            1. **Approve the Base Case Turnaround Plan (+\$1,234,000 Profit Increase)**:
+               - *Plan*: Approve the core policy changes: 20% discount cap at checkout, \$15 oversized fee on tables, and local distribution in Turkey and Nigeria, with a built-in 5% allowance for price-sensitive customer drop-off.
+               - *Expected Result*: Increases company operating profit from **\$1.47M to \$2.70M** (+84.1% increase) and lifts profit margin from **11.6% to 19.9%**.
 
-            2. **Authorize the 6–12 Month Phased Implementation Roadmap**:
-               - *Phase I (Months 1–3)*: Hardcode programmatic ERP discount locks (<15% standard sales rep discretion, 15–20% automated VP sign-off, >20% hard block) and transition sales scorecards to contribution margin.
-               - *Phase II (Months 3–6)*: Execute 3PL master distributor agreements in Turkey and Nigeria; transition fulfillment from cross-border air to localized bonded maritime distribution.
-               - *Phase III (Months 6–12)*: Implement dimensional freight surcharges across the Tables catalog and prune chronically negative-margin furniture SKUs.
+            2. **Approve the 6–12 Month Implementation Timeline**:
+               - *Months 1–3*: Program the checkout system to cap discounts at 20% and update sales commission plans to reward profit.
+               - *Months 3–6*: Finalize distributor agreements in Turkey and Nigeria to stop overseas shipping losses.
+               - *Months 6–12*: Add oversized shipping fees on tables and discontinue money-losing furniture models.
 
-            3. **Charter the Board Turnaround Oversight Committee**:
-               - *Governance Mandate*: Establish a bi-weekly C-suite Turnaround Steering Committee chaired by the CSO and CFO to audit monthly operational scorecards (Discount Leakage Rate < 2.0%, Tables Operating Margin > +10%, Deficit Territory Break-Even).
+            3. **Create a Turnaround Oversight Committee**:
+               - *Governance*: Form a monthly committee chaired by executive leadership to track key metrics (discounts over 15% kept under 2%, tables reaching positive profit, and Turkey/Nigeria breaking even).
             """
         )

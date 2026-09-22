@@ -23,47 +23,42 @@ def sanitize_markdown_text(text: str) -> str:
 
 def render_data_dictionary_expander() -> None:
     """Render a formal Data Dictionary & Financial Accounting Methodology expander."""
-    with st.expander("Data Dictionary and Financial Accounting Methodology", expanded=False):
+    with st.expander("Data Dictionary — What Each Column Means", expanded=False):
         st.markdown(
             r"""
-            ### Transaction Ledger Dimensions (51,290 Records across 147 Countries)
-            | Field Name | Domain | Data Type | Analytical Scope & Operational Relevance |
-            | :--- | :--- | :--- | :--- |
-            | **Order ID** | Order Governance | Alphanumeric | Unique transaction identifier. A single commercial purchase order may encompass multiple discrete item line items. |
-            | **Order Date** | Temporal | Datetime | Date of purchase order entry (format: `DD-MM-YYYY`, range: 2011 through 2014). |
-            | **Ship Date** | Logistics | Datetime | Date of physical dispatch from the regional fulfillment distribution center. |
-            | **Ship Mode** | Fulfillment | Categorical | Logistics service level agreement: *Same Day*, *First Class*, *Second Class*, or *Standard Class*. |
-            | **Customer ID / Name** | Commercial | Alphanumeric | Unique customer corporate account code and institutional entity name. |
-            | **Segment** | Market Tier | Categorical | Client classification: *Consumer* (retail individual), *Corporate* (B2B middle market), or *Home Office* (SMB). |
-            | **City / State / Country** | Territorial | Categorical | Destination market territory across 147 sovereign jurisdictions. |
-            | **Market / Region** | Territorial | Categorical | Macro geographic operating theater: *APAC*, *EU*, *US*, *LATAM*, *EMEA*, *Africa*, *Canada*. |
-            | **Product ID / Name** | Merchandise | Alphanumeric | Unique stock keeping unit (SKU) identifier and product catalog description. |
-            | **Category** | Merchandise | Categorical | Primary merchandising division: *Technology*, *Furniture*, or *Office Supplies*. |
-            | **Sub-Category** | Merchandise | Categorical | 17 distinct product sub-segments (e.g. *Phones*, *Chairs*, *Tables*, *Storage*, *Binders*). |
-            | **Sales** | Financial | Numeric (USD) | Gross invoice value billed to client prior to post-sale allowances. |
-            | **Quantity** | Volume | Integer | Units delivered per order line item. |
-            | **Discount** | Commercial | Percentage | Contractual or promotional price concession applied at point-of-sale (range: 0.00 to 0.85). |
-            | **Profit** | Financial | Numeric (USD) | Net operating profit after accounting for cost of goods sold (COGS) and freight delivery expense. |
-            | **Shipping Cost** | Logistics | Numeric (USD) | Landed carrier freight expense incurred to deliver the order line. |
-            | **Order Priority** | Operational | Categorical | Service level priority: *Critical*, *High*, *Medium*, or *Low*. |
+            ### What's in the Dataset? (51,290 Orders across 147 Countries, 2011–2014)
+            | Column | What It Represents |
+            | :--- | :--- |
+            | **Order ID** | A unique code for each customer order. One order can contain multiple products. |
+            | **Order Date** | The date the customer placed the order (2011–2014). |
+            | **Ship Date** | The date the order was actually sent out from the warehouse. |
+            | **Ship Mode** | How fast the order was delivered: *Same Day*, *First Class* (fast), *Second Class*, or *Standard Class* (slowest, cheapest). |
+            | **Customer ID / Name** | Who bought — each customer has a unique ID and name. |
+            | **Segment** | What type of buyer: *Consumer* (everyday shoppers), *Corporate* (businesses), or *Home Office* (small offices/freelancers). |
+            | **City / State / Country** | Where the order was delivered, across 147 countries. |
+            | **Market / Region** | The broad geographic area: *APAC* (Asia-Pacific), *EU* (Europe), *US*, *LATAM* (Latin America), *EMEA* (Middle East & Africa), *Africa*, or *Canada*. |
+            | **Product ID / Name** | The specific product that was sold. |
+            | **Category** | The product's main group: *Technology*, *Furniture*, or *Office Supplies*. |
+            | **Sub-Category** | A finer product group within the main category (e.g. *Phones*, *Chairs*, *Tables*, *Binders*). |
+            | **Sales** | The amount the customer was charged (in USD), before any returns. |
+            | **Quantity** | How many units were in the order. |
+            | **Discount** | The price reduction given to the customer, as a decimal (e.g. 0.20 = 20% off). Range: 0% to 85%. |
+            | **Profit** | How much money the company actually made on the order, after subtracting product cost and shipping. A negative number means the company lost money on that sale. |
+            | **Shipping Cost** | What it cost to physically deliver the order. |
+            | **Order Priority** | How urgently the order needed to be processed: *Critical*, *High*, *Medium*, or *Low*. |
 
             ---
 
-            ### Financial Metrics and Valuation Formulas
-            * **Operating Profit Margin (%)**:
-              $$\text{Operating Margin} = \frac{\text{Net Operating Profit}}{\text{Gross Sales}} \times 100\%$$
-              - Measures net commercial conversion per dollar of revenue. Target institutional benchmark: **12.0% to 15.0%**.
-            * **Negative Margin Loss Drag (USD)**:
-              $$\text{Loss Drag} = \sum_{i \in \{i \mid \text{Profit}_i < 0\}} |\text{Profit}_i| = \$920,646.16$$
-              - Quantifies the gross capital dilution destroyed by the 24.5% of order lines executed below cost-to-serve (12,544 lines).
-            * **Gross Profitable Contribution (USD)**:
-              $$\text{Profitable Contribution} = \sum_{i \in \{i \mid \text{Profit}_i \ge 0\}} \text{Profit}_i = \$2,388,103.45$$
-              - Reflects the unburdened earning power of the company's core profitable business (\$2.39M).
-            * **Shipping Cost Absorption Ratio (%)**:
-              $$\text{Shipping Absorption} = \frac{\text{Shipping Cost}}{\text{Gross Sales}} \times 100\%$$
-              - Evaluates freight intensity. Absorption ratios exceeding 15.0% without freight pass-through surcharges systematically impair unit contribution.
-            * **Unit Economics Inversion Bound (The 20% Discount Threshold)**:
-              - Transactions discounted **below 20.0%** yield positive operating margins (+9.9% to +25.3%). Transactions discounted **at or above 20.0%** generate structural operating deficits (-5.5% to -111.0%).
+            ### Key Metrics Used in This Dashboard
+            * **Profit Margin (%)** — What percentage of each dollar of sales turns into profit.
+              - Formula: `Profit ÷ Sales × 100`. A healthy benchmark is **12% to 15%**.
+            * **Loss Drag** — The total money lost from orders that were sold at a loss (i.e., where Profit < 0).
+              - In this dataset: **\$920,646** was lost across 12,544 unprofitable orders.
+            * **Profitable Contribution** — The total profit generated by all the orders that *did* make money.
+              - In this dataset: **\$2,388,103** — but \$920K of that was wiped out by the loss-making orders.
+            * **Shipping Cost Ratio (%)** — What percentage of the sale price went to covering delivery costs.
+              - Formula: `Shipping Cost ÷ Sales × 100`. When this is above 15% on a discounted order, the company is almost certainly losing money.
+            * **The 20% Discount Breaking Point** — Orders with discounts below 20% are profitable (margins of +10% to +25%). Once discounts exceed 20%, the company starts losing money on every item shipped.
             """
         )
 
@@ -89,14 +84,14 @@ def render_chart_story_card(
     clean_takeaway = sanitize_markdown_text(key_takeaway)
     clean_impact = sanitize_markdown_text(business_impact)
 
-    with st.expander(f"Analytical Diagnostic: {clean_title}", expanded=False):
+    with st.expander(f"Chart Explanation: {clean_title}", expanded=False):
         st.markdown(
             f"""
-            * **Metric Scope & Visual Architecture**:
+            * **What this chart shows**:
               {clean_shows}
-            * **Empirical Diagnostic Finding**:
+            * **The key finding**:
               {clean_takeaway}
-            * **Commercial Risk & Capital Efficiency Exposure**:
+            * **Why it matters for the business**:
               {clean_impact}
             """
         )
@@ -104,7 +99,7 @@ def render_chart_story_card(
             clean_rec = sanitize_markdown_text(recommendation)
             st.markdown(
                 f"""
-                * **Executive Decision & Governance Intervention**:
+                * **What should be done about it**:
                   {clean_rec}
                 """
             )

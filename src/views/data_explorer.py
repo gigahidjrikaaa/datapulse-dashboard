@@ -38,43 +38,38 @@ def render_data_explorer_view(df: pd.DataFrame) -> None:
             """
         )
 
-    # Formal Problem Formulation
+    # Why This Audit Trail Matters
     with st.container(border=True):
-        st.markdown("### Formal Problem Formulation: Transaction-Level Verification & Audit Traceability")
+        st.markdown("### Why You Need Transaction-Level Proof")
         st.markdown(
             r"""
-            Aggregate dashboards summarize the *what* — they cannot prove the *where* and *who*.
-            For a turnaround decision of this magnitude (renegotiating distributor contracts, blocking 
-            ERP discount codes, restructuring territory coverage), the Board requires **transaction-level evidence**:
+            High-level dashboards show the big picture — but when making real business decisions, 
+            management needs to see the **actual orders behind the numbers**:
 
-            1. **Traceability**: Every aggregate loss figure must resolve to verifiable Order IDs, customer names, 
-               and dates — not just summary statistics.
-            2. **Exception Isolation**: Management must be able to extract a definitive list of offending transactions 
-               (discount > 20%, profit < \$0, territory = Turkey/Nigeria) as documentary evidence for corrective action.
-            3. **Independent Verification**: External auditors and statutory compliance teams must be able to 
-               reproduce any filtered result set and export it for cross-referencing against ERP systems, 
-               carrier invoices, and revenue recognition records.
+            1. **Proof Behind the Totals**: Every dollar of loss can be traced back to real Order IDs, dates, products, and customer names.
+            2. **Find the Worst Orders Fast**: Filter out the specific orders that caused the biggest damage (discounts over 20%, losses in Turkey or Nigeria).
+            3. **Audit-Ready & Exportable**: Double-check any query and download the raw records into Excel or CSV for further analysis.
             """
         )
 
     # Guided Forensic Walkthrough
     with st.container(border=True):
-        st.markdown("### Guided Forensic Walkthrough: Suggested Audit Queries")
+        st.markdown("### Suggested Searches to Try")
         st.markdown(
             """
-            Use the filter console below to reproduce the key findings from this report. Try these in order:
+            Use the filters below to verify the main findings from the report for yourself:
 
-            1. **Reproduce the discount cliff**: Check ✅ *"Strict Discount Leakage (Discount > 20%)"* + ✅ *"Negative-Margin Records Only"*. 
-               You will see the exact orders driving the -\\$814K loss. Try filtering further by Market to see which regions are worst.
+            1. **See the orders past the 20% discount cliff**: Check ✅ *"Discounts Over 20% Only"* + ✅ *"Money-Losing Orders Only"*. 
+               You will see the exact orders that generated the -$814K in losses. Filter by Market to see where they happened.
 
-            2. **Inspect the Turkey & Nigeria deficits**: Set *Filter by Sovereign Territory* to **Turkey** or **Nigeria**. 
-               The KPI cards above the table will immediately show their operating margin and total loss — confirming the -$179K figure.
+            2. **Inspect Turkey & Nigeria orders**: Set *Filter by Country* to **Turkey** or **Nigeria**. 
+               The cards above the table will update to show their total sales, losses, and negative profit margins.
 
-            3. **Isolate the Tables anomaly**: Set *Filter by Sub-Category* to **Tables**. 
-               Sort the Profit column ascending to find the worst individual orders. Check whether high-discount + Same Day shipping is the common pattern.
+            3. **Check the Tables category**: Set *Filter by Sub-Category* to **Tables**. 
+               Sort the Profit column from lowest to highest to see the worst orders, and look at their discount and shipping costs.
 
-            4. **Validate the full loss universe**: Check ✅ *"Negative-Margin Records Only"* with no other filters. 
-               The *Matching Transactions* KPI card should read ~12,544 rows — the exact count cited in the executive report.
+            4. **Count all money-losing orders**: Check ✅ *"Money-Losing Orders Only"* with no other filters. 
+               The *Matching Orders* card will show 12,544 rows — the exact count analyzed throughout this dashboard.
             """
         )
 
@@ -86,17 +81,17 @@ def render_data_explorer_view(df: pd.DataFrame) -> None:
 
     # Filter & Search Controls Container
     with st.container(border=True):
-        st.markdown("### Forensic Filter & Query Console")
+        st.markdown("### Search & Filter Console")
 
         c_search1, c_search2 = st.columns([2, 1])
         with c_search1:
             search_query = st.text_input(
-                "Universal Search (Order ID, Customer Name, Product Name, City)",
-                placeholder="e.g. CA-2014-115812, Global Superstore, Tables, Istanbul...",
+                "Search Orders (Order ID, Customer Name, Product Name, City)",
+                placeholder="e.g. CA-2014-115812, Tables, Istanbul, Staples...",
             )
         with c_search2:
             st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
-            loss_only = st.checkbox("Negative-Margin Records Only (Profit < $0)", value=False)
+            loss_only = st.checkbox("Money-Losing Orders Only (Profit < $0)", value=False)
 
         c_filt1, c_filt2, c_filt3, c_filt4 = st.columns(4)
 
@@ -112,7 +107,7 @@ def render_data_explorer_view(df: pd.DataFrame) -> None:
                 available_countries = sorted(df["Country"].dropna().unique().tolist())
             else:
                 available_countries = []
-            selected_countries = st.multiselect("Filter by Sovereign Territory", options=available_countries, default=[])
+            selected_countries = st.multiselect("Filter by Country", options=available_countries, default=[])
 
         with c_filt3:
             all_cats = sorted(df["Category"].dropna().unique().tolist()) if "Category" in df.columns else []
@@ -135,13 +130,13 @@ def render_data_explorer_view(df: pd.DataFrame) -> None:
                 max_value=100.0,
                 value=(0.0, 100.0),
                 step=5.0,
-                help="Filter transactions by contractual discount rate.",
+                help="Filter orders by customer discount percentage.",
             )
         with c_disc2:
             high_discount_only = st.checkbox(
-                "Strict Discount Leakage (Discount > 20.0% Only)",
+                "Discounts Over 20% Only (The Danger Zone)",
                 value=False,
-                help="Quickly isolate transactions executed beyond the 20% inversion threshold.",
+                help="Quickly isolate orders with discounts greater than 20% where profit turns negative.",
             )
 
     # Apply Local Filters

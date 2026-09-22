@@ -21,27 +21,24 @@ from src.services.analyzer import (
 
 def render_eda_view(df: pd.DataFrame) -> None:
     """Render Section 2: Geographic & Product Margin Variance Analysis."""
-    st.markdown("## Section 2: Geographic & Product Margin Variance")
+    st.markdown("## Section 2: Where Is Money Being Made and Lost?")
     st.markdown(
-        "**Diagnostic Objective**: Deconstruct performance across Geographic Hierarchies (Market → Region → Country), Merchandise Segments (Category → Sub-Category), and Client Account Tiers to isolate structural operating deficits."
+        "**Section Goal**: Break down performance by geography (Market → Region → Country), product lines (Category → Sub-Category), and customer types to find out exactly where profits are leaking."
     )
     st.markdown("---")
 
-    # Formal Problem Formulation (Task 2)
+    # Core Business Problem & Key Questions
     with st.container(border=True):
-        st.markdown("### Formal Problem Formulation: Multi-Dimensional Margin Variance Deconstruction")
+        st.markdown("### The Core Question: Where Are the Biggest Profit Leaks?")
         st.markdown(
-            r"""
-            **Context & Stakeholder Dilemma (Task 2 Brief)**:
-            Given that enterprise gross invoiced revenue expanded by +90.3%, corporate operating margin stagnation (stuck at 11.6%) implies severe internal profit dilution.
-            The Chief Strategy Officer requires an empirical deconstruction across three core operational dimensions to isolate the exact locus of capital destruction:
+            """
+            **What we're investigating**:
+            Even though sales grew +90.3%, our overall profit margin stayed stuck at 11.6%. That means internal losses are eating up the extra profit.
+            To find where that money went, we break down the numbers across three areas:
 
-            1. **Geographic Hierarchy Variance**: $\text{Market} \rightarrow \text{Region} \rightarrow \text{Country}$
-               $$\text{Identify sovereign jurisdictions } j \in J \text{ where } \text{Profit}_j < 0 \quad \text{and quantify aggregate deficit: } \sum_{j, \text{Profit}_j < 0} \text{Profit}_j$$
-            2. **Merchandise Portfolio Contribution**: $\text{Category} \rightarrow \text{Sub-Category}$
-               $$\text{Differentiate Volume Shortfalls vs. Margin Realization Failures: } \text{Identify lines where } \text{Sales} \gg 0 \text{ but } \frac{\text{Profit}}{\text{Sales}} < 0$$
-            3. **Customer Account Tier Homogeneity**: $\text{Segment} \in \{\text{Consumer}, \text{Corporate}, \text{Home Office}\}$
-               $$\text{Test hypothesis: } \text{Margin}_{\text{Consumer}} \approx \text{Margin}_{\text{Corporate}} \approx \text{Margin}_{\text{Home Office}}$$
+            1. **By Country & Region**: Which countries are making healthy profits, and which ones are losing money?
+            2. **By Product Line**: Which products drive our profits, and which ones are being sold at a loss?
+            3. **By Customer Type**: Are corporate buyers or individual consumers more profitable, or do they perform about the same?
             """
         )
 
@@ -53,21 +50,21 @@ def render_eda_view(df: pd.DataFrame) -> None:
 
     # Direct Diagnostic Answers
     with st.container(border=True):
-        st.markdown("### Executive Diagnostic: Variance Concentration")
+        st.markdown("### Key Findings on Countries, Products, and Customers")
         st.markdown(
             """
-            * **Which geographic markets, operating regions, and sovereign countries exhibit structural margin deficits?**
-              - The **EMEA Operating Theater** produces the lowest margin among major international units at **5.45%** (\\$43.9K profit on \\$806K sales).
-              - **Territories with the Largest Operating Deficits**:
-                1. **Turkey**: **-\\$98,447 net operating deficit** on \\$108.5K sales (**-90.73% margin**, average discount rate: 60.0%).
-                2. **Nigeria**: **-\\$80,751 net operating deficit** on \\$54.4K sales (**-148.57% margin**, average discount rate: 70.0%).
-                3. **Netherlands**: **-\\$41,070 net operating deficit** on \\$77.5K sales (**-52.98% margin**, average discount rate: 48.2%).
-                4. **Honduras**: **-\\$29,482 net operating deficit** on \\$90.1K sales (**-32.71% margin**, average discount rate: 40.7%).
-            * **Which merchandise divisions and sub-categories generate structural deficits? Is this a volume shortfall or a margin realization failure?**
-              - **Tables** constitutes the **sole net deficit sub-category** within the global merchandise portfolio, incurring **-\\$64,083 in cumulative losses** on \\$757,042 in sales (-8.46% margin).
-              - **This is strictly a margin realization failure, not a volume deficiency**: Tables generated strong commercial volume (\\$757K revenue, 3,083 units across 861 order lines). Uncontrolled promotional discounting (averaging 29.1%) combined with high freight packaging volume produced negative unit contribution on each sale.
-            * **Where are enterprise operating losses concentrated?**
-              - The top 10 deficit territories account for over **-\\$355,000 in net cash drain**.
+            * **Which countries and regions lose the most money?**
+              - The **Middle East & Africa (EMEA)** region has the lowest profit margin among major markets at **5.45%** (\\$43.9K profit on \\$806K sales).
+              - **The 4 Biggest Money-Losing Countries**:
+                1. **Turkey**: **-\\$98,447 net loss** on \\$108.5K sales (**-90.7% margin**, average discount: 60.0%).
+                2. **Nigeria**: **-\\$80,751 net loss** on \\$54.4K sales (**-148.6% margin**, average discount: 70.0%).
+                3. **Netherlands**: **-\\$41,070 net loss** on \\$77.5K sales (**-53.0% margin**, average discount: 48.2%).
+                4. **Honduras**: **-\\$29,482 net loss** on \\$90.1K sales (**-32.7% margin**, average discount: 40.7%).
+            * **Which product lines are losing money?**
+              - **Tables** is the **only product category that loses money**, generating **-\\$64,083 in cumulative losses** on \\$757,042 in sales (-8.5% margin).
+              - **Customers want tables, but we price them poorly**: Tables had strong sales (\\$757K revenue, 3,083 units). But giving **29.1% average promotional discounts** on large, heavy furniture meant that shipping costs wiped out all the profit on every order.
+            * **How concentrated are these losses?**
+              - The top 10 loss-making countries alone account for over **-\\$355,000 in lost profit**.
             """
         )
 
@@ -75,21 +72,21 @@ def render_eda_view(df: pd.DataFrame) -> None:
 
     tab_quadrant, tab_geo, tab_prod, tab_segment, tab_loss_table = st.tabs(
         [
-            "Strategic Portfolio Matrix (147 Operating Territories)",
-            "Geographic Market & Country Variance",
-            "Product Category & Sub-Category Contribution",
-            "Customer Segment Account Tier Economics",
-            "Forensic Audit: Negative-Margin Transactions",
+            "Country Performance Matrix (147 Countries)",
+            "Geographic Drilldown (Markets & Countries)",
+            "Product Lines & Categories",
+            "Customer Types (Consumer vs Business)",
+            "Audit Trail: Money-Losing Orders",
         ]
     )
 
-    # 1. Advanced Feature: Strategic Portfolio Matrix (147 Operating Territories)
+    # 1. Feature: Country Performance Matrix
     with tab_quadrant:
         with st.container(border=True):
-            st.markdown("### Strategic Portfolio Matrix: 147 Sovereign Operating Territories")
+            st.markdown("### Country Performance Matrix (All 147 Countries)")
             st.markdown(
-                "Multi-dimensional BCG/McKinsey strategic portfolio segmentation evaluating all 147 operating territories "
-                "by commercial volume, operating profit margin, and order frequency."
+                "This chart plots all 147 countries by total sales volume and profit margin, "
+                "making it easy to see which markets drive our business and which ones lose money."
             )
 
             quad_df = compute_territory_quadrant_matrix(df)
@@ -97,27 +94,26 @@ def render_eda_view(df: pd.DataFrame) -> None:
             st.plotly_chart(quad_chart, use_container_width=True)
 
             render_chart_story_card(
-                title="Strategic Classification of 147 Operating Territories",
+                title="Performance Profiles of 147 International Markets",
                 what_it_shows=(
-                    "2x2 strategic bubble matrix plotting sovereign territories across Gross Sales Volume ($ USD, Log Scale, X-axis) "
-                    "and Operating Profit Margin (%, Y-axis). Bubble diameter reflects transaction volume. "
-                    "Dashed red line demarcates break-even (0.0% margin); dotted green line indicates institutional target (10.0% margin)."
+                    "A 2x2 scatter matrix plotting countries by Total Sales ($ USD, log scale on X-axis) "
+                    "and Profit Margin (%, Y-axis). Bubble size shows total number of orders. "
+                    "The red line shows break-even (0% margin); the dotted green line shows our 10% target margin."
                 ),
                 key_takeaway=(
-                    "Global operations segment into four discrete strategic profiles: "
-                    "1. Core Value Engines (Green): High volume, high margin markets (US, UK, Germany, Australia, China, India). "
-                    "2. Margin-Diluted Volume Channels (Amber): Large sales scale but sub-par margins (France, Philippines, Mexico). "
-                    "3. High-Yield Niche Centers (Blue): Moderate sales volume generating superior margins >15% (Canada, New Zealand, Norway). "
-                    "4. Deficit Rationalization Priorities (Red): Chronic capital drains operating below break-even (Turkey, Nigeria, Netherlands, Honduras)."
+                    "Our 147 countries naturally fall into four clear groups: "
+                    "1. Growth Engines (Green): High sales and high margins (US, UK, Germany, Australia, China, India). "
+                    "2. Big Sales, Thin Margins (Amber): Large sales volume, but weak margins due to discounting (France, Philippines, Mexico). "
+                    "3. High-Profit Gems (Blue): Moderate sales volume with excellent profit margins >15% (Canada, New Zealand, Norway). "
+                    "4. Chronic Loss Makers (Red): Countries operating below zero profit (Turkey, Nigeria, Netherlands, Honduras)."
                 ),
                 business_impact=(
-                    "The Board should avoid broad corporate mandate blanket cuts. Capital, promotional budgets, and inventory allocation "
-                    "must be differentiated: invest aggressively in Core Engines and Niche Centers, renegotiate commercial pricing in Diluted Channels, "
-                    "and restructure delivery models in Deficit Priorities."
+                    "We shouldn't treat all countries the same. We should invest heavily in our Growth Engines and Gems, "
+                    "tighten pricing in Thin Margin markets, and stop direct shipping subsidies in Chronic Loss markets."
                 ),
                 recommendation=(
-                    "Establish a two-tier governance framework: grant localized pricing flexibility only to Core Engines and Niche Centers; "
-                    "strip localized pricing discretion from Deficit Territories."
+                    "Give local sales teams pricing flexibility only in proven profitable countries. "
+                    "In loss-making countries, strictly cap discounts at checkout."
                 ),
             )
 
@@ -158,47 +154,47 @@ def render_eda_view(df: pd.DataFrame) -> None:
         c1, c2 = st.columns([3, 2])
         with c1:
             with st.container(border=True):
-                st.markdown("#### Primary Operating Deficit Territories")
+                st.markdown("#### The 10 Biggest Money-Losing Countries")
                 loss_chart = create_country_loss_chart(country_df, bottom_n=10)
                 st.plotly_chart(loss_chart, use_container_width=True)
 
                 render_chart_story_card(
-                    title="Sovereign Territory Margin Deficits (Turkey, Nigeria, Netherlands)",
+                    title="Countries with the Largest Operating Losses",
                     what_it_shows=(
-                        "Ranking of the bottom 10 sovereign operating territories by cumulative negative operating profit. "
-                        "Red bars delineate the absolute dollar deficit incurred in each jurisdiction."
+                        "A ranking of the 10 countries with the largest total losses. "
+                        "Red bars indicate the exact dollar amount lost in each country."
                     ),
                     key_takeaway=(
-                        "Deficits are acutely concentrated: Turkey (-$98.4K on $108.5K sales) and Nigeria (-$80.8K on $54.4K sales) "
-                        "demonstrate extreme negative operating margins (-90.7% and -148.6%). Together, these two jurisdictions destroy $179K in capital, "
-                        "driven by standard baseline discounts ranging between 60.0% and 70.0%."
+                        "Losses are heavily concentrated: Turkey (-$98.4K on $108.5K sales) and Nigeria (-$80.8K on $54.4K sales) "
+                        "have staggering loss margins (-90.7% and -148.6%). Together, these two countries alone burned $179K, "
+                        "caused by huge baseline discounts of 60% to 70%."
                     ),
                     business_impact=(
-                        "The enterprise's centralized commercial pricing framework fails in volatile or high-tariff international markets. "
-                        "Local sales teams utilized high discount allowances to win volume quotas, while the corporate center absorbed "
-                        "international freight charges and import clearance duties."
+                        "Our standard pricing and shipping policies don't work in high-cost or high-tariff countries. "
+                        "Local sales reps gave away massive discounts to hit volume quotas, while the company absorbed "
+                        "expensive international air shipping and customs fees."
                     ),
                     recommendation=(
-                        "Immediately suspend standard discount authority in Turkey, Nigeria, and the Netherlands. "
-                        "Transition international fulfillment from direct cross-border shipment to localized third-party distribution (3PL) models."
+                        "Immediately stop giving large discounts in Turkey, Nigeria, and the Netherlands. "
+                        "Switch from direct international shipping to partnering with local distributors who manage their own domestic delivery."
                     ),
                 )
 
         with c2:
             with st.container(border=True):
-                st.markdown("#### Market Sales Proportions")
+                st.markdown("#### Sales Share by Global Market")
                 pie_chart = create_market_share_pie(mkt_df)
                 st.plotly_chart(pie_chart, use_container_width=True)
 
                 render_chart_story_card(
-                    title="Geographic Revenue Distribution and Regional Margin Disparities",
-                    what_it_shows="Proportional sales volume across the seven primary geographic operating theaters.",
+                    title="Sales Distribution Across Global Regions",
+                    what_it_shows="The share of total company sales coming from each of the seven global markets.",
                     key_takeaway=(
-                        "APAC ($3.59M, 28.4%), EU ($2.94M, 23.2%), and US ($2.30M, 18.2%) represent 69.8% of global volume with stable "
-                        "operating margins (~12.2% to 12.7%). Conversely, EMEA ($806K, 6.4%) generates a severely depressed 5.45% margin."
+                        "APAC ($3.59M, 28.4%), EU ($2.94M, 23.2%), and the US ($2.30M, 18.2%) make up nearly 70% of all sales, "
+                        "all with solid profit margins around 12.2% to 12.7%. Meanwhile, EMEA ($806K, 6.4%) generates a weak 5.45% margin."
                     ),
-                    business_impact="Core mature operating units are commercially sound; regional deficits in EMEA and Africa dilute group return on equity.",
-                    recommendation="Safeguard commercial margins in primary theaters while executing operational restructuring across EMEA and Africa.",
+                    business_impact="Our biggest core markets are financially healthy; losses in EMEA and Africa pull down overall company performance.",
+                    recommendation="Keep margins strong in our primary markets while fixing fulfillment and pricing across EMEA and Africa.",
                 )
 
         st.divider()
@@ -276,22 +272,21 @@ def render_eda_view(df: pd.DataFrame) -> None:
             st.plotly_chart(subcat_chart, use_container_width=True)
 
             render_chart_story_card(
-                title="Portfolio Contribution Variance: Tables Merchandise Line Deficit",
+                title="Product Line Profitability: Tables Is the Only Loss-Maker",
                 what_it_shows=(
-                    "Horizontal diverging bar chart comparing all 17 portfolio merchandise lines. "
-                    "Green indicates positive net operating contribution; red highlights net deficit lines (Tables)."
+                    "A horizontal bar chart comparing profits across all 17 product categories. "
+                    "Green bars show profitable categories; the red bar highlights Tables as the only money-losing line."
                 ),
                 key_takeaway=(
-                    "Technology lines (Copiers +$258.6K, Phones +$216.7K, Accessories +$129.6K) and Office Supplies (Storage +$108.5K, Binders +$72.4K) "
-                    "deliver robust profitability. Tables is the sole net deficit line (-$64,083 loss) despite generating $757K in top-line sales."
+                    "Tech products (Copiers +$258.6K, Phones +$216.7K, Accessories +$129.6K) and Office Supplies (Storage +$108.5K, Binders +$72.4K) "
+                    "bring in great profits. Tables is the only category that lost money (-$64,083 loss) despite bringing in $757K in sales."
                 ),
                 business_impact=(
-                    "Tables is an operational pricing failure. Heavy dimensional packaging elevates freight-to-value ratios. "
-                    "Granting 29.1% average promotional discounts on bulky merchandise systematically eliminates unit gross margin."
+                    "Tables suffers from bad pricing on bulky freight. Heavy boxes cost a lot to ship. "
+                    "Giving an average 29.1% discount on bulky items guarantees that every single table shipped loses money."
                 ),
                 recommendation=(
-                    "Restructure the Tables commercial catalog: introduce mandatory dimensional freight surcharges on commercial deliveries, "
-                    "raise base catalog pricing, and cap promotional allowances at 10%."
+                    "Overhaul the Tables catalog: add standard oversized shipping fees, raise base catalog prices, and cap discounts at 10%."
                 ),
             )
 
@@ -364,17 +359,17 @@ def render_eda_view(df: pd.DataFrame) -> None:
             )
 
             render_chart_story_card(
-                title="Customer Account Tier Uniformity (Non-Explanatory Factor)",
-                what_it_shows="Financial performance across Consumer, Corporate, and Home Office purchasing classifications.",
+                title="Customer Types Perform Almost Identically",
+                what_it_shows="Financial performance across Consumer, Corporate, and Home Office buyers.",
                 key_takeaway=(
-                    "All three customer account tiers display near-identical operating margins: Consumer (11.51%), Corporate (11.54%), "
-                    "and Home Office (11.99%), with average discount rates clustered tightly between 14.1% and 14.4%."
+                    "All three customer types deliver virtually identical profit margins: Consumer (11.51%), Corporate (11.54%), "
+                    "and Home Office (11.99%), with average discounts sitting right around 14%."
                 ),
                 business_impact=(
-                    "This finding confirms that enterprise underperformance is not driven by customer segmentation. "
-                    "Client classifications generate comparable returns under standardized pricing. The operational defect resides strictly in geographic and product pricing rules."
+                    "This proves that our profit problem is not caused by who we sell to. All customer types are equally profitable under normal pricing. "
+                    "The problem is purely about where we sell (specific countries) and how we discount (discounts over 20%)."
                 ),
-                recommendation="Retain existing commercial go-to-market segmentation; concentrate executive interventions on pricing authority and fulfillment logistics.",
+                recommendation="Keep our current sales teams and customer segments as they are; focus fixes entirely on discount caps and shipping costs.",
             )
 
     # 5. Detailed Loss Orders Inspector
@@ -423,20 +418,20 @@ def render_eda_view(df: pd.DataFrame) -> None:
 
     # Section 2 Proposed Solutions
     with st.container(border=True):
-        st.markdown("### Section 2: Strategic Proposed Solutions")
+        st.markdown("### Practical Actions for Section 2")
         st.markdown(
             r"""
-            Based on the multi-dimensional variance diagnostic, the strategic taskforce recommends three operational solutions:
+            Based on the geographic and product analysis, we recommend three specific actions:
 
-            1. **Restructure Sovereign Deficit Channels (Turkey, Nigeria, Netherlands, Honduras)**:
-               - *Operational Action*: Immediately terminate direct cross-border corporate fulfillment into Turkey (-\$98.4K deficit, -90.7% margin) and Nigeria (-\$80.8K deficit, -148.6% margin). Transition these accounts to bonded in-country third-party logistics (3PL) master distributors with wholesale transfer pricing indexed to hard currencies.
-               - *Financial Recovery*: **Eliminates +\$179,198 in direct bilateral deficits** (and up to +\$249,750 across all top-4 deficit territories).
+            1. **Fix the Four High-Loss Countries (Turkey, Nigeria, Netherlands, Honduras)**:
+               - *Action*: Stop shipping orders directly from international warehouses into Turkey (-\$98.4K loss) and Nigeria (-\$80.8K loss). Partner with local in-country distributors and warehouses that handle domestic shipping with prices set in local currencies.
+               - *Profit Recovered*: **Saves +\$179,198 in direct bilateral deficits** across Turkey and Nigeria (and up to +\$249,750 across all four high-loss countries).
 
-            2. **Merchandise Portfolio Turnaround: Tables Catalog Restructuring**:
-               - *Operational Action*: Tables represents a margin realization failure (-\$64K loss on \$757K sales), not a demand failure. Restructure the commercial furniture line: introduce mandatory dimensional freight surcharges, eliminate unapproved commercial discounts, and discontinue negative-margin SKUs.
-               - *Financial Recovery*: **+\$46,245 bulky freight recovery and +\$80,000+ margin turnaround**, converting Tables from enterprise loss-maker into positive contribution margin.
+            2. **Fix the Tables Category (Add Shipping Fees & Limit Discounts)**:
+               - *Action*: Customers want tables, but our pricing loses money. Update the table catalog: add standard oversized shipping fees on bulky deliveries, stop offering free express shipping, and drop models that lose money.
+               - *Profit Recovered*: **+\$46,245 in recovered shipping fees and over +\$80,000 in total margin turnaround**, turning Tables into a profitable category.
 
-            3. **Preserve Customer Account Tier Segmentation Structure**:
-               - *Operational Action*: Retain the existing sales organizational alignment across Consumer, Corporate, and Home Office. The data confirms near-identical margins (~11.5%) across all three account tiers, demonstrating that account classification is commercially sound and not the cause of margin dilution.
+            3. **Keep Customer Segments As They Are**:
+               - *Action*: Keep our current customer sales structure (Consumer, Corporate, Home Office). The data shows all three groups perform equally well (~11.5% margin), so changing them won't solve the problem.
             """
         )
