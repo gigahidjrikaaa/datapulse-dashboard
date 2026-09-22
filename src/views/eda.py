@@ -91,7 +91,7 @@ def render_eda_view(df: pd.DataFrame) -> None:
 
             quad_df = compute_territory_quadrant_matrix(df)
             quad_chart = create_territory_quadrant_chart(quad_df)
-            st.plotly_chart(quad_chart, use_container_width=True)
+            st.plotly_chart(quad_chart, width="stretch")
 
             render_chart_story_card(
                 title="Performance Profiles of 147 International Markets",
@@ -144,7 +144,7 @@ def render_eda_view(df: pd.DataFrame) -> None:
                         "Avg_Discount": "{:.1f}%",
                     }
                 ),
-                use_container_width=True,
+                width="stretch",
             )
 
     # 2. Geographic Drilldown
@@ -156,7 +156,7 @@ def render_eda_view(df: pd.DataFrame) -> None:
             with st.container(border=True):
                 st.markdown("#### The 10 Biggest Money-Losing Countries")
                 loss_chart = create_country_loss_chart(country_df, bottom_n=10)
-                st.plotly_chart(loss_chart, use_container_width=True)
+                st.plotly_chart(loss_chart, width="stretch")
 
                 render_chart_story_card(
                     title="Countries with the Largest Operating Losses",
@@ -184,7 +184,7 @@ def render_eda_view(df: pd.DataFrame) -> None:
             with st.container(border=True):
                 st.markdown("#### Sales Share by Global Market")
                 pie_chart = create_market_share_pie(mkt_df)
-                st.plotly_chart(pie_chart, use_container_width=True)
+                st.plotly_chart(pie_chart, width="stretch")
 
                 render_chart_story_card(
                     title="Sales Distribution Across Global Regions",
@@ -208,7 +208,7 @@ def render_eda_view(df: pd.DataFrame) -> None:
             col_reg_chart, col_reg_table = st.columns([3, 2])
             with col_reg_chart:
                 reg_fig = create_region_margin_chart(reg_df)
-                st.plotly_chart(reg_fig, use_container_width=True)
+                st.plotly_chart(reg_fig, width="stretch")
             with col_reg_table:
                 st.markdown("##### Sub-Region Operating Summary")
                 st.dataframe(
@@ -222,7 +222,7 @@ def render_eda_view(df: pd.DataFrame) -> None:
                             "Orders": "{:,}",
                         }
                     ),
-                    use_container_width=True,
+                    width="stretch",
                 )
 
         st.divider()
@@ -240,7 +240,7 @@ def render_eda_view(df: pd.DataFrame) -> None:
                         "Orders": "{:,}",
                     }
                 ),
-                use_container_width=True,
+                width="stretch",
             )
 
         # Full Country-Level Table (All 147 Territories)
@@ -259,7 +259,7 @@ def render_eda_view(df: pd.DataFrame) -> None:
                         "Orders": "{:,}",
                     }
                 ),
-                use_container_width=True,
+                width="stretch",
             )
 
     # 3. Product Drilldown
@@ -269,7 +269,7 @@ def render_eda_view(df: pd.DataFrame) -> None:
         with st.container(border=True):
             st.markdown("#### Merchandise Line Profitability Distribution")
             subcat_chart = create_subcat_profit_chart(subcat_df)
-            st.plotly_chart(subcat_chart, use_container_width=True)
+            st.plotly_chart(subcat_chart, width="stretch")
 
             render_chart_story_card(
                 title="Product Line Profitability: Tables Is the Only Loss-Maker",
@@ -306,7 +306,7 @@ def render_eda_view(df: pd.DataFrame) -> None:
                             "Quantity": "{:,}",
                         }
                     ),
-                    use_container_width=True,
+                    width="stretch",
                 )
 
         with col_subcat:
@@ -322,7 +322,7 @@ def render_eda_view(df: pd.DataFrame) -> None:
                             "Quantity": "{:,}",
                         }
                     ),
-                    use_container_width=True,
+                    width="stretch",
                 )
 
     # 4. Customer Segment Drilldown
@@ -342,7 +342,7 @@ def render_eda_view(df: pd.DataFrame) -> None:
             segment_df["Avg_Discount_Pct"] = segment_df["Avg_Discount"] * 100.0
 
             segment_chart = create_segment_performance_chart(segment_df)
-            st.plotly_chart(segment_chart, use_container_width=True)
+            st.plotly_chart(segment_chart, width="stretch")
 
             st.markdown("##### Account Tier Economic Matrix")
             st.dataframe(
@@ -355,7 +355,7 @@ def render_eda_view(df: pd.DataFrame) -> None:
                         "Orders": "{:,}",
                     }
                 ),
-                use_container_width=True,
+                width="stretch",
             )
 
             render_chart_story_card(
@@ -403,7 +403,7 @@ def render_eda_view(df: pd.DataFrame) -> None:
                         "Profit": "${:,.2f}",
                     }
                 ),
-                use_container_width=True,
+                width="stretch",
             )
 
             csv_loss = loss_df[display_cols].to_csv(index=False).encode("utf-8")

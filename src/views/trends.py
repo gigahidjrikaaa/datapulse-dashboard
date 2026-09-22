@@ -76,7 +76,7 @@ def render_trends_view(df: pd.DataFrame) -> None:
         col_chart, col_table = st.columns([3, 2])
         with col_chart:
             cliff_fig = create_discount_cliff_chart(disc_df)
-            st.plotly_chart(cliff_fig, use_container_width=True)
+            st.plotly_chart(cliff_fig, width="stretch")
 
         with col_table:
             st.markdown("#### Profit by Discount Level")
@@ -91,7 +91,7 @@ def render_trends_view(df: pd.DataFrame) -> None:
                         "Avg_Sales_Per_Line": "${:,.2f}",
                     }
                 ),
-                use_container_width=True,
+                width="stretch",
             )
 
         render_chart_story_card(
@@ -124,7 +124,7 @@ def render_trends_view(df: pd.DataFrame) -> None:
             "Notice how almost every order to the right of the 20% line falls below zero profit."
         )
         scatter_fig = create_discount_profit_scatter(df)
-        st.plotly_chart(scatter_fig, use_container_width=True)
+        st.plotly_chart(scatter_fig, width="stretch")
 
     st.divider()
 
@@ -143,7 +143,7 @@ def render_trends_view(df: pd.DataFrame) -> None:
 
         with tab_tier:
             freight_chart = create_freight_absorption_chart(ship_df)
-            st.plotly_chart(freight_chart, use_container_width=True)
+            st.plotly_chart(freight_chart, width="stretch")
             st.markdown("#### Shipping Costs by Delivery Speed")
             st.dataframe(
                 ship_df.style.format(
@@ -157,12 +157,12 @@ def render_trends_view(df: pd.DataFrame) -> None:
                         "Orders": "{:,}",
                     }
                 ),
-                use_container_width=True,
+                width="stretch",
             )
 
         with tab_prio:
             priority_chart = create_priority_freight_chart(priority_df)
-            st.plotly_chart(priority_chart, use_container_width=True)
+            st.plotly_chart(priority_chart, width="stretch")
             st.markdown("#### Shipping Costs by Urgency Level")
             st.dataframe(
                 priority_df.style.format(
@@ -176,7 +176,7 @@ def render_trends_view(df: pd.DataFrame) -> None:
                         "Orders": "{:,}",
                     }
                 ),
-                use_container_width=True,
+                width="stretch",
             )
 
         render_chart_story_card(

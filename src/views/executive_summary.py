@@ -247,7 +247,7 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
             volume_attrition_rate=0.05,
         )
         bridge_fig = create_ebitda_bridge_chart(sim_summary["bridge_components"])
-        st.plotly_chart(bridge_fig, use_container_width=True)
+        st.plotly_chart(bridge_fig, width="stretch")
 
     st.divider()
 

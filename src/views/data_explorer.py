@@ -227,7 +227,7 @@ def render_data_explorer_view(df: pd.DataFrame) -> None:
                 data=csv_data,
                 file_name="global_superstore_ledger_export.csv",
                 mime="text/csv",
-                use_container_width=True,
+                width="stretch",
             )
 
         # Default standard audit columns
@@ -279,7 +279,7 @@ def render_data_explorer_view(df: pd.DataFrame) -> None:
         st.dataframe(
             filtered[selected_display_cols],
             column_config=col_config,
-            use_container_width=True,
+            width="stretch",
             height=500,
         )
 

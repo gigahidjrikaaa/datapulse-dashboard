@@ -134,7 +134,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
 
         # EBITDA Bridge Waterfall Chart
         w_chart = create_ebitda_bridge_chart(sim_results["bridge_components"])
-        st.plotly_chart(w_chart, use_container_width=True)
+        st.plotly_chart(w_chart, width="stretch")
 
         render_chart_story_card(
             title="Step-by-Step Profit Recovery Waterfall",
@@ -197,7 +197,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
         )
         st.dataframe(
             bridge_df.style.format({"Impact ($ USD)": "${:,.2f}"}),
-            use_container_width=True,
+            width="stretch",
         )
 
         st.markdown("<br>", unsafe_allow_html=True)
@@ -217,7 +217,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                     "Projected Operating Margin": "{:.2f}%",
                 }
             ),
-            use_container_width=True,
+            width="stretch",
         )
 
     st.divider()
@@ -326,7 +326,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                     data=f.read(),
                     file_name="Global_Superstore_Revival_Strategy_Board_Deck.pptx",
                     mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
-                    use_container_width=True,
+                    width="stretch",
                 )
         if os.path.exists(pdf_path):
             with open(pdf_path, "rb") as f:
@@ -335,7 +335,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                     data=f.read(),
                     file_name="Global_Superstore_Revival_Strategy_Board_Deck.pdf",
                     mime="application/pdf",
-                    use_container_width=True,
+                    width="stretch",
                 )
         if os.path.exists(docx_path):
             with open(docx_path, "rb") as f:
@@ -344,7 +344,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                     data=f.read(),
                     file_name="Global_Superstore_Executive_Summary.docx",
                     mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                    use_container_width=True,
+                    width="stretch",
                 )
 
         with st.expander("Executive Deck Architecture: Slide Content, Visual Evidence & Presenter Notes", expanded=True):

@@ -71,7 +71,7 @@ def render_overview_view(df: pd.DataFrame) -> None:
     with st.container(border=True):
         st.markdown("### Year-over-Year Growth (2011–2014)")
         yoy_chart = create_yoy_growth_chart(yoy_df)
-        st.plotly_chart(yoy_chart, use_container_width=True)
+        st.plotly_chart(yoy_chart, width="stretch")
 
         render_chart_story_card(
             title="Sales Doubled, but Profit Margins Stayed Flat",
@@ -111,7 +111,7 @@ def render_overview_view(df: pd.DataFrame) -> None:
                     "Quantity": "{:,}",
                 }
             ),
-            use_container_width=True,
+            width="stretch",
         )
 
     st.divider()
@@ -124,7 +124,7 @@ def render_overview_view(df: pd.DataFrame) -> None:
         )
         monthly_df = compute_monthly_trend(df)
         trend_chart = create_monthly_trend_chart(monthly_df)
-        st.plotly_chart(trend_chart, use_container_width=True)
+        st.plotly_chart(trend_chart, width="stretch")
 
         render_chart_story_card(
             title="Monthly Sales Patterns and Year-End Surges",
@@ -151,7 +151,7 @@ def render_overview_view(df: pd.DataFrame) -> None:
         )
         quarterly_df = compute_quarterly_seasonality(df)
         q_chart = create_quarterly_seasonality_chart(quarterly_df)
-        st.plotly_chart(q_chart, use_container_width=True)
+        st.plotly_chart(q_chart, width="stretch")
 
         render_chart_story_card(
             title="Q4 Consistently Accounts for Over One-Third of Annual Sales",
@@ -177,7 +177,7 @@ def render_overview_view(df: pd.DataFrame) -> None:
                     "Orders": "{:,}",
                 }
             ),
-            use_container_width=True,
+            width="stretch",
         )
 
     st.divider()
