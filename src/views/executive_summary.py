@@ -108,7 +108,7 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
               1. **Discounts above 20%**: Sales teams offered steep discounts (up to 70%) to hit top-line quotas, losing money on every unit shipped.
               2. **Subsidized shipping to expensive overseas markets**: High discounts paired with expensive direct international shipping caused severe cash drain in countries like Turkey, Nigeria, and the Netherlands.
               3. **Bulky furniture**: Tables were heavily discounted while shipping costs ate up the remaining margin.
-            * **The path to recovery**: By capping discounts at 20% at checkout, switching to local distribution partners in loss-making countries, and charging oversized shipping fees on bulky items, the company can capture **+\\$1,233,804 in net EBITDA (+84.1% expansion to \$2.70M at 19.9% margin)**.
+            * **The path to recovery**: By capping discounts at 20% at checkout, switching to local distribution partners in loss-making countries, and charging oversized shipping fees on bulky items, the company can capture **+\\$1,233,804 in net EBITDA (+84.1% expansion to \\$2.70M at 19.9% margin)**.
             """
         )
 
