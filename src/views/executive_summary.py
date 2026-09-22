@@ -9,22 +9,56 @@ from src.components.narratives import render_data_dictionary_expander
 from src.services.analyzer import compute_overview_kpis, simulate_turnaround_impact
 
 
+def render_syndicate_roster() -> None:
+    """Render the Syndicate 6 project members using native Streamlit card containers."""
+    members = [
+        {"name": "Giga Hidjrika Aura Adkhy", "id": "388", "role": "Syndicate Member"},
+        {"name": "Safia Aisyah Nur Savanah", "id": "364", "role": "Syndicate Member"},
+        {"name": "Adiva Fitri Khalishah", "id": "377", "role": "Syndicate Member"},
+        {"name": "Azka Ghossani Amin", "id": "357", "role": "Syndicate Member"},
+        {"name": "Nurul Aulia Rahmawati", "id": "359", "role": "Syndicate Member"},
+        {"name": "Cindy Monica Manurung", "id": "384", "role": "Syndicate Member"},
+        {"name": "Louis Alessandro", "id": "356", "role": "Syndicate Member"},
+    ]
+
+    with st.container(border=True):
+        st.markdown("#### Syndicate 6 Advisory Team")
+        st.caption("Prepared by Class A Syndicate 6 | Strategic Diagnostic & Advisory Deliverable")
+
+        # Row 1: Members 1 to 4
+        cols_row1 = st.columns(4)
+        for idx in range(4):
+            m = members[idx]
+            with cols_row1[idx]:
+                with st.container(border=True):
+                    st.caption(f"Student ID: **{m['id']}**")
+                    st.markdown(f"**{m['name']}**")
+                    st.caption(m["role"])
+
+        # Row 2: Members 5 to 7 + Syndicate Summary Card
+        cols_row2 = st.columns(4)
+        for idx in range(3):
+            m = members[4 + idx]
+            with cols_row2[idx]:
+                with st.container(border=True):
+                    st.caption(f"Student ID: **{m['id']}**")
+                    st.markdown(f"**{m['name']}**")
+                    st.caption(m["role"])
+
+        with cols_row2[3]:
+            with st.container(border=True):
+                st.caption("Academic Syndicate")
+                st.markdown("**Class A • Syndicate 6**")
+                st.caption("7 Advisory Analysts")
+
+
 def render_executive_summary_view(df: pd.DataFrame) -> None:
     """Render the one-page executive memorandum for the Board of Directors."""
     st.markdown("# Global Superstore Case | Executive Summary")
     st.markdown(
         "**Prepared by Class A Syndicate 6**"
     )
-    st.markdown("""
-        Members:
-        - Giga Hidjrika Aura Adkhy (388)
-        - Safia Aisyah Nur Savanah (364)
-        - Adiva Fitri Khalishah (377)
-        - Azka Ghossani Amin (357)
-        - Nurul Aulia Rahmawati (359)
-        - Cindy Monica Manurung (384)
-        - Louis Alessandro (356)
-    """)
+    render_syndicate_roster()
     st.markdown("---")
 
     # Global Data Dictionary & Financial Methodology
