@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 740 300">
+  <!-- table -->
+  <g fill="none" stroke="#5A3921" stroke-width="10">
+    <rect x="90" y="128" width="390" height="26" rx="8" fill="#E2DCD2"/>
+    <path d="M 128 154 V 258 M 442 154 V 258" stroke-width="16"/>
+    <path d="M 150 226 H 420" stroke-width="9" opacity="0.55"/>
+  </g>
+  <!-- oversized discount tag hanging off the edge -->
+  <g transform="rotate(16 555 148)">
+    <path d="M 500 150 H 640 L 668 186 L 640 222 H 500 Z" fill="#E2DCD2" stroke="#5A3921" stroke-width="9"/>
+    <circle cx="524" cy="186" r="10" fill="#FFFFFF" stroke="#5A3921" stroke-width="7"/>
+    <text x="592" y="205" font-family="Georgia, 'Times New Roman', serif" font-size="60" font-weight="bold"
+          fill="#5A3921" stroke="none" text-anchor="middle">%</text>
+  </g>
+  <path d="M 480 141 Q 505 122 525 140" fill="none" stroke="#8A7B6B" stroke-width="7"/>
+  <!-- freight cost dragging it under -->
+  <path d="M 672 224 q 12 20 -4 38" fill="none" stroke="#A22727" stroke-width="8"/>
+</svg>

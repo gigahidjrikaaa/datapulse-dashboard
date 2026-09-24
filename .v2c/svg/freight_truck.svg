@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 740 300">
+  <g fill="none" stroke="#5A3921" stroke-width="10">
+    <!-- box body + cab -->
+    <rect x="100" y="118" width="330" height="100" rx="10" fill="#FFFFFF"/>
+    <path d="M 430 142 H 536 L 592 186 V 218 H 430 Z" fill="#FFFFFF"/>
+    <rect x="452" y="152" width="48" height="34" rx="6" fill="#E2DCD2" stroke-width="8"/>
+  </g>
+  <!-- crates in the box (drawn open-topped for a lighter look) -->
+  <g fill="none" stroke="#5A3921" stroke-width="8">
+    <rect x="128" y="140" width="64" height="60" fill="#E2DCD2"/>
+    <rect x="204" y="140" width="64" height="60"/>
+    <path d="M 236 140 V 200 M 204 170 h 64" stroke-width="6"/>
+  </g>
+  <!-- wheels -->
+  <g fill="#FFFFFF" stroke="#322014" stroke-width="9">
+    <circle cx="180" cy="232" r="26"/>
+    <circle cx="470" cy="232" r="26"/>
+    <circle cx="540" cy="232" r="26"/>
+  </g>
+  <g fill="#322014" stroke="none">
+    <circle cx="180" cy="232" r="8"/>
+    <circle cx="470" cy="232" r="8"/>
+    <circle cx="540" cy="232" r="8"/>
+  </g>
+  <!-- heavy freight coin weighing on the load -->
+  <g fill="#C5A681" stroke="#322014" stroke-width="6">
+    <circle cx="265" cy="52" r="24"/>
+  </g>
+  <path d="M 249 44 a 24 24 0 0 1 32 0" fill="none" stroke="#5A3921" stroke-width="5"/>
+  <path d="M 265 96 v 26 m -9 -11 l 9 11 l 9 -11" fill="none" stroke="#A22727" stroke-width="7"/>
+  <!-- motion dashes + ground -->
+  <g stroke="#8A7B6B" stroke-width="8" fill="none">
+    <path d="M 40 148 h 34 M 24 178 h 40"/>
+    <path d="M 76 268 H 680" stroke-width="9" opacity="0.55"/>
+  </g>
+</svg>

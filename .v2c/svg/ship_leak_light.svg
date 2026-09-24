@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 740 440">
+  <g fill="none" stroke="#322014" stroke-width="9">
+    <!-- hull -->
+    <path d="M 90 300 H 620 L 570 380 H 160 Z" fill="none"/>
+    <!-- containers on deck -->
+    <rect x="170" y="230" width="90" height="70" fill="none"/>
+    <rect x="270" y="230" width="90" height="70" fill="none"/>
+    <rect x="370" y="230" width="90" height="70" fill="none"/>
+    <rect x="320" y="160" width="90" height="70" fill="none"/>
+    <path d="M 480 300 V 170 H 545 V 300"/>
+    <!-- crack in the hull -->
+    <path d="M 262 322 l 16 14 l -12 12 l 18 15" stroke="#322014" stroke-width="7"/>
+  </g>
+  <!-- one red container -->
+  <rect x="270" y="230" width="90" height="70" fill="#A22727" opacity="0.85"/>
+  <!-- coins dripping from the crack -->
+  <g fill="#C5A681" stroke="#322014" stroke-width="6">
+    <circle cx="286" cy="402" r="14"/>
+  </g>
+  <g fill="none" stroke="#322014" stroke-width="7">
+    <path d="M 340 396 q 6 10 0 20" opacity="0.9"/>
+    <path d="M 240 402 q -6 10 0 20" opacity="0.9"/>
+  </g>
+  <!-- water line -->
+  <path d="M 60 420 q 40 -18 80 0 t 80 0 t 80 0 t 80 0 t 80 0 t 80 0 t 80 0 t 80 0"
+        fill="none" stroke="#322014" stroke-width="8" opacity="0.75"/>
+</svg>

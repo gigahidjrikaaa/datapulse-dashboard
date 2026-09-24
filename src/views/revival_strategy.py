@@ -8,6 +8,7 @@ from src.components.charts import create_ebitda_bridge_chart
 from src.components.metrics import render_kpi_card
 from src.components.narratives import render_chart_story_card, render_data_dictionary_expander
 from src.services.analyzer import (
+    compute_alternatives_assessment,
     compute_scenario_sensitivity_matrix,
     simulate_turnaround_impact,
 )
@@ -218,6 +219,53 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                 }
             ),
             width="stretch",
+        )
+
+        # Alternatives the taskforce considered and eliminated
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("#### Alternatives Considered & Eliminated")
+        st.markdown(
+            "Before locking the three-lever plan, we stress-tested the obvious alternatives on the same ledger. "
+            "Each one either re-opens the loss zone, forfeits revenue, or moves too little, too slowly:"
+        )
+        alts = compute_alternatives_assessment(df)
+        alternatives_df = pd.DataFrame(
+            [
+                {
+                    "Alternative": "1. Raise list prices, allow deeper discounts",
+                    "What It Promises": "Bigger concessions look affordable from a higher invoice price",
+                    "Why It Is Eliminated": (
+                        f"The leak follows the discount depth, not the list price: margins run +9.9% at 10-20% off "
+                        f"but -5.5% at 20-30%, and {alts['deep_share_of_losses'] * 100.0:.1f}% of all loss dollars "
+                        f"(${alts['deep_discount_loss']:,.0f}) sit above the 20% line. A deeper cap re-opens that loss zone."
+                    ),
+                    "Verdict": "Eliminated",
+                },
+                {
+                    "Alternative": "2. Exit Turkey and Nigeria entirely",
+                    "What It Promises": "Instant stop to the country deficits",
+                    "Why It Is Eliminated": (
+                        f"Abandons ${alts['tn_sales']:,.0f} of revenue and two developing markets; 3PL restructuring "
+                        f"removes the same ${alts['tn_loss']:,.0f} of losses while keeping every sale."
+                    ),
+                    "Verdict": "Eliminated",
+                },
+                {
+                    "Alternative": "3. Renegotiate carrier rates company-wide",
+                    "What It Promises": "Cheaper freight on every order",
+                    "Why It Is Eliminated": (
+                        f"Freight totals ${alts['freight_total']:,.0f} ({alts['freight_ratio'] * 100.0:.1f}% of sales), "
+                        f"so a realistic 10% cut returns only ~${alts['freight_cut_recovery']:,.0f} after 12+ months of "
+                        f"contracting - and leaves the ${alts['deep_discount_loss']:,.0f} discount leak untouched."
+                    ),
+                    "Verdict": "Support lever only",
+                },
+            ]
+        )
+        st.dataframe(alternatives_df, width="stretch")
+        st.caption(
+            "Verdicts are assessed on the FY2011-FY2014 ledger under the same base-case assumptions as the simulator above. "
+            "Modelling estimates, not forecasts."
         )
 
     st.divider()

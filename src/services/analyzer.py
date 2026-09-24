@@ -544,6 +544,64 @@ def simulate_turnaround_impact(
     }
 
 
+def compute_alternatives_assessment(df: pd.DataFrame) -> dict[str, Any]:
+    """Quantify the strategic alternatives considered alongside the three-lever turnaround plan.
+
+    Grounds the alternatives-elimination narrative in the same ledger as the simulator:
+    1. Raise list prices while allowing deeper discounts -> measured by how concentrated the
+       loss dollars are above the 20% discount line (the leak follows discount depth).
+    2. Exit Turkey and Nigeria entirely -> measured by revenue forfeited vs. losses removed.
+    3. Renegotiate carrier rates company-wide -> measured by total freight spend and a
+       realistic 10% negotiated cut.
+
+    Args:
+        df: Input sales DataFrame.
+
+    Returns:
+        Dictionary of evidence metrics used by the dashboard and board materials.
+    """
+    empty_result = {
+        "freight_total": 0.0,
+        "freight_ratio": 0.0,
+        "loss_dollars_total": 0.0,
+        "deep_discount_loss": 0.0,
+        "deep_discount_lines": 0,
+        "deep_share_of_losses": 0.0,
+        "tn_sales": 0.0,
+        "tn_loss": 0.0,
+        "freight_cut_recovery": 0.0,
+    }
+    if df.empty:
+        return empty_result
+
+    freight_total = float(df["Shipping Cost"].sum())
+    sales_total = float(df["Sales"].sum())
+    freight_ratio = (freight_total / sales_total) if sales_total > 0 else 0.0
+
+    loss_mask = df["Profit"] < 0
+    loss_dollars_total = float(abs(df.loc[loss_mask, "Profit"].sum())) if loss_mask.any() else 0.0
+
+    over20_mask = df["Discount"] > 0.20
+    deep_discount_loss = float(abs(df.loc[over20_mask, "Profit"].sum())) if over20_mask.any() else 0.0
+    deep_share = (deep_discount_loss / loss_dollars_total) if loss_dollars_total > 0 else 0.0
+
+    tn_mask = df["Country"].isin(["Turkey", "Nigeria"])
+    tn_sales = float(df.loc[tn_mask, "Sales"].sum())
+    tn_loss = float(abs(df.loc[tn_mask, "Profit"].sum()))
+
+    return {
+        "freight_total": freight_total,
+        "freight_ratio": freight_ratio,
+        "loss_dollars_total": loss_dollars_total,
+        "deep_discount_loss": deep_discount_loss,
+        "deep_discount_lines": int(over20_mask.sum()),
+        "deep_share_of_losses": deep_share,
+        "tn_sales": tn_sales,
+        "tn_loss": tn_loss,
+        "freight_cut_recovery": 0.10 * freight_total,
+    }
+
+
 def compute_scenario_sensitivity_matrix(df: pd.DataFrame) -> pd.DataFrame:
     """Pre-compute three institutional turnaround policy scenarios for Board evaluation.
 

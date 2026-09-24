@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 740 300">
+  <g fill="none" stroke="#5A3921" stroke-width="11">
+    <!-- dial: safe zone (beige, thick) then thin track -->
+    <path d="M 150 250 A 220 220 0 0 1 370 30" stroke="#E2DCD2" stroke-width="30"/>
+    <path d="M 370 30 A 220 220 0 0 1 590 250" stroke-width="11"/>
+    <!-- ticks -->
+    <path d="M 370 62 V 92 M 205 105 l 20 24 M 143 250 h 30 M 567 250 h 30 M 517 105 l -20 24" stroke-width="8"/>
+    <!-- needle pinned just left of centre -->
+    <path d="M 370 250 L 282 106" stroke="#322014" stroke-width="14"/>
+  </g>
+  <circle cx="370" cy="250" r="22" fill="#5A3921"/>
+  <!-- red deficit marker on the left of the dial -->
+  <circle cx="163" cy="206" r="16" fill="#A22727"/>
+</svg>

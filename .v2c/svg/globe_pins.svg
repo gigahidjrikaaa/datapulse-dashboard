@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 740 300">
+  <g fill="none" stroke="#5A3921" stroke-width="10">
+    <circle cx="300" cy="158" r="118" fill="#FFFFFF"/>
+    <ellipse cx="300" cy="158" rx="52" ry="118" stroke-width="8"/>
+    <path d="M 190 122 H 410 M 190 194 H 410" stroke-width="8"/>
+    <path d="M 300 40 V 276" stroke-width="8"/>
+    <!-- dotted loss route between two pins -->
+    <path d="M 292 96 C 380 60 470 70 540 130" stroke="#8A7B6B" stroke-width="7" stroke-dasharray="1 20"/>
+    <!-- baseline -->
+    <path d="M 620 268 H 700" stroke-width="9" opacity="0.55"/>
+  </g>
+  <!-- red pin (loss-maker) with pulse -->
+  <circle cx="288" cy="92" r="26" fill="#A22727" opacity="0.18" stroke="none"/>
+  <path d="M 288 66 C 272 66 260 79 260 94 C 260 114 288 134 288 134 C 288 134 316 114 316 94 C 316 79 304 66 288 66 Z"
+        fill="#A22727" stroke="#322014" stroke-width="7"/>
+  <circle cx="288" cy="92" r="9" fill="#FFFFFF" stroke="none"/>
+  <!-- brown pin (destination) -->
+  <path d="M 544 112 C 530 112 520 123 520 136 C 520 152 544 168 544 168 C 544 168 568 152 568 136 C 568 123 558 112 544 112 Z"
+        fill="#5A3921" stroke="#322014" stroke-width="7"/>
+  <circle cx="544" cy="135" r="8" fill="#FFFFFF" stroke="none"/>
+</svg>

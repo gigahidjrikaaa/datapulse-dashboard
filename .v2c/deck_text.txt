@@ -1,0 +1,268 @@
+=== Slide 1 ===
+Global Superstore · Revival Strategy
+Board of Directors briefing
+Global Superstore · Revival Strategy
+Global Superstore:
+The Revival Strategy
+From forensic diagnosis to a 6-12 month turnaround plan
+Syndicate 6
+1. Giga Hidjrika Aura Adhky (388)
+5. Nurul Aulia Rahmawati (359)
+2. Safia Aisyah Nur Savanah (364)
+6. Cindy Monica Manurung (384)
+3. Adiva Fitri Khalishah Cipta Raharja (377)
+7. Louis Alessandro Bonaparte (356)
+4. Azka Ghossani A. (357)
+Analytics Taskforce for the Chief Strategy Officer · FY2011-FY2014 transaction ledger, 51,290 order lines
+=== Slide 2 ===
+Global Superstore · Revival Strategy
+Executive summary
+Global Superstore · Revival Strategy
+1
+Sales are growing; profit is leaking through discounting and freight
+One key message for the Board
+Global Superstore does not have a growth problem. It has a margin-leakage problem: about a quarter of all order lines sell at a loss, and the loss is concentrated in deep discounts and loss-making overseas territories. Tightening price control and fixing those territories recovers roughly $1.23M of operating profit without adding a single new sale.
+The evidence in four numbers
+$2.26M → $4.30M
+Revenue over four years (+90.3%, 23.9% a year)
+11.6%
+Operating margin, four-year average (annual range: 11.0% to 11.9%)
+-$920,646
+Profit destroyed by 12,544 loss-making lines (24.5%)
++$1.23M
+Operating profit recoverable on the current ledger (+84%)
+Source: Global Superstore transaction ledger, FY2011-FY2014 (51,290 order lines). Operating profit is reported profit after cost of goods and freight. Recovery is the base-case simulation output (analytics model, this deck), about $0.31M a year on the same run-rate.
+=== Slide 3 ===
+Global Superstore · Revival Strategy
+Diagnosis · Growth
+Global Superstore · Revival Strategy
+2
+Revenue grew 90% to $4.3M and operating profit more than doubled
+Gross sales and operating profit
+$ million (bars) · $ thousand (bars), FY2011-FY2014
+Gross sales ($M) & Operating profit ($M)
+Year-on-year growth: +18.5%, +27.2%, +26.3%
+Growth is genuine and volume-driven
+Revenue rose every year, from $2.26M in FY2011 to $4.30M in FY2014 (+90.3%).
+Operating profit rose every year too, from $249K to $504K (+102.5%).
+Order volume grew from 4,440 to 8,531 orders; average order value stayed flat at about $505.
+Growth came from more customers and orders, not from raising prices.
+Source: Global Superstore transaction ledger, FY2011-FY2014. Operating profit is reported profit after cost of goods and freight.
+Order Volume: 4,440 → 8,531 (+92.1%)  |  Avg Order Value: ~$505 (flat, -0.9%)
+=== Slide 4 ===
+Global Superstore · Revival Strategy
+Diagnosis · Margin
+Global Superstore · Revival Strategy
+3
+Operating margin stayed near 11% while sales climbed 90%
+Gross sales and operating margin
+$ million (top) · margin % (bottom)
+Gross sales (top)
+Operating margin (bottom)
+Volume was rewarded, margin was not
+Revenue compounded at 23.9% a year, but operating margin moved only from 11.0% to 11.7%.
+Profit grew almost exactly in line with revenue, so every extra dollar of sales carried the same thin margin.
+The company measures and pays for gross volume, so sales teams had no reason to defend price.
+Margin, not revenue, is the number the Board should track from here.
+Source: Global Superstore transaction ledger, FY2011-FY2014. Operating margin = profit / gross sales.
+=== Slide 5 ===
+Global Superstore · Revival Strategy
+Diagnosis · Profit leakage
+Global Superstore · Revival Strategy
+4
+One in four order lines loses money and drains $921K of earned profit
+From earned profit to reported profit
+$ million, FY2011-FY2014 cumulative
+Earned
+Lost
+Reported
+What the bridge shows
+Profitable lines earn $2.39M before the losses; that core is strong on its own.
+12,544 lines (24.5% of all lines) were priced at a loss and removed $0.92M of that profit.
+Reported operating profit of $1.47M understates how profitable the healthy core really is.
+The loss is a pricing and cost-to-serve outcome, not a weak market.
+Source: Global Superstore transaction ledger, FY2011-FY2014. A line is loss-making where reported profit, net of cost of goods and freight, is negative.
+=== Slide 6 ===
+Global Superstore · Revival Strategy
+Diagnosis · Geography
+Global Superstore · Revival Strategy
+5
+Losses concentrate in four countries, led by Turkey and Nigeria
+Operating profit by country
+$ thousand, FY2011-FY2014 cumulative
+A company-policy loss, not a market loss
+Turkey (-$98K) and Nigeria (-$81K) alone account for $179K of the deficit.
+29 of 147 countries are net-negative; the top four carry 56% of that deficit.
+Both were sold at extreme average discounts: 60% in Turkey and 70% in Nigeria.
+The EMEA market (Europe, Middle East and Africa) runs a 5.4% margin, well below 12-13% in the other markets.
+No discount or freight cost was charged back to these territories, so their losses were absorbed centrally.
+Source: Global Superstore transaction ledger, FY2011-FY2014. Discount is the order-line average; country profit is net of all lines in that country.
+=== Slide 7 ===
+Global Superstore · Revival Strategy
+Diagnosis · Product
+Global Superstore · Revival Strategy
+6
+Tables is the only one of 17 sub-categories that loses money
+Operating profit by sub-category
+$ thousand, FY2011-FY2014 cumulative
+Loss-making
+Profitable
+A pricing and freight problem, not demand
+Tables lost $64.1K on $757K of sales, a -8.5% margin, and is the only deficit sub-category.
+It carried a 29.1% average discount plus the highest freight per unit of any line.
+The rest of the portfolio is profitable: Copiers +$259K, Phones +$217K, Bookcases +$162K.
+Furniture overall runs a 6.9% margin against 14.0% for Technology.
+Source: Global Superstore transaction ledger, FY2011-FY2014. All 17 sub-categories, ranked by operating profit.
+=== Slide 8 ===
+Global Superstore · Revival Strategy
+Diagnosis · Discounting
+Global Superstore · Revival Strategy
+7
+Order economics invert once the discount passes 20%
+Operating margin by discount band
+margin %, all order lines FY2011-FY2014
+20% discount line
+The 20% break-even
+Below 20% every line is profitable: margin runs from +25.3% at no discount to +9.9% at 10-20%.
+Above 20% every band is loss-making, sliding from -5.5% to -111%.
+11,328 lines (22.1%) were priced above the 20% line and lost $814,682 in total.
+Gross margin cannot cover concessions deeper than 20%, so the cap follows from the data.
+Source: Global Superstore transaction ledger, FY2011-FY2014. Bands follow the discount distribution in the ledger.
+Profitable (≤20% discount)
+Operating deficit (>20% discount)
+=== Slide 9 ===
+Global Superstore · Revival Strategy
+Diagnosis · Cost to serve
+Global Superstore · Revival Strategy
+8
+Expedited orders lose up to 24% of sales value to freight
+Freight cost as a share of sales
+% of invoiced sales
+Order priority
+Ship mode
+Cost to serve is never charged back
+Critical-priority orders spend 23.8% of their sales value on freight; Same Day spends 17.4%.
+Standard Class spends only 8.1%, a third of the Critical rate.
+Company-wide freight is 10.7% of sales and is not passed through on bulky or expedited lines.
+Deep discounts and heavy freight co-occur on the same orders, so those orders struggle to recover.
+Source: Global Superstore transaction ledger, FY2011-FY2014. Freight ratio = shipping cost / gross sales.
+=== Slide 10 ===
+Global Superstore · Revival Strategy
+Diagnosis · Root causes
+Global Superstore · Revival Strategy
+9
+Deep discounts, loss-making territories and bulky Tables drive the $921K leak
+Root cause | Evidence in the data | Where it concentrates | Profit recovered by the fix
+Uncontrolled discounting | 22.1% of lines were priced above a 20% discount
+Margin inverts at the 20% line, from +9.9% to -5.5% | Every market; worst in EMEA and LATAM | +$1.03M
+Loss-making overseas territories | Turkey -$98K and Nigeria -$81K at 60-70% average discounts
+EMEA margin 5.4% against 12-13% elsewhere | Turkey, Nigeria, Netherlands | +$0.18M
+Bulk freight on Tables | Tables -$64K at a 29.1% average discount
+Expedited freight runs at 17-24% of sales | Tables within Furniture | +$0.05M
+Recovery exceeds the reported $921K loss because capping discounts at 20% returns those lines to a positive margin (+9.9%), rather than just break-even.
+Source: base-case simulation on the FY2011-FY2014 ledger, before the churn allowance. Figures are an analytics estimate, not a forecast.
+=== Slide 11 ===
+Global Superstore · Revival Strategy
+Turnaround · Plan
+Global Superstore · Revival Strategy
+10
+$1.23M of operating profit is recoverable on the full-ledger basis
+Initiative | Owner | Timing | KPI to track | Expected impact
+1. Pricing governance: cap discounts at 20% | Chief Commercial Officer | Months 1-2 | Orders above 15% discount: below 2%
+Average discount: below 12% | +$1.03M
+2. Restructure loss-making territories to third-party logistics (3PL) | VP Global Supply Chain | Months 3-4 | Country operating margin: break-even within 90 days
+Freight: below 12% of sales | +$0.18M
+3. Tables freight pass-through and repricing | Head of Merchandising | Months 5-7 | Tables operating margin: above +10%
+Dimensional freight recovery: 100% | +$0.05M
+Source: base-case simulation on the FY2011-FY2014 ledger; levers are gross and the $1.23M headline is net of a churn allowance, about $0.31M a year on the same run-rate. Modelling estimate, not a forecast.
+=== Slide 12 ===
+Global Superstore · Revival Strategy
+Turnaround · Financial impact
+Global Superstore · Revival Strategy
+11
+The base case lifts operating profit 84% and margin to 19.9%
+Operating profit bridge, baseline to projected
+$ million, FY2011-FY2014 ledger basis
+$1.47M
+Baseline
++$1.03M
+Discount cap
++$0.18M
+Territory 3PL
++$0.05M
+Freight
+-$0.02M
+Churn (5%)
+$2.70M
+Projected
+Baseline
+Recovery levers
+Churn allowance
+Projected
+The recovery path
+Baseline operating profit on the four-year ledger is $1.467M at an 11.6% blended margin.
+The 20% discount cap contributes +$1.03M, the largest single lever.
+Territory restructuring adds +$0.18M and Tables freight +$0.05M.
+After the churn allowance the company lands at $2.70M and a 19.9% blended margin, about $0.31M a year higher.
+Source: analytics simulation on the FY2011-FY2014 ledger (base case: 20% cap, $15 per table unit surcharge, full 3PL transition, 5% churn allowance). Modelling estimate, not a forecast.
+=== Slide 13 ===
+Global Superstore · Revival Strategy
+Turnaround · Sensitivity
+Global Superstore · Revival Strategy
+12
+The recommendation holds under conservative and aggressive assumptions
+Scenario | Discount cap | Tables surcharge | Churn allowance | Projected profit | Margin | Uplift
+Baseline (status quo) | No cap | $0 | 0.0% | $1.467M | 11.6% | n/a
+Conservative | 25% | $0 | 7.0% | $2.373M | 17.8% | +$0.91M
+Base case (recommended) | 20% | $15 | 5.0% | $2.701M | 19.9% | +$1.23M
+Aggressive | 15% | $25 | 3.0% | $2.997M | 21.7% | +$1.53M
+Source: analytics simulation on the FY2011-FY2014 ledger. Highlighted row is the recommended plan; all figures are on the four-year ledger basis and are modelling estimates, not forecasts.
+=== Slide 14 ===
+Global Superstore · Revival Strategy
+Turnaround · Roadmap
+Global Superstore · Revival Strategy
+13
+Execution runs from immediate price controls to a permanent margin committee
+Four-phase implementation
+months 1-12
+1  Commercial control
+Lock a 20% discount ceiling into order entry and move sales pay from volume to margin contribution.
+Months 1-2 · Target: no order above 20% without approval
+2  Territory restructuring
+Move Turkey and Nigeria to local master distributors and bonded third-party logistics, ending cross-border air freight.
+Months 3-4 · Target: regional loss cut 70%
+3  Freight and Tables repricing
+Add dimensional freight surcharges on bulky lines and reprice the Tables portfolio.
+Months 5-7 · Target: Tables at break-even
+4  Institutional review
+Run quarterly margin audits across all territories and stand up a permanent margin committee.
+Months 8-12 · Target: margin above 15.5%
+Source: turnaround plan derived from the FY2011-FY2014 diagnosis. Phase 1 begins on Board approval.
+=== Slide 15 ===
+Global Superstore · Revival Strategy
+Board decision
+Global Superstore · Revival Strategy
+14
+The Board must approve the 20% discount cap and 3PL restructuring this quarter
+Three decisions requested
+Approve the 20% discount cap in order entry, with VP sign-off for discounts between 15% and 20% and a hard block above 20%.
+Authorise the 3PL transition for Turkey and Nigeria to remove the cross-border loss.
+Charter a margin committee chaired by the CFO to review discount leakage and Tables margin every quarter.
+Decision today, first savings inside 90 days
+Phase 1 needs no new capital and no new systems beyond an order-entry rule.
+What the Board gets in return
++$1.23M
+Operating profit, full-ledger basis (+84% on $1.467M)
+19.9%
+Operating margin, from 11.6% and above the 15.5% target
+$0
+New capital spend required; Phase 1 is an order-entry rule
+Source: base-case simulation on the FY2011-FY2014 ledger. Returns are on the four-year ledger basis and depend on the 5% churn assumption holding. Modelling estimate, not a forecast.
+=== Slide 16 ===
+Global Superstore
+Revival Strategy
+“Beware of little expenses; a small leak will sink a great ship.”
+Benjamin Franklin
+Prepared for the Board of Directors
+Global Superstore · Revival Strategy
+Source data: Global Superstore transaction ledger, FY2011-FY2014 (51,290 order lines). Deck produced with consulting-pptx-skill (github.com/carnot-tech/consulting-pptx-skill).
