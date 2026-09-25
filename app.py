@@ -24,6 +24,9 @@ def main() -> None:
         initial_sidebar_state="expanded",
     )
 
+    # Syndicate 6 branding
+    st.logo("assets/syndicate6_logo.png", icon_image="assets/syndicate6_logo.png")
+
     # Sidebar Header & Branding
     st.sidebar.title(APP_TITLE)
     st.sidebar.caption(f"{APP_SUBTITLE} | Version {APP_VERSION}")

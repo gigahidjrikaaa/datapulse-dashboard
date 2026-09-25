@@ -9,6 +9,8 @@ Senior-analyst presentation pattern (pyramid principle):
 
 import streamlit as st
 
+from src.components.narratives import sanitize_markdown_text
+
 STORY_CHAPTERS = [
     {"key": "answer", "label": "The Answer First", "question": "What is the one thing the Board must know?"},
     {"key": "ch1", "label": "Ch. 1 - The Verdict", "question": "Is Global Superstore really underperforming?"},
@@ -38,7 +40,10 @@ def render_story_ribbon(current_key: str, answer: str, next_line: str | None = N
             chips.append(f"**{ch['label']}**")
         else:
             chips.append(ch["label"])
-    st.caption("  →  ".join(chips))
-    st.markdown(f"**Question:** {STORY_CHAPTERS[cur]['question']}  \n**Short answer:** {answer}")
+    st.caption(sanitize_markdown_text("  →  ".join(chips)))
+    st.markdown(
+        f"**Question:** {STORY_CHAPTERS[cur]['question']}  \n"
+        f"**Short answer:** {sanitize_markdown_text(answer)}"
+    )
     if next_line:
-        st.caption(f"Next → {next_line}")
+        st.caption(sanitize_markdown_text(f"Next → {next_line}"))

@@ -359,18 +359,59 @@ def test_deck_presenter_notes():
     from pptx import Presentation
 
     prs = Presentation(os.path.join("presentation", "board_deck.pptx"))
-    assert len(prs.slides) == 17
+    assert len(prs.slides) == 18
 
     total_seconds = 0.0
     for i, slide in enumerate(prs.slides, 1):
         assert slide.has_notes_slide, f"slide {i} has no notes slide"
         text = slide.notes_slide.notes_text_frame.text
-        m = re.match(r"\[(\d+):(\d+) - Slide \d+ of 17\]", text)
+        m = re.match(r"\[(\d+):(\d+) - Slide \d+ of 18\]", text)
         assert m, f"slide {i} notes missing timing header: {text[:40]!r}"
         assert "SAY:" in text, f"slide {i} notes missing talk track"
         total_seconds += int(m.group(1)) * 60 + int(m.group(2))
 
     assert 9.0 <= total_seconds / 60.0 <= 11.0, f"briefing length {total_seconds / 60.0:.2f} min off budget"
+
+
+def test_slide_what_happens_next_and_cliff_stats():
+    """Deck: the what-happens-next slide exists and the cliff slide carries the new statistical evidence."""
+    from pptx import Presentation
+
+    prs = Presentation(os.path.join("presentation", "board_deck.pptx"))
+    assert len(prs.slides) == 18
+
+    texts = []
+    for slide in prs.slides:
+        text = ""
+        for shape in slide.shapes:
+            if shape.has_text_frame:
+                text += " " + shape.text_frame.text
+            if shape.has_table:
+                for row in shape.table.rows:
+                    for cell in row.cells:
+                        text += " " + cell.text
+        texts.append(text)
+
+    # New slide: forecast, measured cap effect, churn lift
+    assert any("What Happens Next" in t and "5.28M" in t for t in texts)
+    assert any("101% of volume kept" in t for t in texts)
+    assert any("2.9x the average rate" in t for t in texts)
+    assert any("AUC 0.80" in t for t in texts)
+
+    # Cliff slide: distribution + correlation evidence
+    cliff = next(t for t in texts if "Order economics invert" in t)
+    assert "Past 50% off, 100% of orders lose money." in cliff
+    assert "-0.60 (Pearson: -0.32)" in cliff
+
+    # Page numbers stayed sequential after the insertion
+    numbers = []
+    for slide in prs.slides:
+        for shape in slide.shapes:
+            if shape.name == "TextBox 6" and shape.has_text_frame:
+                text = shape.text_frame.text.strip()
+                if text.isdigit():
+                    numbers.append(text)
+    assert numbers == [str(i) for i in range(1, 17)]
 
 
 

@@ -11,7 +11,11 @@ from src.components.charts import (
     create_ebitda_bridge_chart,
 )
 from src.components.metrics import render_kpi_card
-from src.components.narratives import render_chart_story_card, render_data_dictionary_expander
+from src.components.narratives import (
+    render_chart_story_card,
+    render_data_dictionary_expander,
+    sanitize_markdown_text,
+)
 from src.components.predictive_charts import create_policy_profit_surface_chart
 from src.services.analyzer import (
     compute_alternatives_assessment,
@@ -37,12 +41,14 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
     """Render Chapter 4: the turnaround strategy, simulator, optimizer, and board deck."""
     render_story_ribbon(
         "ch4",
-        "Three actions, each mapped to a root cause, recover $1.23M: cap discounts at 20% (+$1.03M), move "
-        "Turkey and Nigeria to local distribution partners (+$0.18M), and charge for Tables freight (+$0.05M). "
-        "Each comes with an owner, a deadline, a KPI, and a number backed by the data.",
+        sanitize_markdown_text(
+            "Three actions, each mapped to a root cause, recover $1.23M: cap discounts at 20% (+$1.03M), move "
+            "Turkey and Nigeria to local distribution partners (+$0.18M), and charge for Tables freight (+$0.05M). "
+            "Each comes with an owner, a deadline, a KPI, and a number backed by the data."
+        ),
         "Ch. 5 - What Happens Next: the FY2015 outlook and the customers to save",
     )
-    st.markdown("## Chapter 4 - The Fix: Three Actions That Recover $1.23M")
+    st.markdown("## Chapter 4 - The Fix: Three Actions That Recover \\$1.23M")
     st.markdown(
         "**What this chapter shows**: the root causes are policy, so the fix is policy. Below: the interactive "
         "simulator, a policy optimizer built on the measured demand response, the alternatives we tested and "
@@ -52,7 +58,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
 
     # Core Business Problem & Key Questions
     with st.container(border=True):
-        st.markdown("### The Core Question: How Do We Recapture Over $1.2M in Profit?")
+        st.markdown("### The Core Question: How Do We Recapture Over \\$1.2M in Profit?")
         st.markdown(
             """
             **What leadership needs to decide**:
@@ -303,10 +309,12 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                 width="stretch",
             )
             st.caption(
-                f"Why 'raise list prices, allow deeper discounts' fails: the leak follows discount depth, not list "
-                f"price. The bands above the 20% line destroy ${alts['deep_discount_loss']:,.0f} of net profit - "
-                f"{alts['deep_share_of_losses'] * 100.0:.1f}% of all loss dollars - so a deeper cap re-opens exactly "
-                f"these bands."
+                sanitize_markdown_text(
+                    f"Why 'raise list prices, allow deeper discounts' fails: the leak follows discount depth, not list "
+                    f"price. The bands above the 20% line destroy ${alts['deep_discount_loss']:,.0f} of net profit - "
+                    f"{alts['deep_share_of_losses'] * 100.0:.1f}% of all loss dollars - so a deeper cap re-opens exactly "
+                    f"these bands."
+                )
             )
         with e2:
             st.plotly_chart(
@@ -314,9 +322,11 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                 width="stretch",
             )
             st.caption(
-                f"Why 'exit Turkey & Nigeria' fails: walking away forfeits ${alts['tn_sales']:,.0f} of revenue and two "
-                f"developing markets, while 3PL restructuring removes the identical ${alts['tn_loss']:,.0f} loss and keeps "
-                f"every sale."
+                sanitize_markdown_text(
+                    f"Why 'exit Turkey & Nigeria' fails: walking away forfeits ${alts['tn_sales']:,.0f} of revenue and two "
+                    f"developing markets, while 3PL restructuring removes the identical ${alts['tn_loss']:,.0f} loss and keeps "
+                    f"every sale."
+                )
             )
         with e3:
             cut_pct_of_leak = (
@@ -331,10 +341,12 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                 width="stretch",
             )
             st.caption(
-                f"Why 'renegotiate carrier rates company-wide' is only a support lever: freight totals "
-                f"${alts['freight_total']:,.0f} ({alts['freight_ratio'] * 100.0:.1f}% of sales), so a realistic 10% cut "
-                f"returns ~${alts['freight_cut_recovery']:,.0f} after 12+ months of contracting - just "
-                f"{cut_pct_of_leak:.0f}% of the ${alts['deep_discount_loss']:,.0f} discount leak it never touches."
+                sanitize_markdown_text(
+                    f"Why 'renegotiate carrier rates company-wide' is only a support lever: freight totals "
+                    f"${alts['freight_total']:,.0f} ({alts['freight_ratio'] * 100.0:.1f}% of sales), so a realistic 10% cut "
+                    f"returns ~${alts['freight_cut_recovery']:,.0f} after 12+ months of contracting - just "
+                    f"{cut_pct_of_leak:.0f}% of the ${alts['deep_discount_loss']:,.0f} discount leak it never touches."
+                )
             )
 
         # Prescriptive optimizer: search the policy space with the measured demand response
@@ -547,7 +559,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                 #### Slide 2: Multi-Year Revenue Audit (Refuting Market Rumors)
                 * **Slide Title**: *Top-Line Performance: Revenue Expanded +90.3% to \$4.30M; Operating Profit Lifted to \$504K*
                 * **Visual**: Multi-year revenue and operating profit progression chart (FY2011–FY2014) with annual growth indicators (+18.5%, +27.2%, +26.3% YoY).
-                * **Data Evidence**: Sales scaled from \$2.26M to \$4.30M (CAGR: 23.9%); operating profit expanded from \$249K to \$504K; order count scaled from 4,440 to 8,531 orders with stable AOV (~$505).
+                * **Data Evidence**: Sales scaled from \$2.26M to \$4.30M (CAGR: 23.9%); operating profit expanded from \$249K to \$504K; order count scaled from 4,440 to 8,531 orders with stable AOV (~\$505).
                 * **Presenter Notes (1.0 minute)**:
                   > *"Over the past four fiscal years, Global Superstore added more than \$2.0 million in top-line revenue, expanding annual order volume from 4,440 to 8,531 orders. However, consolidated operating margin remained constrained at 11.6% (annual range: 11.0% to 11.9%), and scale never turned into better margins."*
 

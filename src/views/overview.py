@@ -27,8 +27,8 @@ def render_overview_view(df: pd.DataFrame) -> None:
     )
     st.markdown("## Chapter 1 - The Verdict: Sales Doubled, Margin Didn't Move")
     st.markdown(
-        "**What this chapter shows**: revenue rose from \$2.26M to \$4.30M and operating profit from \$249K to "
-        "\$504K between 2011 and 2014, yet the margin band never left 11-12%. The year-by-year numbers below "
+        "**What this chapter shows**: revenue rose from \\$2.26M to \\$4.30M and operating profit from \\$249K to "
+        "\\$504K between 2011 and 2014, yet the margin band never left 11-12%. The year-by-year numbers below "
         "separate the growth story from the profitability story."
     )
     st.markdown("---")
