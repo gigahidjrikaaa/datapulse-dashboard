@@ -9,8 +9,8 @@ DATA_DIR: Final[Path] = BASE_DIR / "data"
 DEFAULT_DATASET_PATH: Final[Path] = DATA_DIR / "Global_Superstore2.csv"
 
 # Dashboard Metadata
-APP_TITLE: Final[str] = "Global Superstore: Strategic Performance Evaluation & Turnaround Plan"
-APP_SUBTITLE: Final[str] = "Board of Directors Diagnostic: Commercial Governance, Unit Economics & Margin Optimization"
+APP_TITLE: Final[str] = "Global Superstore: The Revival Strategy"
+APP_SUBTITLE: Final[str] = "Board of Directors Diagnostic - Sales, Profit, and Pricing (2011-2014)"
 APP_ICON: Final[Optional[str]] = None
 APP_LAYOUT: Final[str] = "wide"
 APP_VERSION: Final[str] = "2.2.0"

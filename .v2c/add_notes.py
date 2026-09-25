@@ -4,7 +4,7 @@ import copy
 from pptx import Presentation
 
 SRC = "presentation/board_deck.pptx"
-BACKUP = ".v2c/board_deck_backup_pre_notes.pptx"
+BACKUP = ".v2c/board_deck_backup_pre_notes_v2.pptx"
 MD = "presentation/board_deck_presenter_notes.md"
 
 NOTES = [
@@ -12,8 +12,8 @@ NOTES = [
     ("0:30", """SAY: "Good morning. Four years of transaction data - 51,290 order lines - and one finding: Global Superstore does not have a growth problem. It has a pricing problem. In the next ten minutes we will show you exactly where the profit leaks, and a three-lever plan that recovers $1.23M without a dollar of new capital."
 DELIVERY: One line of team intro - Syndicate 6, seven analysts - then move. Do not read the roster aloud.
 TRANSITION: "Let us start with the headline number.\""""),
-    # 2 Executive summary (1:00)
-    ("1:00", """SAY: Four numbers tell the whole story. Revenue nearly doubled, $2.26M to $4.30M, up 90.3% - so the rumors of stagnation are false. Yet margin is stuck at 11.6%. Why? One in four order lines sells at a loss, destroying $920,646. The fix is not more sales - it is three policy levers that recover $1.23M, an 84% uplift, with zero new capital.
+    # 2 Executive summary (0:45)
+    ("0:45", """SAY: Four numbers tell the whole story. Revenue nearly doubled, $2.26M to $4.30M, up 90.3% - so the rumors of stagnation are false. Yet margin is stuck at 11.6%. Why? One in four order lines sells at a loss, destroying $920,646. The fix is not more sales - it is three policy levers that recover $1.23M, an 84% uplift, with zero new capital.
 DELIVERY: Point at each of the four cards as you name it. Pause after "$920,646".
 IF ASKED "is $1.23M realistic?": It is the base case of our simulator; even the conservative case returns +$0.91M - slide 14 covers the stress test.
 TRANSITION: "First, the diagnosis. Is the growth real?\""""),
@@ -56,11 +56,16 @@ TRANSITION: "Net of churn, here is the money.\""""),
     ("0:30", """SAY: From $1.47M baseline: plus $1.03M from the cap, plus $0.18M from 3PL, plus $0.05M freight, minus $0.02M for a 5% churn allowance - landing at $2.70M projected. Margin moves from 11.6% to 19.9%. That is about $0.31M a year on the same run-rate.
 IF ASKED about the 5% churn: It is a deliberate penalty for price-sensitive buyers who walk. The stress test on the next slide shows we are robust even at 7%.
 TRANSITION: "And the plan holds under stress.\""""),
-    # 14 Sensitivity (0:30)
-    ("0:30", """SAY: The conservative case - a 25% cap, no surcharge, 7% churn, half the 3PL transition - still lifts profit +$0.91M to $2.37M. The aggressive case reaches $3.0M. The recommendation does not depend on optimism; every scenario beats the status quo decisively.
+    # 14 Sensitivity (0:15)
+    ("0:15", """SAY: The conservative case - a 25% cap, no surcharge, 7% churn, half the 3PL transition - still lifts profit +$0.91M to $2.37M. The aggressive case reaches $3.0M. One sentence: the recommendation does not depend on optimism.
 TRANSITION: "Execution is a four-phase, twelve-month program.\""""),
     # 15 Roadmap (0:30)
     ("0:30", """SAY: Phase 1, months 1-2, is an order-entry rule - no capital, no new systems. Phase 2, months 3-4, cuts the regional loss by 70%. Phase 3, months 5-7, brings Tables back to break-even. Phase 4, months 8-12, makes it permanent: quarterly margin audits and a standing margin committee, with company margin above 15.5% as the exit target.
+TRANSITION: "So what does the future look like if we execute?\""""),
+    # 16 What happens next (0:30)
+    ("0:30", """SAY: Before the decision - what happens next. Three answers, all model-based and all tested on data the models never saw. One: if trends hold, FY2015 revenue lands at $5.3M, +23%. Two: capping discounts at 20% keeps essentially all volume - measured from our own ledger, not assumed. Three: the riskiest tenth of our customers lapse at nearly three times the average rate, and we can name them.
+DELIVERY: "Volume-neutral" is the phrase to land - the cap costs almost no demand.
+IF ASKED "how reliable are these numbers?": the forecast's error on unseen data was 10%; the churn model separates leavers from stayers at 0.80 AUC.
 TRANSITION: "Which brings us to the three approvals we need today.\""""),
     # 16 Board decision (0:30)
     ("0:30", """SAY: Three decisions. Approve the 20% discount cap with VP sign-off between 15% and 20% and a hard block above 20%. Authorize the 3PL transition for Turkey and Nigeria. Charter a margin committee chaired by the CFO. Zero new capital; first savings inside 90 days; +$1.23M and a 19.9% margin on the full ledger.

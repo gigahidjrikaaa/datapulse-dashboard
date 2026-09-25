@@ -362,7 +362,7 @@ def create_territory_quadrant_chart(quadrant_df: pd.DataFrame) -> go.Figure:
 
 
 def create_ebitda_bridge_chart(bridge_components: dict[str, float]) -> go.Figure:
-    """Create a Plotly Waterfall chart illustrating the EBITDA Turnaround Bridge.
+    """Create a Plotly Waterfall chart illustrating the profit turnaround bridge.
 
     Args:
         bridge_components: Dictionary of waterfall labels and dollar values.
@@ -381,7 +381,7 @@ def create_ebitda_bridge_chart(bridge_components: dict[str, float]) -> go.Figure
 
     fig = go.Figure(
         go.Waterfall(
-            name="EBITDA Bridge",
+            name="Profit Bridge",
             orientation="v",
             measure=measures,
             x=labels,
@@ -397,7 +397,7 @@ def create_ebitda_bridge_chart(bridge_components: dict[str, float]) -> go.Figure
 
     fig.update_layout(
         template=CHART_TEMPLATE,
-        title="Executive EBITDA Recovery Bridge: Baseline to Projected Operating Profit",
+        title="Profit Recovery Bridge: Baseline to Projected",
         xaxis_title="Turnaround Strategic Driver",
         yaxis_title="Net Operating Profit ($ USD)",
         margin=dict(l=40, r=40, t=60, b=40),
@@ -924,5 +924,94 @@ def create_segment_performance_chart(segment_df: pd.DataFrame) -> go.Figure:
         ),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         margin=dict(l=40, r=50, t=60, b=40),
+    )
+    return fig
+
+
+def create_margin_boxplot_chart(dist_rows: list[dict]) -> go.Figure:
+    """Box plot of order-level profit margin per discount band, from precomputed quartiles.
+
+    Shows the full spread of outcomes in each band: below the cap the boxes stay positive,
+    past it they sink below zero, and in the >50% band every order loses money.
+
+    Args:
+        dist_rows: Output of analyze_margin_distribution (median, quartiles, fences per band).
+
+    Returns:
+        Plotly Figure.
+    """
+    below_cap = {"0%", "0.1-10%", "10.1-20%"}
+    fig = go.Figure()
+    lo_all, hi_all = 0.0, 0.0
+    for row in dist_rows:
+        fig.add_box(
+            x=[f"{row['band']}<br>{row['loss_share_pct']:.0f}% lose money"],
+            q1=[row["q1"]],
+            median=[row["median"]],
+            q3=[row["q3"]],
+            lowerfence=[row["whisker_lo"]],
+            upperfence=[row["whisker_hi"]],
+            marker_color=SUCCESS_COLOR if row["band"] in below_cap else DANGER_COLOR,
+            width=0.6,
+            showlegend=False,
+        )
+        lo_all = min(lo_all, row["whisker_lo"])
+        hi_all = max(hi_all, row["whisker_hi"])
+    fig.add_hline(y=0, line_color="#94A3B8")
+    pad = (hi_all - lo_all) * 0.08
+    fig.update_layout(
+        template=CHART_TEMPLATE,
+        title="Order Profit Margin Distribution by Discount Band (box = middle 50% of orders)",
+        xaxis_title="Discount band",
+        yaxis_title="Order profit margin (%)",
+        yaxis=dict(range=[lo_all - pad, hi_all + pad]),
+        margin=dict(l=40, r=40, t=60, b=40),
+    )
+    return fig
+
+
+def create_correlation_heatmap_chart(corr: dict) -> go.Figure:
+    """Side-by-side Pearson and Spearman correlation heatmaps of the five numeric measures.
+
+    Pearson reads straight-line association only; the gap between the two coefficients for
+    Discount vs Profit is evidence that the damage is a cliff, not a straight line.
+
+    Args:
+        corr: Output of analyze_measure_correlations (pearson and spearman DataFrames).
+
+    Returns:
+        Plotly Figure.
+    """
+    from plotly.subplots import make_subplots
+
+    mats = [("Pearson (straight-line association)", corr["pearson"]), ("Spearman (rank-based)", corr["spearman"])]
+    fig = make_subplots(
+        rows=1,
+        cols=2,
+        subplot_titles=[title for title, _ in mats],
+        horizontal_spacing=0.18,
+    )
+    for i, (_, mat) in enumerate(mats, start=1):
+        fig.add_trace(
+            go.Heatmap(
+                z=mat.values,
+                x=list(mat.columns),
+                y=list(mat.index),
+                zmin=-1,
+                zmax=1,
+                colorscale="RdBu",
+                text=mat.round(2).values,
+                texttemplate="%{text}",
+                showscale=(i == 2),
+                colorbar=dict(title="r", thickness=12),
+            ),
+            row=1,
+            col=i,
+        )
+    fig.update_yaxes(autorange="reversed")
+    fig.update_layout(
+        template=CHART_TEMPLATE,
+        title="How Strongly Each Measure Moves With the Others (-1 = opposite, +1 = together)",
+        margin=dict(l=40, r=60, t=60, b=40),
     )
     return fig

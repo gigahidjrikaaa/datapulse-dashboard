@@ -21,17 +21,15 @@ def render_overview_view(df: pd.DataFrame) -> None:
     """Render Chapter 1: the verdict on whether Global Superstore is underperforming."""
     render_story_ribbon(
         "ch1",
-        "The rumours are wrong about the disease. Sales grew +90% and profit +102% - nothing is declining. "
-        "But margin never moved off ~11.6%, so every extra dollar of growth arrived at the same thin profit. "
-        "This is not a growth problem; it is a leak that scales with every sale.",
+        "The rumours say the company is dying. The data says otherwise: sales grew +90% and profit +102% from "
+        "2011 to 2014. The real problem is margin, stuck near 11.6% all four years.",
         "Ch. 2 - Where It Leaks: Four Countries, One Product, One Market",
     )
     st.markdown("## Chapter 1 - The Verdict: Sales Doubled, Margin Didn't Move")
     st.markdown(
-        "**The claim this chapter defends**: between 2011 and 2014 revenue rose from \$2.26M to \$4.30M and "
-        "operating profit from \$249K to \$504K, yet the margin band never left 11-12%. Below is the year-by-year "
-        "evidence that separates the growth story from the profitability story - and shows the underperformance "
-        "is concentrated, not general."
+        "**What this chapter shows**: revenue rose from \$2.26M to \$4.30M and operating profit from \$249K to "
+        "\$504K between 2011 and 2014, yet the margin band never left 11-12%. The year-by-year numbers below "
+        "separate the growth story from the profitability story."
     )
     st.markdown("---")
 
@@ -41,7 +39,7 @@ def render_overview_view(df: pd.DataFrame) -> None:
         st.markdown(
             """
             **What we're investigating**:
-            There have been rumors that Global Superstore is losing steam and running out of steam financially. 
+            There have been rumors that Global Superstore is losing money and running out of steam. 
             To test whether that's true, we looked at all 51,290 orders between 2011 and 2014 to answer three practical questions:
 
             1. **Are sales actually dropping, or is revenue growing?**

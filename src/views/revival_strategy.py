@@ -18,6 +18,7 @@ from src.services.analyzer import (
     compute_scenario_sensitivity_matrix,
     simulate_turnaround_impact,
 )
+from src.components.story import render_story_ribbon
 from src.services.prescriptive import best_cap_by_market, optimize_turnaround_policy
 
 
@@ -36,16 +37,16 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
     """Render Chapter 4: the turnaround strategy, simulator, optimizer, and board deck."""
     render_story_ribbon(
         "ch4",
-        "Three levers, each mapped to a root cause, recover $1.23M: cap discounts at 20% (+$1.03M), restructure "
-        "Turkey & Nigeria onto 3PL (+$0.18M), and bill Tables freight (+$0.05M) - with owners, timelines and "
-        "KPIs, and demand effects measured from the ledger rather than assumed.",
+        "Three actions, each mapped to a root cause, recover $1.23M: cap discounts at 20% (+$1.03M), move "
+        "Turkey and Nigeria to local distribution partners (+$0.18M), and charge for Tables freight (+$0.05M). "
+        "Each comes with an owner, a deadline, a KPI, and a number backed by the data.",
         "Ch. 5 - What Happens Next: the FY2015 outlook and the customers to save",
     )
-    st.markdown("## Chapter 4 - The Fix: Three Levers That Recover $1.23M")
+    st.markdown("## Chapter 4 - The Fix: Three Actions That Recover $1.23M")
     st.markdown(
-        "**The claim this chapter defends**: the root causes are policy, so the fix is policy. Below: the "
-        "interactive simulator, the measured-demand policy optimizer, the alternatives we tested and rejected, "
-        "and the three priority actions - each with an owner, a timeline, a KPI, and an expected impact."
+        "**What this chapter shows**: the root causes are policy, so the fix is policy. Below: the interactive "
+        "simulator, a policy optimizer built on the measured demand response, the alternatives we tested and "
+        "rejected, and the three priority actions - each with an owner, a timeline, a KPI, and an expected impact."
     )
     st.markdown("---")
 
@@ -134,7 +135,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
             )
         with m2:
             render_kpi_card(
-                title="Simulated Operating EBITDA",
+                title="Projected Operating Profit",
                 value=f"${sim_results['projected_profit']:,.0f}",
                 sub_value=f"Simulated Margin: {sim_results['projected_margin']:.2f}%",
             )
@@ -146,7 +147,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                 else 0.0
             )
             render_kpi_card(
-                title="Net EBITDA Recovery",
+                title="Profit Recovery",
                 value=f"+${uplift:,.0f}" if uplift >= 0 else f"-${abs(uplift):,.0f}",
                 sub_value=f"{pct_uplift:+.1f}% vs Baseline",
             )
@@ -238,21 +239,21 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
             scenario_matrix.style.format(
                 {
                     "Repriced Orders": "{:,}",
-                    "Projected Operating EBITDA": "${:,.2f}",
-                    "Net EBITDA Uplift": "+${:,.2f}",
-                    "EBITDA Uplift (%)": "{:+.1f}%",
+                    "Projected Profit": "${:,.2f}",
+                    "Profit Uplift": "+${:,.2f}",
+                    "Uplift (%)": "{:+.1f}%",
                     "Projected Operating Margin": "{:.2f}%",
                 }
             ),
             width="stretch",
         )
 
-        # Alternatives the taskforce considered and eliminated
+        # Alternatives we tested and rejected
         st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("#### Alternatives Considered & Eliminated")
+        st.markdown("#### Alternatives We Considered and Rejected")
         st.markdown(
-            "Before locking the three-lever plan, we stress-tested the obvious alternatives on the same ledger. "
-            "Each one either re-opens the loss zone, forfeits revenue, or moves too little, too slowly:"
+            "Before choosing the three actions, we tested the obvious alternatives on the same data. Each one "
+            "either brings the losses back, gives up sales, or is too small and too slow:"
         )
         alts = compute_alternatives_assessment(df)
         alternatives_df = pd.DataFrame(
@@ -294,7 +295,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
             "Modelling estimates, not forecasts."
         )
 
-        st.markdown("##### The Evidence Behind Each Elimination")
+        st.markdown("##### Why Each One Fails")
         e1, e2, e3 = st.columns(3)
         with e1:
             st.plotly_chart(
@@ -346,48 +347,48 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
         best = opt["best"]
         gap = best["Projected operating profit"] - base_row["Projected operating profit"]
 
-        st.markdown("##### Policy Optimizer: Profit Surface Across Caps & Surcharges (Measured Demand)")
+        st.markdown("##### Policy Optimizer: Which Cap and Surcharge Earn the Most?")
         st.markdown(
-            "The simulator above treats churn as an assumption. This optimizer replaces it with the Chapter 5 "
-            "demand-response model: every line above the cap is re-priced at the cap, its volume scaled by the "
-            "measured response, and the full cap x surcharge grid is searched for the profit-maximizing policy."
+            "The simulator above has to guess how many customers leave. This optimizer uses what the data says "
+            "instead: every order above the cap is re-priced and its volume adjusted by the measured demand "
+            "response from Chapter 5, for every combination of cap and surcharge."
         )
         st.plotly_chart(create_policy_profit_surface_chart(opt["grid"], best), width="stretch")
 
         o1, o2, o3, o4 = st.columns(4)
         o1.metric("Profit-maximizing policy", f"{best['Discount cap']} cap", f"{best['Tables surcharge']} surcharge")
         o2.metric("Profit at optimum", f"${best['Projected operating profit']/1e6:,.2f}M", f"+{best['Uplift %']:.0f}% vs baseline")
-        o3.metric("Plan of record (20% / $15)", f"${base_row['Projected operating profit']/1e6:,.2f}M", "+86% vs baseline, measured")
-        o4.metric("Optimum vs plan of record", f"+${gap/1e6:,.2f}M", "rides on extrapolated demand response", delta_color="off")
+        o3.metric("Recommended plan (20% / $15)", f"${base_row['Projected operating profit']/1e6:,.2f}M", "+86% vs baseline, measured")
+        o4.metric("Best vs recommended", f"+${gap/1e6:,.2f}M", "assumes demand stays flat as discounts shrink", delta_color="off")
 
         render_chart_story_card(
-            title="With Measured Demand, Tighter Caps Look Better - and the 20% Plan Still Holds",
+            title="The Data Says Even a 10% Cap Would Work - We Still Recommend 20%",
             what_it_shows=(
-                f"Every combination of discount cap and Tables surcharge simulated on the full ledger with the "
-                f"measured volume response ({opt['n_policies']} policies). Retention stays between 96% and 104% "
-                "across the whole cap range - the deep-discount lines were never buying volume."
+                f"Every combination of discount cap and Tables surcharge, simulated on the full ledger with the "
+                f"measured demand response ({opt['n_policies']} policies). Volume stays between 96% and 104% "
+                "across the whole cap range - the deep-discount lines were never bringing in much volume."
             ),
             key_takeaway=(
-                f"The grid optimum is a {best['Discount cap']} cap with a {best['Tables surcharge']} surcharge at "
-                f"${best['Projected operating profit']/1e6:,.2f}M. The plan of record (20% / $15) delivers "
-                f"${base_row['Projected operating profit']/1e6:,.2f}M on the same measured basis - and the entire "
-                "20-30% cap band sits within a few percent of it."
+                f"The best policy in the grid is a {best['Discount cap']} cap with a {best['Tables surcharge']} "
+                f"surcharge at ${best['Projected operating profit']/1e6:,.2f}M. The recommended plan (20% / $15) "
+                f"delivers ${base_row['Projected operating profit']/1e6:,.2f}M on the same basis, and the whole "
+                "20-30% cap range sits within a few percent of it."
             ),
             business_impact=(
-                "The turnaround case strengthens: what the assumed-churn simulator called a risk, the measured "
-                "data calls roughly volume-neutral, so the profit range across sane policies is wide and entirely "
-                "in the company's favour."
+                "This strengthens the turnaround case: what the old simulator treated as a risk, the measured "
+                "data shows is close to volume-neutral. The profit range across sensible policies is wide, and "
+                "all of it favours the company."
             ),
             recommendation=(
-                "Keep the 20% cap as the plan of record - the extra profit from a 10% cap rests on extrapolating "
-                "the demand response below where discounts are densely observed and on assuming associations hold "
-                "when a cap binds. Re-run this optimizer after one quarter of live cap data."
+                "Start at 20%. The extra profit from a 10% cap assumes customers behave as the model predicts "
+                "once real discounts shrink, and we do not have data to prove that yet. Re-run this after one "
+                "quarter with the cap live."
             ),
         )
         st.caption(
-            "Measured response = Chapter 5 demand model (OLS with category, market, year, and month controls) applied to "
-            "the full FY2011-FY2014 ledger; sidebar filters do not apply. The optimum's advantage over the 20% cap "
-            "is an extrapolation signal, not an operational recommendation."
+            "Measured demand comes from the Chapter 5 model (regression with product, market, year, and month "
+            "controls) fitted on the full FY2011-FY2014 ledger; sidebar filters do not apply. The gap between "
+            "the 10% optimum and the 20% plan is a model assumption, not a recommendation."
         )
 
         st.markdown("#### Best Cap per Market (Other Levers at Base Case)")
@@ -435,7 +436,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
     with action_col2:
         with st.container(border=True):
             st.markdown(
-                """
+                r"""
                 #### Action 2: Local Partners in Turkey & Nigeria
                 * **The Problem**: Shipping directly across borders into volatile currency countries cost more than customers paid us.
                 * **Executive Owner**: VP of Global Supply Chain & Regional Directors.
@@ -448,7 +449,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                   - Country profit margin (Target: Break even in 90 days; > 8% in 12 months)
                   - Shipping cost ratio (Target: < 12% of sales)
                 * **Expected Profit**:
-                  - **Eliminates +\\$179,198 in chronic bilateral cash drain** across Turkey (-\\$98.4K) and Nigeria (-\\$80.8K).
+                  - **Stops the \$179,198 in losses** from Turkey (-\$98.4K) and Nigeria (-\$80.8K).
                 """
             )
 
@@ -468,7 +469,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                   - Tables category profit (Target: > +\\$50,000)
                   - Oversized shipping fee compliance (Target: 100%)
                 * **Expected Profit**:
-                  - **+\\$46,245 bulky freight recovery and +\\$80,000+ total turnaround**, turning Tables into a profitable category.
+                  - **+\\$46,245 from freight fees and +\\$80,000+ in total**, turning Tables into a profitable category.
                 """
             )
 
@@ -539,7 +540,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                 * **Presenters**: Special Strategy & Operations Taskforce (Syndicate 6)
                 * **Visual**: Institutional executive title card with FY2011–FY2014 headline audit metrics (51,290 order lines).
                 * **Presenter Notes (1.0 minute)**:
-                  > *"Members of the Board, external speculation regarding Global Superstore's revenue stagnation is empirically disproven by transaction data. Our commercial demand engine is robust (+90.3% growth to \$4.30M), but operating earnings are diluted by an internal pricing governance failure. Today, we present conclusive audit evidence and an operational roadmap to unlock \$1,234,000 in bottom-line operating profit expansion."*
+                  > *"Members of the Board, external speculation regarding Global Superstore's revenue stagnation is empirically disproven by transaction data. Demand is strong (+90.3% growth to \$4.30M), but operating earnings are diluted by an internal pricing governance failure. Today, we present conclusive audit evidence and an operational roadmap to unlock \$1,234,000 in bottom-line operating profit expansion."*
 
                 ---
 
@@ -548,7 +549,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                 * **Visual**: Multi-year revenue and operating profit progression chart (FY2011–FY2014) with annual growth indicators (+18.5%, +27.2%, +26.3% YoY).
                 * **Data Evidence**: Sales scaled from \$2.26M to \$4.30M (CAGR: 23.9%); operating profit expanded from \$249K to \$504K; order count scaled from 4,440 to 8,531 orders with stable AOV (~$505).
                 * **Presenter Notes (1.0 minute)**:
-                  > *"Over the past four fiscal years, Global Superstore added more than \$2.0 million in top-line revenue, expanding annual order volume from 4,440 to 8,531 orders. However, consolidated operating margin remained constrained at 11.6% (annual range: 11.0% to 11.9%), failing to capture operating leverage benefits as volume scaled."*
+                  > *"Over the past four fiscal years, Global Superstore added more than \$2.0 million in top-line revenue, expanding annual order volume from 4,440 to 8,531 orders. However, consolidated operating margin remained constrained at 11.6% (annual range: 11.0% to 11.9%), and scale never turned into better margins."*
 
                 ---
 

@@ -142,7 +142,7 @@ def create_policy_profit_surface_chart(grid: pd.DataFrame, best: dict) -> go.Fig
     """Heatmap of projected operating profit across the discount-cap x surcharge policy grid.
 
     The profit-maximizing cell is marked; the row at the recommended 20% cap is outlined so
-    the board can see how much of the surface sits near the plan of record.
+    the board can see how close the rest of the surface sits to the recommended 20% plan.
 
     Args:
         grid: Ranked policy grid from optimize_turnaround_policy.

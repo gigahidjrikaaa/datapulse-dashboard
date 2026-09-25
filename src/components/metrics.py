@@ -49,7 +49,7 @@ def render_kpi_cards(kpi_data: dict[str, float]) -> None:
         net = kpi_data.get("total_profit", 1.0)
         upside_pct = (loss_drag / net * 100.0) if net > 0 else 0.0
         st.metric(
-            label="EBITDA Recovery Potential",
+            label="Profit Recovery Potential",
             value=f"+{upside_pct:.1f}%",
             delta="Via pricing governance",
             delta_color="normal",

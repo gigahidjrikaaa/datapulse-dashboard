@@ -69,6 +69,47 @@ def test_slide8_discount_inversion(global_df):
     assert over_20["Profit"].sum() == pytest.approx(-814_682.09, abs=1.0)
 
 
+def test_margin_distribution_by_band(global_df):
+    """Chapter 3 boxplot evidence: median margin flips negative past 20%; >50% band loses 100%."""
+    from src.services.analyzer import analyze_margin_distribution
+
+    dist = {d["band"]: d for d in analyze_margin_distribution(global_df)}
+    assert len(dist) == 7
+    assert dist["0%"]["median"] == pytest.approx(27.0, abs=1.0)
+    assert dist["0%"]["loss_share_pct"] == pytest.approx(0.0, abs=0.5)
+    assert dist["10.1-20%"]["median"] == pytest.approx(12.5, abs=1.0)
+    assert dist["20.1-30%"]["median"] == pytest.approx(-4.3, abs=1.0)
+    assert dist[">50%"]["median"] == pytest.approx(-106.7, abs=2.0)
+    assert dist[">50%"]["loss_share_pct"] == pytest.approx(100.0, abs=0.5)
+    assert dist[">50%"]["q3"] < 0  # even the top quartile of the >50% band loses money
+
+
+def test_measure_correlations(global_df):
+    """Chapter 3 correlation evidence: Pearson understates the discount cliff (Spearman is stronger)."""
+    from src.services.analyzer import analyze_measure_correlations
+
+    corr = analyze_measure_correlations(global_df)
+    assert corr["pearson"].loc["Discount", "Profit"] == pytest.approx(-0.316, abs=0.01)
+    assert corr["spearman"].loc["Discount", "Profit"] == pytest.approx(-0.596, abs=0.01)
+    assert abs(corr["pearson"].loc["Discount", "Sales"]) < 0.15
+    assert abs(corr["pearson"].loc["Discount", "Quantity"]) < 0.10
+    assert corr["pearson"].loc["Sales", "Profit"] > 0.3  # growth itself is healthy
+
+
+def test_distribution_correlation_charts(global_df):
+    """The two Chapter 3 exhibits construct with the expected traces."""
+    from src.components.charts import create_correlation_heatmap_chart, create_margin_boxplot_chart
+    from src.services.analyzer import analyze_margin_distribution, analyze_measure_correlations
+
+    fig_box = create_margin_boxplot_chart(analyze_margin_distribution(global_df))
+    assert len(fig_box.data) == 7  # one box per discount band
+
+    fig_corr = create_correlation_heatmap_chart(analyze_measure_correlations(global_df))
+    assert len(fig_corr.data) == 2  # Pearson + Spearman panels
+    assert fig_corr.data[0].type == "heatmap"
+    assert len(fig_corr.data[0].z) == 5 and len(fig_corr.data[0].z[0]) == 5
+
+
 def test_slide12_and_13_base_case_turnaround(global_df):
     """Slide 12 & 13: Base Case turnaround simulation lifts EBITDA +$1.23M to $2.70M (19.9% margin)."""
     sim = simulate_turnaround_impact(
@@ -205,8 +246,8 @@ def test_dashboard_alternatives_narrative():
     revival_path = os.path.join("src", "views", "revival_strategy.py")
     with open(revival_path, "r", encoding="utf-8") as f:
         content = f.read()
-    assert "Alternatives Considered & Eliminated" in content
-    assert "The Evidence Behind Each Elimination" in content
+    assert "Alternatives We Considered and Rejected" in content
+    assert "Why Each One Fails" in content
     assert "compute_alternatives_assessment" in content
     assert "Raise list prices, allow deeper discounts" in content
     assert "create_alt1_loss_concentration_chart" in content
@@ -284,21 +325,21 @@ def test_dashboard_narrative_data_accuracy():
     assert "Corporate (11.54%)" in eda_content
     assert "Home Office (11.99%)" in eda_content
     assert "29.1% average promotional discounts" in eda_content
-    assert "179,198 in direct bilateral deficits" in eda_content
+    assert "179,198 in Turkey and Nigeria" in eda_content
 
     # 2. Verify trends.py clarifies 88.5% loss dollars vs 81.2% transaction volume
     trends_path = os.path.join("src", "views", "trends.py")
     with open(trends_path, "r", encoding="utf-8") as f:
         trends_content = f.read()
-    assert "88.5% of enterprise cumulative loss capital" in trends_content
-    assert "81.2% of all deficit transactions (10,180 lines)" in trends_content
+    assert "88.5% of all lost dollars" in trends_content
+    assert "81.2% of all loss-making lines (10,180)" in trends_content
 
 
     # 3. Verify executive_summary.py has exact Base Case turnaround values
     exec_path = os.path.join("src", "views", "executive_summary.py")
     with open(exec_path, "r", encoding="utf-8") as f:
         exec_content = f.read()
-    assert "1,233,804 in net EBITDA" in exec_content
+    assert "1,233,804 in profit" in exec_content
     assert "1,032,488" in exec_content
     assert "179,198" in exec_content
 
@@ -307,8 +348,8 @@ def test_dashboard_narrative_data_accuracy():
     with open(revival_path, "r", encoding="utf-8") as f:
         revival_content = f.read()
     assert "1,032,488 in operating profit" in revival_content
-    assert "179,198 in chronic bilateral cash drain" in revival_content
-    assert "46,245 bulky freight recovery" in revival_content
+    assert "179,198 in losses" in revival_content
+    assert "46,245 from freight fees" in revival_content
 
 
 def test_deck_presenter_notes():

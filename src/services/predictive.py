@@ -356,8 +356,12 @@ def score_customer_churn_risk(
 
     beta_full = _fit_logistic(X_design, feats["lapsed"].to_numpy())
     feats["p_lapse"] = _sigmoid(X_design @ beta_full)
-    feats["risk_tier"] = pd.cut(
-        feats["p_lapse"], bins=[-0.01, 0.25, 0.5, 1.0], labels=["Low (0-25%)", "Medium (25-50%)", "High (50%+)"]
+    # Quantile tiers instead of fixed probability cutoffs: with a ~5% lapse rate, almost no
+    # customer crosses 0.5, so rank-based tiers keep the top tier meaningful
+    feats["risk_tier"] = pd.qcut(
+        feats["p_lapse"].rank(method="first"),
+        q=3,
+        labels=["Low (bottom third)", "Medium (middle third)", "High (top third)"],
     )
 
     effects = pd.DataFrame({"feature": _CHURN_FEATURES, "logistic_coef": beta_full[1:]})

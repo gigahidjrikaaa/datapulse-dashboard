@@ -39,6 +39,6 @@ def render_story_ribbon(current_key: str, answer: str, next_line: str | None = N
         else:
             chips.append(ch["label"])
     st.caption("  →  ".join(chips))
-    st.markdown(f"**This chapter answers:** {STORY_CHAPTERS[cur]['question']}  \n**The answer, up front:** {answer}")
+    st.markdown(f"**Question:** {STORY_CHAPTERS[cur]['question']}  \n**Short answer:** {answer}")
     if next_line:
-        st.caption(f"Up next → {next_line}")
+        st.caption(f"Next → {next_line}")

@@ -57,9 +57,8 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
     """Render the one-page executive memorandum for the Board of Directors."""
     render_story_ribbon(
         "answer",
-        "Global Superstore does not have a growth problem - it has a pricing problem. Sales nearly doubled "
-        "(+$90%) while margin sat still at ~11.6%, because a quarter of all order lines were sold at a loss. "
-        "Three policy levers recover $1.23M of profit without adding a single sale.",
+        "Sales almost doubled (+90%), but margin stayed at about 11.6% because one in four order lines was "
+        "sold at a loss. The fix is pricing, not more sales - three actions recover $1.23M.",
     )
     st.markdown('# The Answer First: "Sales Doubled - Pricing Gave the Profit Away"')
     st.markdown("**Prepared by Class A Syndicate 6 · Analytics Taskforce to the Chief Strategy Officer**")
@@ -70,19 +69,18 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
     with st.container(border=True):
         st.markdown("### The Story This Dashboard Tells")
         st.markdown(
-            "The Board asked one question - *are we really underperforming?* - and the answer needed a chain of "
-            "smaller questions. Each chapter of this dashboard answers one of them, in order, with the answer "
-            "stated up front:"
+            "The Board asked one question: are we really underperforming? The answer needs four smaller "
+            "questions, and each chapter of this dashboard answers one of them:"
         )
         st.markdown(
             """
-            | Chapter | Question | The answer, in one line |
+            | Chapter | Question | The answer |
             | :--- | :--- | :--- |
-            | **Ch. 1 - The Verdict** *(Task 1)* | Are we really underperforming? | No decline - sales +90%, profit +102%, but margin stuck at ~11.6%. The problem is a leak, not a slump. |
+            | **Ch. 1 - The Verdict** *(Task 1)* | Are we really underperforming? | No - sales +90% and profit +102%, but margin stuck at ~11.6%. The problem is a leak, not a slump. |
             | **Ch. 2 - Where It Leaks** *(Task 2)* | Where is the money going? | Four countries (led by Turkey and Nigeria), one product line (Tables), one weak market (EMEA). Three quarters of the business is healthy. |
-            | **Ch. 3 - Why It Happens** *(Task 3)* | Why? | Discounts past 20% invert unit economics (-$814,682), and freight of up to 24% of sales was never billed. Policy failure, not market failure. |
-            | **Ch. 4 - The Fix** *(Task 4)* | What do we do? | Three levers with owners and KPIs recover **+$1.23M** - validated against alternatives and optimized on measured demand. |
-            | **Ch. 5 - What's Next** | Will it hold? | FY2015 forecast at $5.28M (+22.8%); the cap is measured volume-neutral; high-risk customers are named. |
+            | **Ch. 3 - Why It Happens** *(Task 3)* | Why? | Discounts past 20% turn orders into losses (-$814,682), and freight of up to 24% of sales was never billed. Our policy, not the market. |
+            | **Ch. 4 - The Fix** *(Task 4)* | What do we do? | Three actions with owners and KPIs recover **+$1.23M** - checked against alternatives and tuned on measured demand. |
+            | **Ch. 5 - What's Next** | Will it hold? | FY2015 forecast at $5.28M (+22.8%); the cap barely changes demand; the at-risk customers are named. |
             | **Appendix** | Can we verify it? | Every headline number resolves to filterable transaction rows. |
             """
         )
@@ -136,7 +134,7 @@ def render_executive_summary_view(df: pd.DataFrame) -> None:
               1. **Discounts above 20%**: Sales teams offered steep discounts (up to 70%) to hit top-line quotas, losing money on every unit shipped.
               2. **Subsidized shipping to expensive overseas markets**: High discounts paired with expensive direct international shipping caused severe cash drain in countries like Turkey, Nigeria, and the Netherlands.
               3. **Bulky furniture**: Tables were heavily discounted while shipping costs ate up the remaining margin.
-            * **The path to recovery**: By capping discounts at 20% at checkout, switching to local distribution partners in loss-making countries, and charging oversized shipping fees on bulky items, the company can capture **+\\$1,233,804 in net EBITDA (+84.1% expansion to \\$2.70M at 19.9% margin)**.
+            * **The path to recovery**: By capping discounts at 20% at checkout, switching to local distribution partners in loss-making countries, and charging oversized shipping fees on bulky items, the company can capture **+\\$1,233,804 in profit (+84.1%, to \\$2.70M at a 19.9% margin)**.
             """
         )
 

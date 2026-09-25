@@ -177,8 +177,8 @@ def test_compute_scenario_sensitivity_matrix(sample_superstore_df: pd.DataFrame)
     assert "2. Base Case (Recommended Plan)" in scenarios
     assert "3. Aggressive Case" in scenarios
 
-    assert "Projected Operating EBITDA" in matrix.columns
-    assert "Net EBITDA Uplift" in matrix.columns
+    assert "Projected Profit" in matrix.columns
+    assert "Profit Uplift" in matrix.columns
     assert "Projected Operating Margin" in matrix.columns
 
     # Test empty DataFrame

@@ -40,17 +40,16 @@ def render_predictive_view(df: pd.DataFrame) -> None:
     """Render Chapter 5: predictive models with holdout validation."""
     render_story_ribbon(
         "ch5",
-        "If the current trajectory holds, FY2015 lands at $5.28M (+22.8%) - the fix does not need heroic growth. "
-        "The 20% cap is measured to be volume-neutral, and the customers most likely to lapse can be named today, "
-        "with the revenue riding on them.",
+        "If current trends continue, FY2015 revenue lands at $5.28M (+22.8%). The 20% cap barely changes "
+        "demand, and we can name the customers most likely to stop ordering - and how much they spend.",
         "The Appendix - verify every number line by line",
     )
     st.markdown("## Chapter 5 - What Happens Next: FY2015 and the Customers to Save")
     st.markdown(
-        "**The claim this chapter defends**: the strategy is robust to the future, not just fitted to the past. "
-        "Three validated models - a backtested revenue forecast, a controlled discount-response regression, and "
-        "a customer churn score - pressure-test the plan and point retention effort where it matters. Every "
-        "model is scored on data it never saw during training."
+        "**What this chapter shows**: three simple models, each tested on data it never saw during training. "
+        "They answer three questions: what will sales do in 2015, what happens to demand when discounts are "
+        "capped, and which customers are about to leave. Models run on the full FY2011-FY2014 ledger; sidebar "
+        "filters do not apply."
     )
     st.markdown("---")
 
@@ -116,22 +115,22 @@ def render_predictive_view(df: pd.DataFrame) -> None:
                 title="FY2015 Sales Are Tracking Toward $5.3M If Trends Hold",
                 what_it_shows=(
                     "48 months of actual monthly sales (blue) and the 12-month FY2015 forecast (dashed) with an "
-                    "80% prediction interval. Two candidate models competed on a holdout year; the winner "
-                    "(seasonal naive with drift) simply carries each month's latest level forward at the "
-                    "training-window growth rate."
+                    "80% prediction band. Two models were tested on a year they had never seen; the winner "
+                    "repeats last year's pattern with the measured growth rate added on top - and it beat the "
+                    "fancier trend model."
                 ),
                 key_takeaway=(
                     f"FY2015 revenue is forecast at ${fc['forecast_fy_total']/1e6:,.2f}M ({fc['fy_growth_pct']:+.1f}% vs "
-                    "FY2014), with the usual Q4 peak above $600K. The trend-extrapolation benchmark over-predicted "
-                    "the holdout year by double digits, so the validated simple model was preferred."
+                    "FY2014), with the usual Q4 peak above $600K. The trend model over-predicted the holdout "
+                    "year, so the simple model that passed the test makes the forecast."
                 ),
                 business_impact=(
-                    "The revival plan does not depend on heroic growth: even at the historical ~23% trajectory, "
-                    "FY2015 revenue covers the $1.23M profit recovery with margin to spare."
+                    "The plan does not depend on fast growth: at the usual ~23% pace, FY2015 revenue comfortably "
+                    "covers the $1.23M profit recovery."
                 ),
                 recommendation=(
                     "Re-fit this model every quarter as new months close; treat the 80% band as the planning "
-                    "envelope for inventory and freight capacity."
+                    "range for inventory and freight capacity."
                 ),
             )
 
@@ -153,31 +152,29 @@ def render_predictive_view(df: pd.DataFrame) -> None:
         m3.metric("Holdout error (log MAE)", f"{dr['holdout_mae_log']:.2f}", f"{dr['n_lines']:,} lines modelled")
 
         render_chart_story_card(
-            title="The Ledger Shows Deep Discounts Do Not Buy Proportional Volume",
+            title="Deep Discounts Do Not Buy Much Extra Volume",
             what_it_shows=(
-                "A controlled regression of line volume on discount depth, holding product category, market, year, "
-                "and month fixed (Q4 seasonality is the big confounder - December discounts coincide with "
-                "high demand, not because of the discount)."
+                "A regression of order volume on discount depth, controlling for product, market, year, and "
+                "month. The month control matters: December has both big discounts and big sales, and the model "
+                "separates the two."
             ),
             key_takeaway=(
-                "Predicted volume peaks around a 30-40% discount and *declines* beyond it: the 60-70% discounts in "
-                "Turkey and Nigeria bought less volume than a 20% discount would. Capping every line at 20% is "
-                "predicted to retain about "
-                f"{r20['retained_pct']:.0f}% of volume - the data-driven replacement for the simulator's assumed 5% churn."
+                "Predicted volume peaks around a 30-40% discount and falls after that: the 60-70% discounts in "
+                "Turkey and Nigeria brought in less volume than a 20% discount would. Capping at 20% keeps about "
+                f"{r20['retained_pct']:.0f}% of volume, so the simulator no longer needs the 5% churn guess."
             ),
             business_impact=(
                 "This is the strongest evidence yet for the discount cap: the volume we fear losing from capping "
-                "is, on this ledger, already smaller than the volume deep discounts fail to attract."
+                "is smaller than the volume the deep discounts never attracted in the first place."
             ),
             recommendation=(
-                "Use the measured retention (not the assumed churn) when re-running the Chapter 4 simulator; "
-                "treat the 15% aggressive-cap case as approximately volume-neutral too."
+                "Use this measured volume effect (not the 5% guess) when running the Chapter 4 simulator; the "
+                "15% cap case is close to volume-neutral too."
             ),
         )
         st.caption(
-            "Caveat: this is observational data, not an experiment. Discounts were handed out non-randomly, so the "
-            "curve measures association under controls - strong enough to bound the churn assumption, not proof of "
-            "causation."
+            "Note: this is historical data, not an experiment. The curve shows what happened together, not "
+            "proof of cause and effect. It is good enough to check the churn guess, not to promise exact numbers."
         )
 
     st.divider()
@@ -194,36 +191,38 @@ def render_predictive_view(df: pd.DataFrame) -> None:
             st.plotly_chart(create_churn_lift_chart(cr), width="stretch")
 
             scores = cr["customer_scores"]
-            high_risk = scores[scores["risk_tier"] == "High (50%+)"]
+            high_risk = scores[scores["risk_tier"] == "High (top third)"]
+            top_decile = scores.nlargest(max(len(scores) // 10, 1), "p_lapse")
+            top_lift = top_decile["lapsed"].mean() / max(cr["lapse_rate_pct"] / 100.0, 1e-9)
             m1, m2, m3 = st.columns(3)
             m1.metric("Model AUC (holdout)", f"{cr['auc_test']:.2f}", "0.50 = coin flip")
             m2.metric("Customers scored", f"{cr['n_customers']:,}")
             m3.metric(
-                "Revenue at high risk",
+                "Revenue in the top risk third",
                 f"${high_risk['pre_sales'].sum()/1e3:,.0f}K",
-                f"{len(high_risk):,} customers at 50%+ lapse probability",
+                f"lapsing {top_lift:.1f}x the average rate",
             )
 
             render_chart_story_card(
-                title="One in Five High-Risk Customers Can Be Named Today",
+                title="The Model Flags the Customers Most Likely to Leave",
                 what_it_shows=(
-                    "Customers sorted into ten deciles by predicted lapse probability. A customer 'lapses' if they "
-                    "place no order in the year after the feature window closes; features use only pre-2014 "
-                    "behaviour (order recency, frequency, average discount, deep-discount share, order value), so "
-                    "the score is a genuine prediction, not a restatement of the label."
+                    "Customers sorted into ten groups by predicted chance of lapsing. A customer counts as "
+                    "'lapsed' if they placed no order in 2014. The score uses only pre-2014 behaviour - how "
+                    "recently and how often they ordered, their average discount, how much of what they bought "
+                    "was discounted over 20%, and their order value - so it is a real prediction."
                 ),
                 key_takeaway=(
-                    f"The model separates lapsers from stayers at AUC {cr['auc_test']:.2f} on held-out customers, "
-                    "and the top deciles lapse at many times the average rate. Deep-discount exposure is a "
-                    "positive churn driver - customers acquired on 20%+ discounts are the least loyal."
+                    f"On held-out customers the model reaches AUC {cr['auc_test']:.2f} (0.50 would be a coin "
+                    "flip), and the top groups lapse at several times the average rate. Heavy discount exposure "
+                    "is a churn signal: customers trained on 20%+ discounts are the least loyal."
                 ),
                 business_impact=(
-                    "Retention effort can be targeted: the high-risk tier holds the revenue most likely to vanish "
-                    "when the 20% cap lands, tightening the churn allowance in the turnaround plan."
+                    "Retention work can be targeted. The high-risk tier holds the revenue most likely to "
+                    "disappear when the 20% cap lands, which tightens the churn estimate in the turnaround plan."
                 ),
                 recommendation=(
-                    "Assign account managers to the high-risk tier before the discount cap goes live; monitor "
-                    "whether their repeat-purchase rate closes the gap to the average."
+                    "Assign account managers to the high-risk tier before the discount cap goes live; watch "
+                    "whether their repeat-purchase rate moves back toward the average."
                 ),
             )
 

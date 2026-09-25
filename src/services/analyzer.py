@@ -524,7 +524,7 @@ def simulate_turnaround_impact(
         "International 3PL Restructuring": territory_recovery,
         "Tables Freight Pass-Through": table_freight_recovery,
         "Volume Churn Friction Drag": -attrition_drag,
-        "Projected Operating EBITDA": projected_profit,
+        "Projected Operating Profit": projected_profit,
     }
 
     return {
@@ -686,9 +686,9 @@ def compute_scenario_sensitivity_matrix(df: pd.DataFrame) -> pd.DataFrame:
             "International Model": "Direct Fulfillment (Deficit)",
             "Churn Attrition": "0.0%",
             "Repriced Orders": 0,
-            "Projected Operating EBITDA": baseline_profit,
-            "Net EBITDA Uplift": 0.0,
-            "EBITDA Uplift (%)": 0.0,
+            "Projected Profit": baseline_profit,
+            "Profit Uplift": 0.0,
+            "Uplift (%)": 0.0,
             "Projected Operating Margin": baseline_margin,
         },
         {
@@ -698,9 +698,9 @@ def compute_scenario_sensitivity_matrix(df: pd.DataFrame) -> pd.DataFrame:
             "International Model": "Hybrid / Partial 3PL (50%)",
             "Churn Attrition": "7.0%",
             "Repriced Orders": res_cons["affected_orders_count"],
-            "Projected Operating EBITDA": cons_profit,
-            "Net EBITDA Uplift": cons_uplift,
-            "EBITDA Uplift (%)": cons_pct_uplift,
+            "Projected Profit": cons_profit,
+            "Profit Uplift": cons_uplift,
+            "Uplift (%)": cons_pct_uplift,
             "Projected Operating Margin": cons_margin,
         },
         {
@@ -710,9 +710,9 @@ def compute_scenario_sensitivity_matrix(df: pd.DataFrame) -> pd.DataFrame:
             "International Model": "Bonded 3PL Master Distributor",
             "Churn Attrition": "5.0%",
             "Repriced Orders": res_base["affected_orders_count"],
-            "Projected Operating EBITDA": base_profit,
-            "Net EBITDA Uplift": base_uplift,
-            "EBITDA Uplift (%)": base_pct_uplift,
+            "Projected Profit": base_profit,
+            "Profit Uplift": base_uplift,
+            "Uplift (%)": base_pct_uplift,
             "Projected Operating Margin": base_margin,
         },
         {
@@ -722,12 +722,76 @@ def compute_scenario_sensitivity_matrix(df: pd.DataFrame) -> pd.DataFrame:
             "International Model": "Bonded 3PL Master Distributor",
             "Churn Attrition": "3.0%",
             "Repriced Orders": res_aggr["affected_orders_count"],
-            "Projected Operating EBITDA": aggr_profit,
-            "Net EBITDA Uplift": aggr_uplift,
-            "EBITDA Uplift (%)": aggr_pct_uplift,
+            "Projected Profit": aggr_profit,
+            "Profit Uplift": aggr_uplift,
+            "Uplift (%)": aggr_pct_uplift,
             "Projected Operating Margin": aggr_margin,
         },
     ]
 
     return pd.DataFrame(scenarios)
 
+
+
+def analyze_margin_distribution(df: pd.DataFrame) -> list[dict[str, Any]]:
+    """Distribution statistics of order-level profit margin per discount band.
+
+    Companion exhibit to the discount cliff: shows not just the average margin in each
+    band but the full box (quartiles) and what share of orders in the band lose money.
+
+    Args:
+        df: Order-line DataFrame with 'Discount_Bucket', 'Sales', 'Profit'.
+
+    Returns:
+        List of dicts (one per band, in canonical order) with median, quartiles,
+        whisker fences (1.5 x IQR clipped to data), order count, and loss share.
+    """
+    if df.empty or "Discount_Bucket" not in df.columns:
+        return []
+    d = df[(df["Sales"] > 0) & (df["Discount_Bucket"].notna())].copy()
+    d["margin_pct"] = d["Profit"] / d["Sales"] * 100.0
+    bands = ["0%", "0.1-10%", "10.1-20%", "20.1-30%", "30.1-40%", "40.1-50%", ">50%"]
+    out: list[dict[str, Any]] = []
+    for band in bands:
+        g = d.loc[d["Discount_Bucket"] == band, "margin_pct"]
+        if g.empty:
+            continue
+        q1, med, q3 = g.quantile(0.25), g.median(), g.quantile(0.75)
+        iqr = q3 - q1
+        lo, hi = g.min(), g.max()
+        out.append(
+            {
+                "band": band,
+                "n": int(len(g)),
+                "median": float(med),
+                "q1": float(q1),
+                "q3": float(q3),
+                "whisker_lo": float(max(lo, q1 - 1.5 * iqr)),
+                "whisker_hi": float(min(hi, q3 + 1.5 * iqr)),
+                "loss_share_pct": float((g < 0).mean() * 100.0),
+            }
+        )
+    return out
+
+
+def analyze_measure_correlations(df: pd.DataFrame) -> dict[str, Any]:
+    """Pearson and Spearman correlation matrices for the five numeric measures.
+
+    Pearson measures straight-line association only; the discount-profit relationship is
+    a cliff, so the Spearman (rank) coefficient is shown beside it - the gap between the
+    two is itself evidence that the damage is non-linear.
+
+    Args:
+        df: Order-line DataFrame.
+
+    Returns:
+        Dictionary with the measure list and both correlation DataFrames.
+    """
+    measures = ["Sales", "Quantity", "Discount", "Profit", "Shipping Cost"]
+    cols = [c for c in measures if c in df.columns]
+    sub = df[cols].astype(float)
+    return {
+        "measures": cols,
+        "pearson": sub.corr(method="pearson"),
+        "spearman": sub.corr(method="spearman"),
+    }

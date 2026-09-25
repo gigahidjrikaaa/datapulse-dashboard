@@ -4,15 +4,19 @@ import pandas as pd
 import streamlit as st
 
 from src.components.charts import (
+    create_correlation_heatmap_chart,
     create_discount_cliff_chart,
     create_discount_profit_scatter,
     create_freight_absorption_chart,
+    create_margin_boxplot_chart,
     create_priority_freight_chart,
 )
 from src.components.narratives import render_chart_story_card, render_data_dictionary_expander
 from src.components.story import render_story_ribbon
 from src.services.analyzer import (
     analyze_discount_impact,
+    analyze_margin_distribution,
+    analyze_measure_correlations,
     analyze_shipping_and_priority,
 )
 
@@ -21,16 +25,17 @@ def render_trends_view(df: pd.DataFrame) -> None:
     """Render Chapter 3: root-cause analysis on pricing and shipping."""
     render_story_ribbon(
         "ch3",
-        "Two policy failures, not market forces. Every discount past 20% destroys margin - 11,328 lines burned "
-        "$814,682 that way - and freight of up to 24% of sales value on priority and Same Day orders was never "
-        "billed to the customer. The cause the company can act on is governance, not geography.",
-        "Ch. 4 - The Fix: Three Levers That Recover $1.23M",
+        "Discounts, mostly. Any discount past 20% loses money, and 11,328 lines crossed that line for a total "
+        "loss of $814,682. On top of that, freight of up to 24% of the sale was never billed to the customer. "
+        "These are policy problems the company can fix.",
+        "Ch. 4 - The Fix: Three Actions That Recover $1.23M",
     )
     st.markdown("## Chapter 3 - Why It Happens: We Gave It Away Past 20%")
     st.markdown(
-        "**The claim this chapter defends**: the Chapter 2 leaks share one mechanism. Discounts past 20% invert "
-        "unit economics, and expensive shipping rode along uncharged. Asking \"why?\" five times takes us from "
-        "lost margin to the actable root causes: no checkout limit, volume-based incentives, and free freight."
+        "**What this chapter shows**: the Chapter 2 leaks share one mechanism. Discounts past 20% flip the "
+        "economics of an order from profit to loss, and expensive shipping rode along uncharged. Asking "
+        "\"why?\" five times leads back to causes the company controls: no checkout limit, bonuses based on "
+        "revenue instead of profit, and free freight."
     )
     st.markdown("---")
 
@@ -118,8 +123,8 @@ def render_trends_view(df: pd.DataFrame) -> None:
             ),
             business_impact=(
                 "This single issue explains why profit margins stayed flat while sales doubled: we gave away $814,682 "
-                "through unmanaged discounting. Stopping discounts above 20% eliminates 88.5% of enterprise cumulative loss capital "
-                "and 81.2% of all deficit transactions (10,180 lines)."
+                "through unmanaged discounting. Stopping discounts above 20% removes 88.5% of all lost dollars "
+                "and 81.2% of all loss-making lines (10,180)."
             ),
             recommendation=(
                 "Set an automatic rule in the checkout system: block any order with a discount greater than 20%, "
@@ -136,11 +141,45 @@ def render_trends_view(df: pd.DataFrame) -> None:
         scatter_fig = create_discount_profit_scatter(df)
         st.plotly_chart(scatter_fig, width="stretch")
 
+        # Distribution and correlation evidence for the discount finding
+        with st.container(border=True):
+            st.markdown("#### The Same Finding in Distributions and Correlations")
+            st.markdown(
+                "Averages can hide what is going on, so here are two more ways to check the discount finding: "
+                "the full spread of order margins in each discount band, and how strongly each measure moves "
+                "with profit."
+            )
+            dist = analyze_margin_distribution(df)
+            corr = analyze_measure_correlations(df)
+            c_box, c_heat = st.columns([3, 2])
+            with c_box:
+                st.plotly_chart(create_margin_boxplot_chart(dist), width="stretch")
+                st.caption(
+                    "Each box covers the middle 50% of orders in the band, with the median marked inside. "
+                    "Past 50% discount the whole box sits below zero: every order loses money."
+                )
+            with c_heat:
+                st.plotly_chart(create_correlation_heatmap_chart(corr), width="stretch")
+                st.caption(
+                    "Numbers run from -1 (always move in opposite directions) to +1 (always move together)."
+                )
+            st.markdown(
+                f"""
+                * Median margin falls from **+27%** with no discount to **-107%** past 50% off, and past 40% off
+                **more than 96% of orders lose money**.
+                * Discount is the measure most negatively tied to profit. Pearson says **-0.32**; the rank-based
+                Spearman says **-0.60**. The gap is the point: the damage is a cliff, not a straight line, which
+                is why the Chapter 5 model uses a curved discount term.
+                * Discount has almost no tie to sales (-0.09) or quantity (-0.02) - the classic defence that
+                "discounts drive volume" does not show up in this ledger.
+                """
+            )
+
     st.divider()
 
     # 2. Shipping Cost and Order Priority Analysis
     with st.container(border=True):
-        st.markdown("### 2. Shipping Costs and Delivery Speeds")
+        st.markdown("### 3. Shipping Costs and Delivery Speeds")
         ship_df, priority_df = analyze_shipping_and_priority(df)
 
         # Freight Absorption Exhibits: Delivery Tiers & Fulfillment Priorities
@@ -214,7 +253,7 @@ def render_trends_view(df: pd.DataFrame) -> None:
 
     # 3. Process & Governance Hierarchy (The 5-Why Table)
     with st.container(border=True):
-        st.markdown("### 3. The '5 Whys': Tracing the Problem to Its Root Cause")
+        st.markdown("### 4. The '5 Whys': Tracing the Problem to Its Root Cause")
         st.markdown(
             """
             | Level | The Question | What the Data and Systems Reveal |

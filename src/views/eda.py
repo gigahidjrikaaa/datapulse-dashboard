@@ -24,16 +24,16 @@ def render_eda_view(df: pd.DataFrame) -> None:
     """Render Chapter 2: the geographic and product drilldown behind the losses."""
     render_story_ribbon(
         "ch2",
-        "The damage is concentrated, not general. Three quarters of orders are healthy - the losses trace to "
-        "four countries led by Turkey (-$98K) and Nigeria (-$81K), exactly one product line (Tables, -$64K), and "
-        "one weak market (EMEA at 5.4% margin). Fix the tail and the company is fine.",
+        "Almost everything is fine: 75.5% of orders make money. The losses sit in four countries (Turkey -$98K, "
+        "Nigeria -$81K, Netherlands -$41K, Honduras -$29K) and one product line (Tables, -$64K). EMEA is the "
+        "weak market at 5.4% margin.",
         "Ch. 3 - Why It Happens: We Gave It Away Past 20%",
     )
     st.markdown("## Chapter 2 - Where It Leaks: Four Countries, One Product, One Market")
     st.markdown(
-        "**The claim this chapter defends**: the losses are not spread across the business - they sit in "
-        "nameable places. Drilling Market → Region → Country and Category → Sub-Category, plus customer "
-        "segments, shows the health of the core and names the exact territories and products that drain it."
+        "**What this chapter shows**: the losses are not spread across the business - they sit in a few "
+        "nameable places. Drilling down by geography (Market → Region → Country), product (Category → "
+        "Sub-Category), and customer segment names exactly where the money goes."
     )
     st.markdown("---")
 
@@ -256,7 +256,7 @@ def render_eda_view(df: pd.DataFrame) -> None:
         # Full Country-Level Table (All 147 Territories)
         with st.expander("Explore Full Sovereign Territories Operating Matrix (All 147 Countries)"):
             st.markdown(
-                "Comprehensive operating ledger across all 147 sovereign operating jurisdictions, sorted by cumulative operating contribution."
+                "All 147 countries with sales, profit, margin, and discounts, sorted by profit."
             )
             st.dataframe(
                 country_df.style.format(
@@ -435,7 +435,7 @@ def render_eda_view(df: pd.DataFrame) -> None:
 
             1. **Fix the Four High-Loss Countries (Turkey, Nigeria, Netherlands, Honduras)**:
                - *Action*: Stop shipping orders directly from international warehouses into Turkey (-\$98.4K loss) and Nigeria (-\$80.8K loss). Partner with local in-country distributors and warehouses that handle domestic shipping with prices set in local currencies.
-               - *Profit Recovered*: **Saves +\$179,198 in direct bilateral deficits** across Turkey and Nigeria (and up to +\$249,750 across all four high-loss countries).
+               - *Profit Recovered*: **Saves +\$179,198 in Turkey and Nigeria** (and up to +\$249,750 across all four high-loss countries).
 
             2. **Fix the Tables Category (Add Shipping Fees & Limit Discounts)**:
                - *Action*: Customers want tables, but our pricing loses money. Update the table catalog: add standard oversized shipping fees on bulky deliveries, stop offering free express shipping, and drop models that lose money.
