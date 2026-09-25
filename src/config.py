@@ -13,7 +13,7 @@ APP_TITLE: Final[str] = "Global Superstore: Strategic Performance Evaluation & T
 APP_SUBTITLE: Final[str] = "Board of Directors Diagnostic: Commercial Governance, Unit Economics & Margin Optimization"
 APP_ICON: Final[Optional[str]] = None
 APP_LAYOUT: Final[str] = "wide"
-APP_VERSION: Final[str] = "2.1.0"
+APP_VERSION: Final[str] = "2.2.0"
 
 # Visualization Color Palette (Restrained institutional executive palette)
 PRIMARY_COLOR: Final[str] = "#2563EB"      # Enterprise Blue

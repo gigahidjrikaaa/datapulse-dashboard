@@ -12,11 +12,23 @@ from src.components.charts import (
 )
 from src.components.metrics import render_kpi_card
 from src.components.narratives import render_chart_story_card, render_data_dictionary_expander
+from src.components.predictive_charts import create_policy_profit_surface_chart
 from src.services.analyzer import (
     compute_alternatives_assessment,
     compute_scenario_sensitivity_matrix,
     simulate_turnaround_impact,
 )
+from src.services.prescriptive import best_cap_by_market, optimize_turnaround_policy
+
+
+@st.cache_data(show_spinner="Searching the policy grid with measured demand...")
+def _cached_policy_optimizer(df: pd.DataFrame) -> dict:
+    return optimize_turnaround_policy(df)
+
+
+@st.cache_data(show_spinner="Tuning the cap per market...")
+def _cached_market_caps(df: pd.DataFrame) -> pd.DataFrame:
+    return best_cap_by_market(df)
 
 
 
@@ -314,6 +326,73 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
                 f"returns ~${alts['freight_cut_recovery']:,.0f} after 12+ months of contracting - just "
                 f"{cut_pct_of_leak:.0f}% of the ${alts['deep_discount_loss']:,.0f} discount leak it never touches."
             )
+
+        # Prescriptive optimizer: search the policy space with the measured demand response
+        raw_df = st.session_state.get("raw_df")
+        if raw_df is None or raw_df.empty:
+            raw_df = df
+        opt = _cached_policy_optimizer(raw_df)
+        markets = _cached_market_caps(raw_df)
+        base_row = opt["grid"][(opt["grid"]["cap_value"] == 0.20) & (opt["grid"]["surcharge_value"] == 15.0)].iloc[0]
+        best = opt["best"]
+        gap = best["Projected operating profit"] - base_row["Projected operating profit"]
+
+        st.markdown("##### Policy Optimizer: Profit Surface Across Caps & Surcharges (Measured Demand)")
+        st.markdown(
+            "The simulator above treats churn as an assumption. This optimizer replaces it with the Section 5 "
+            "demand-response model: every line above the cap is re-priced at the cap, its volume scaled by the "
+            "measured response, and the full cap x surcharge grid is searched for the profit-maximizing policy."
+        )
+        st.plotly_chart(create_policy_profit_surface_chart(opt["grid"], best), width="stretch")
+
+        o1, o2, o3, o4 = st.columns(4)
+        o1.metric("Profit-maximizing policy", f"{best['Discount cap']} cap", f"{best['Tables surcharge']} surcharge")
+        o2.metric("Profit at optimum", f"${best['Projected operating profit']/1e6:,.2f}M", f"+{best['Uplift %']:.0f}% vs baseline")
+        o3.metric("Plan of record (20% / $15)", f"${base_row['Projected operating profit']/1e6:,.2f}M", "+86% vs baseline, measured")
+        o4.metric("Optimum vs plan of record", f"+${gap/1e6:,.2f}M", "rides on extrapolated demand response", delta_color="off")
+
+        render_chart_story_card(
+            title="With Measured Demand, Tighter Caps Look Better - and the 20% Plan Still Holds",
+            what_it_shows=(
+                f"Every combination of discount cap and Tables surcharge simulated on the full ledger with the "
+                f"measured volume response ({opt['n_policies']} policies). Retention stays between 96% and 104% "
+                "across the whole cap range - the deep-discount lines were never buying volume."
+            ),
+            key_takeaway=(
+                f"The grid optimum is a {best['Discount cap']} cap with a {best['Tables surcharge']} surcharge at "
+                f"${best['Projected operating profit']/1e6:,.2f}M. The plan of record (20% / $15) delivers "
+                f"${base_row['Projected operating profit']/1e6:,.2f}M on the same measured basis - and the entire "
+                "20-30% cap band sits within a few percent of it."
+            ),
+            business_impact=(
+                "The turnaround case strengthens: what the assumed-churn simulator called a risk, the measured "
+                "data calls roughly volume-neutral, so the profit range across sane policies is wide and entirely "
+                "in the company's favour."
+            ),
+            recommendation=(
+                "Keep the 20% cap as the plan of record - the extra profit from a 10% cap rests on extrapolating "
+                "the demand response below where discounts are densely observed and on assuming associations hold "
+                "when a cap binds. Re-run this optimizer after one quarter of live cap data."
+            ),
+        )
+        st.caption(
+            "Measured response = Section 5 model (OLS with category, market, year, and month controls) applied to "
+            "the full FY2011-FY2014 ledger; sidebar filters do not apply. The optimum's advantage over the 20% cap "
+            "is an extrapolation signal, not an operational recommendation."
+        )
+
+        st.markdown("#### Best Cap per Market (Other Levers at Base Case)")
+        st.dataframe(
+            markets.style.format(
+                {
+                    "Ledger profit": "${:,.0f}",
+                    "Profit at best cap": "${:,.0f}",
+                    "Profit at global 20% cap": "${:,.0f}",
+                    "Uplift from tuning (vs global 20%)": "${:,.0f}",
+                }
+            ),
+            width="stretch",
+        )
 
     st.divider()
 

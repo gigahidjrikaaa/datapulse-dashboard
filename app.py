@@ -10,6 +10,7 @@ from src.views.data_explorer import render_data_explorer_view
 from src.views.eda import render_eda_view
 from src.views.executive_summary import render_executive_summary_view
 from src.views.overview import render_overview_view
+from src.views.predictive import render_predictive_view
 from src.views.revival_strategy import render_revival_strategy_view
 from src.views.trends import render_trends_view
 
@@ -89,6 +90,9 @@ def main() -> None:
     def view_task4_5() -> None:
         render_revival_strategy_view(st.session_state["filtered_df"])
 
+    def view_predictive() -> None:
+        render_predictive_view(st.session_state["filtered_df"])
+
     def view_data_explorer() -> None:
         render_data_explorer_view(st.session_state["filtered_df"])
 
@@ -117,8 +121,12 @@ def main() -> None:
                 title="Section 4: Strategic Turnaround Framework & Action Plan",
             ),
             st.Page(
+                view_predictive,
+                title="Section 5: Predictive Outlook (FY2015 Forecast & Churn Risk)",
+            ),
+            st.Page(
                 view_data_explorer,
-                title="Section 5: Transaction Ledger & Forensic Data Explorer",
+                title="Section 6: Transaction Ledger & Forensic Data Explorer",
             ),
         ]
     )
