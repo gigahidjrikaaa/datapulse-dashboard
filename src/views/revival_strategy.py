@@ -1,4 +1,4 @@
-"""Section 4 View: Strategic Turnaround Framework & Board Presentation Deck (Task 4 & 5)."""
+"""Chapter 4 View: The Fix - Strategic Turnaround Framework & Board Deck (Task 4 & 5)."""
 
 import os
 import pandas as pd
@@ -33,10 +33,19 @@ def _cached_market_caps(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
-    """Render Section 4: Turnaround Strategy, What-If Simulator, and Board Presentation Deck."""
-    st.markdown("## Section 4: How We Turn Things Around (Strategy & Presentation)")
+    """Render Chapter 4: the turnaround strategy, simulator, optimizer, and board deck."""
+    render_story_ribbon(
+        "ch4",
+        "Three levers, each mapped to a root cause, recover $1.23M: cap discounts at 20% (+$1.03M), restructure "
+        "Turkey & Nigeria onto 3PL (+$0.18M), and bill Tables freight (+$0.05M) - with owners, timelines and "
+        "KPIs, and demand effects measured from the ledger rather than assumed.",
+        "Ch. 5 - What Happens Next: the FY2015 outlook and the customers to save",
+    )
+    st.markdown("## Chapter 4 - The Fix: Three Levers That Recover $1.23M")
     st.markdown(
-        "**Section Goal**: Lay out three prioritized turnaround steps with executive owners, timelines, and measurable goals — plus an interactive policy simulator and a 10-slide briefing deck for leadership."
+        "**The claim this chapter defends**: the root causes are policy, so the fix is policy. Below: the "
+        "interactive simulator, the measured-demand policy optimizer, the alternatives we tested and rejected, "
+        "and the three priority actions - each with an owner, a timeline, a KPI, and an expected impact."
     )
     st.markdown("---")
 
@@ -339,7 +348,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
 
         st.markdown("##### Policy Optimizer: Profit Surface Across Caps & Surcharges (Measured Demand)")
         st.markdown(
-            "The simulator above treats churn as an assumption. This optimizer replaces it with the Section 5 "
+            "The simulator above treats churn as an assumption. This optimizer replaces it with the Chapter 5 "
             "demand-response model: every line above the cap is re-priced at the cap, its volume scaled by the "
             "measured response, and the full cap x surcharge grid is searched for the profit-maximizing policy."
         )
@@ -376,7 +385,7 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
             ),
         )
         st.caption(
-            "Measured response = Section 5 model (OLS with category, market, year, and month controls) applied to "
+            "Measured response = Chapter 5 demand model (OLS with category, market, year, and month controls) applied to "
             "the full FY2011-FY2014 ledger; sidebar filters do not apply. The optimum's advantage over the 20% cap "
             "is an extrapolation signal, not an operational recommendation."
         )
@@ -614,9 +623,9 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
 
     st.divider()
 
-    # Section 4 Proposed Solutions
+    # Chapter 4 - what this evidence changes
     with st.container(border=True):
-        st.markdown("### Practical Actions & Board Resolutions for Section 4")
+        st.markdown("### Chapter 4 Actions & Board Resolutions")
         st.markdown(
             r"""
             To put this turnaround into motion over the next 6 to 12 months, we recommend three formal board resolutions:

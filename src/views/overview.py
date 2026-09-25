@@ -1,4 +1,4 @@
-"""Section 1 View: Multi-Year Financial Performance Audit (Task 1)."""
+"""Chapter 1 View: The Verdict on the Rumours - Multi-Year Performance (Task 1)."""
 
 import pandas as pd
 import streamlit as st
@@ -9,6 +9,7 @@ from src.components.charts import (
     create_yoy_growth_chart,
 )
 from src.components.narratives import render_chart_story_card, render_data_dictionary_expander
+from src.components.story import render_story_ribbon
 from src.services.analyzer import (
     compute_monthly_trend,
     compute_quarterly_seasonality,
@@ -17,10 +18,20 @@ from src.services.analyzer import (
 
 
 def render_overview_view(df: pd.DataFrame) -> None:
-    """Render Section 1: Multi-Year Financial Performance Audit (2011–2014)."""
-    st.markdown("## Section 1: Multi-Year Financial Performance Overview")
+    """Render Chapter 1: the verdict on whether Global Superstore is underperforming."""
+    render_story_ribbon(
+        "ch1",
+        "The rumours are wrong about the disease. Sales grew +90% and profit +102% - nothing is declining. "
+        "But margin never moved off ~11.6%, so every extra dollar of growth arrived at the same thin profit. "
+        "This is not a growth problem; it is a leak that scales with every sale.",
+        "Ch. 2 - Where It Leaks: Four Countries, One Product, One Market",
+    )
+    st.markdown("## Chapter 1 - The Verdict: Sales Doubled, Margin Didn't Move")
     st.markdown(
-        "**Section Goal**: Review how the business performed from 2011 to 2014, calculate year-over-year growth, and see if the rumors of slowing sales are true."
+        "**The claim this chapter defends**: between 2011 and 2014 revenue rose from \$2.26M to \$4.30M and "
+        "operating profit from \$249K to \$504K, yet the margin band never left 11-12%. Below is the year-by-year "
+        "evidence that separates the growth story from the profitability story - and shows the underperformance "
+        "is concentrated, not general."
     )
     st.markdown("---")
 
@@ -182,9 +193,9 @@ def render_overview_view(df: pd.DataFrame) -> None:
 
     st.divider()
 
-    # Section 1 Proposed Solutions
+    # Chapter 1 - what this evidence changes
     with st.container(border=True):
-        st.markdown("### Practical Actions for Section 1")
+        st.markdown("### Chapter 1 Actions: Protect the Growth")
         st.markdown(
             r"""
             Based on the 4-year trend analysis, we recommend three practical steps:

@@ -1,4 +1,4 @@
-"""Section 5 View: Predictive Outlook — FY2015 forecast, discount response, churn risk.
+"""Chapter 5 View: What Happens Next — FY2015 forecast, discount response, churn risk.
 
 Models run on the full FY2011-FY2014 ledger (st.session_state raw data), not the sidebar
 filters: time-series and customer-level models need the complete continuous history.
@@ -13,6 +13,7 @@ from src.components.predictive_charts import (
     create_discount_response_chart,
     create_sales_forecast_chart,
 )
+from src.components.story import render_story_ribbon
 from src.services.predictive import (
     analyze_discount_response,
     forecast_monthly_sales,
@@ -36,12 +37,20 @@ def _cached_churn(df: pd.DataFrame) -> dict:
 
 
 def render_predictive_view(df: pd.DataFrame) -> None:
-    """Render Section 5: predictive models with holdout validation."""
-    st.markdown("## Section 5: Predictive Outlook (FY2015 Forecast, Demand Response & Churn Risk)")
+    """Render Chapter 5: predictive models with holdout validation."""
+    render_story_ribbon(
+        "ch5",
+        "If the current trajectory holds, FY2015 lands at $5.28M (+22.8%) - the fix does not need heroic growth. "
+        "The 20% cap is measured to be volume-neutral, and the customers most likely to lapse can be named today, "
+        "with the revenue riding on them.",
+        "The Appendix - verify every number line by line",
+    )
+    st.markdown("## Chapter 5 - What Happens Next: FY2015 and the Customers to Save")
     st.markdown(
-        "**Section Goal**: Move beyond describing the past — forecast next year's revenue, measure how demand "
-        "actually responds to discount depth, and score which customers are at risk of lapsing. Every model "
-        "below is validated on held-out data, and runs on the full FY2011-FY2014 ledger (sidebar filters do not apply)."
+        "**The claim this chapter defends**: the strategy is robust to the future, not just fitted to the past. "
+        "Three validated models - a backtested revenue forecast, a controlled discount-response regression, and "
+        "a customer churn score - pressure-test the plan and point retention effort where it matters. Every "
+        "model is scored on data it never saw during training."
     )
     st.markdown("---")
 
@@ -50,7 +59,7 @@ def render_predictive_view(df: pd.DataFrame) -> None:
         st.markdown(
             """
             **What we're predicting**:
-            Sections 1-4 explained *what happened* and *why*. This section predicts *what happens next*:
+            Chapters 1-4 explained *what happened* and *why*. This chapter predicts *what happens next*:
 
             1. **Revenue**: What will monthly sales look like in FY2015 if the current trajectory holds?
             2. **Demand response**: If discounts are capped at 20%, how much volume would we actually lose?
@@ -161,7 +170,7 @@ def render_predictive_view(df: pd.DataFrame) -> None:
                 "is, on this ledger, already smaller than the volume deep discounts fail to attract."
             ),
             recommendation=(
-                "Use the measured retention (not the assumed churn) when re-running the Section 4 simulator; "
+                "Use the measured retention (not the assumed churn) when re-running the Chapter 4 simulator; "
                 "treat the 15% aggressive-cap case as approximately volume-neutral too."
             ),
         )

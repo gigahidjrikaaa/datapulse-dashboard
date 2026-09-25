@@ -101,32 +101,32 @@ def main() -> None:
         [
             st.Page(
                 view_executive_summary,
-                title="Global Superstore Case | Executive Summary",
+                title="The Answer First | Key Message & Story Map",
                 default=True,
             ),
             st.Page(
                 view_task1,
-                title="Section 1: Multi-Year Financial Performance Audit",
+                title="Ch. 1 — The Verdict: Sales Doubled, Margin Didn't (Task 1)",
             ),
             st.Page(
                 view_task2,
-                title="Section 2: Geographic & Product Margin Variance",
+                title="Ch. 2 — Where It Leaks: Four Countries, One Product (Task 2)",
             ),
             st.Page(
                 view_task3,
-                title="Section 3: Root Cause Diagnostic: Pricing & Logistics",
+                title="Ch. 3 — Why: Discounts Past 20% & Unbilled Freight (Task 3)",
             ),
             st.Page(
                 view_task4_5,
-                title="Section 4: Strategic Turnaround Framework & Action Plan",
+                title="Ch. 4 — The Fix: Three Levers, $1.23M (Task 4)",
             ),
             st.Page(
                 view_predictive,
-                title="Section 5: Predictive Outlook (FY2015 Forecast & Churn Risk)",
+                title="Ch. 5 — What Happens Next: FY2015 Forecast & Churn Risk",
             ),
             st.Page(
                 view_data_explorer,
-                title="Section 6: Transaction Ledger & Forensic Data Explorer",
+                title="Appendix — The Audit Trail: Every Order, Verifiable",
             ),
         ]
     )

@@ -1,4 +1,4 @@
-"""Section 2 View: Geographic & Product Margin Variance (Task 2)."""
+"""Chapter 2 View: Where It Leaks - Geographic & Product Margin Variance (Task 2)."""
 
 import pandas as pd
 import streamlit as st
@@ -12,6 +12,7 @@ from src.components.charts import (
     create_territory_quadrant_chart,
 )
 from src.components.narratives import render_chart_story_card, render_data_dictionary_expander
+from src.components.story import render_story_ribbon
 from src.services.analyzer import (
     analyze_geographic_drilldown,
     analyze_product_breakdown,
@@ -20,10 +21,19 @@ from src.services.analyzer import (
 
 
 def render_eda_view(df: pd.DataFrame) -> None:
-    """Render Section 2: Geographic & Product Margin Variance Analysis."""
-    st.markdown("## Section 2: Where Is Money Being Made and Lost?")
+    """Render Chapter 2: the geographic and product drilldown behind the losses."""
+    render_story_ribbon(
+        "ch2",
+        "The damage is concentrated, not general. Three quarters of orders are healthy - the losses trace to "
+        "four countries led by Turkey (-$98K) and Nigeria (-$81K), exactly one product line (Tables, -$64K), and "
+        "one weak market (EMEA at 5.4% margin). Fix the tail and the company is fine.",
+        "Ch. 3 - Why It Happens: We Gave It Away Past 20%",
+    )
+    st.markdown("## Chapter 2 - Where It Leaks: Four Countries, One Product, One Market")
     st.markdown(
-        "**Section Goal**: Break down performance by geography (Market → Region → Country), product lines (Category → Sub-Category), and customer types to find out exactly where profits are leaking."
+        "**The claim this chapter defends**: the losses are not spread across the business - they sit in "
+        "nameable places. Drilling Market → Region → Country and Category → Sub-Category, plus customer "
+        "segments, shows the health of the core and names the exact territories and products that drain it."
     )
     st.markdown("---")
 
@@ -416,9 +426,9 @@ def render_eda_view(df: pd.DataFrame) -> None:
 
     st.divider()
 
-    # Section 2 Proposed Solutions
+    # Chapter 2 - what this evidence changes
     with st.container(border=True):
-        st.markdown("### Practical Actions for Section 2")
+        st.markdown("### Chapter 2 Actions: Stop the Named Leaks")
         st.markdown(
             r"""
             Based on the geographic and product analysis, we recommend three specific actions:

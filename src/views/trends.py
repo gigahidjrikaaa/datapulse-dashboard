@@ -1,4 +1,4 @@
-"""Section 3 View: Root Cause Diagnostic: Pricing & Logistics (Task 3)."""
+"""Chapter 3 View: Why It Happens - Root Cause Diagnostic (Task 3)."""
 
 import pandas as pd
 import streamlit as st
@@ -10,6 +10,7 @@ from src.components.charts import (
     create_priority_freight_chart,
 )
 from src.components.narratives import render_chart_story_card, render_data_dictionary_expander
+from src.components.story import render_story_ribbon
 from src.services.analyzer import (
     analyze_discount_impact,
     analyze_shipping_and_priority,
@@ -17,10 +18,19 @@ from src.services.analyzer import (
 
 
 def render_trends_view(df: pd.DataFrame) -> None:
-    """Render Section 3: Root Cause Analysis on Pricing Discounts and Shipping Costs."""
-    st.markdown("## Section 3: Why Are Orders Losing Money? (Pricing & Shipping)")
+    """Render Chapter 3: root-cause analysis on pricing and shipping."""
+    render_story_ribbon(
+        "ch3",
+        "Two policy failures, not market forces. Every discount past 20% destroys margin - 11,328 lines burned "
+        "$814,682 that way - and freight of up to 24% of sales value on priority and Same Day orders was never "
+        "billed to the customer. The cause the company can act on is governance, not geography.",
+        "Ch. 4 - The Fix: Three Levers That Recover $1.23M",
+    )
+    st.markdown("## Chapter 3 - Why It Happens: We Gave It Away Past 20%")
     st.markdown(
-        "**Section Goal**: Dig into customer discounts, shipping costs, delivery speeds, and sales incentives to find the exact root causes of our profit leaks."
+        "**The claim this chapter defends**: the Chapter 2 leaks share one mechanism. Discounts past 20% invert "
+        "unit economics, and expensive shipping rode along uncharged. Asking \"why?\" five times takes us from "
+        "lost margin to the actable root causes: no checkout limit, volume-based incentives, and free freight."
     )
     st.markdown("---")
 
@@ -221,7 +231,7 @@ def render_trends_view(df: pd.DataFrame) -> None:
 
     # Section 3 Proposed Solutions
     with st.container(border=True):
-        st.markdown("### Practical Actions for Section 3")
+        st.markdown("### Chapter 3 Actions: Close the Root Causes")
         st.markdown(
             r"""
             Based on the pricing and shipping diagnostic, we recommend three concrete actions:

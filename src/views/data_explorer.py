@@ -1,17 +1,23 @@
-"""Section 5 View: Transaction Ledger & Forensic Data Explorer."""
+"""Appendix View: Transaction Ledger & Forensic Data Explorer."""
 
 import pandas as pd
 import streamlit as st
 
 from src.components.metrics import render_kpi_card
 from src.components.narratives import render_data_dictionary_expander
+from src.components.story import render_story_ribbon
 
 
 def render_data_explorer_view(df: pd.DataFrame) -> None:
-    """Render Section 5: Full Transaction Ledger & Forensic Data Explorer."""
-    st.markdown("## Section 5: Transaction Ledger & Forensic Data Explorer")
+    """Render the Appendix: full transaction ledger & forensic data explorer."""
+    render_story_ribbon(
+        "appendix",
+        "Yes. Every headline number in Chapters 1-4 - the -$920K, the 12,544 deficit lines, the 20% cliff, the "
+        "Turkey & Nigeria deficits - resolves to individual rows you can filter and inspect here.",
+    )
+    st.markdown("## Appendix - The Audit Trail: Every Order, Verifiable")
     st.markdown(
-        r"**Purpose**: Sections 1–4 proved the problem at an *aggregate* level — \$920K in losses, 12,544 "
+        r"**Purpose**: Chapters 1–4 proved the problem at an *aggregate* level — \$920K in losses, 12,544 "
         r"deficit orders, a 20% discount cliff, two toxic territories. This section lets you go one level "
         r"deeper: see the individual transactions behind those numbers, isolate the specific orders that "
         r"caused the damage, and verify every finding row-by-row."
@@ -20,7 +26,7 @@ def render_data_explorer_view(df: pd.DataFrame) -> None:
 
     # Story: Why This Section Exists
     with st.container(border=True):
-        st.markdown("### The Story Behind This Section")
+        st.markdown("### Why This Audit Trail Exists")
         st.markdown(
             r"""
             The previous sections established four structural findings from the aggregate data:
@@ -285,9 +291,9 @@ def render_data_explorer_view(df: pd.DataFrame) -> None:
 
     st.divider()
 
-    # Section 5 Proposed Solutions
+    # Appendix - what this evidence changes
     with st.container(border=True):
-        st.markdown("### Section 5: Proposed Actions — From Evidence to Execution")
+        st.markdown("### From Evidence to Execution: Proposed Actions")
         st.markdown(
             r"""
             The transaction explorer does more than verify findings — it is itself a governance tool.

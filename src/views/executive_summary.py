@@ -6,6 +6,7 @@ import streamlit as st
 from src.components.charts import create_ebitda_bridge_chart
 from src.components.metrics import render_kpi_cards
 from src.components.narratives import render_data_dictionary_expander
+from src.components.story import render_story_ribbon
 from src.services.analyzer import compute_overview_kpis, simulate_turnaround_impact
 
 
@@ -54,11 +55,38 @@ def render_syndicate_roster() -> None:
 
 def render_executive_summary_view(df: pd.DataFrame) -> None:
     """Render the one-page executive memorandum for the Board of Directors."""
-    st.markdown("# Global Superstore Case | Executive Summary")
-    st.markdown(
-        "**Prepared by Class A Syndicate 6**"
+    render_story_ribbon(
+        "answer",
+        "Global Superstore does not have a growth problem - it has a pricing problem. Sales nearly doubled "
+        "(+$90%) while margin sat still at ~11.6%, because a quarter of all order lines were sold at a loss. "
+        "Three policy levers recover $1.23M of profit without adding a single sale.",
     )
+    st.markdown('# The Answer First: "Sales Doubled - Pricing Gave the Profit Away"')
+    st.markdown("**Prepared by Class A Syndicate 6 · Analytics Taskforce to the Chief Strategy Officer**")
     render_syndicate_roster()
+    st.markdown("---")
+
+    # The storyline: how the case unfolds chapter by chapter (Task 5 - the narrative)
+    with st.container(border=True):
+        st.markdown("### The Story This Dashboard Tells")
+        st.markdown(
+            "The Board asked one question - *are we really underperforming?* - and the answer needed a chain of "
+            "smaller questions. Each chapter of this dashboard answers one of them, in order, with the answer "
+            "stated up front:"
+        )
+        st.markdown(
+            """
+            | Chapter | Question | The answer, in one line |
+            | :--- | :--- | :--- |
+            | **Ch. 1 - The Verdict** *(Task 1)* | Are we really underperforming? | No decline - sales +90%, profit +102%, but margin stuck at ~11.6%. The problem is a leak, not a slump. |
+            | **Ch. 2 - Where It Leaks** *(Task 2)* | Where is the money going? | Four countries (led by Turkey and Nigeria), one product line (Tables), one weak market (EMEA). Three quarters of the business is healthy. |
+            | **Ch. 3 - Why It Happens** *(Task 3)* | Why? | Discounts past 20% invert unit economics (-$814,682), and freight of up to 24% of sales was never billed. Policy failure, not market failure. |
+            | **Ch. 4 - The Fix** *(Task 4)* | What do we do? | Three levers with owners and KPIs recover **+$1.23M** - validated against alternatives and optimized on measured demand. |
+            | **Ch. 5 - What's Next** | Will it hold? | FY2015 forecast at $5.28M (+22.8%); the cap is measured volume-neutral; high-risk customers are named. |
+            | **Appendix** | Can we verify it? | Every headline number resolves to filterable transaction rows. |
+            """
+        )
+
     st.markdown("---")
 
     # Global Data Dictionary & Financial Methodology
