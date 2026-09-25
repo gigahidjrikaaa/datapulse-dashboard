@@ -291,7 +291,9 @@ def create_market_share_pie(market_df: pd.DataFrame) -> go.Figure:
         values="Sales",
         hole=0.45,
         title="Regional Market Sales Distribution",
-        color_discrete_sequence=CHART_COLORWAY,
+        # 7 markets need 7 distinct colors; the base colorway has 6 and would
+        # wrap the last slice back to the first color, adjacent in the ring.
+        color_discrete_sequence=CHART_COLORWAY + ["#64748B"],
         template=CHART_TEMPLATE,
     )
     fig.update_traces(textposition="inside", textinfo="percent+label")
@@ -574,6 +576,129 @@ def create_freight_absorption_chart(ship_df: pd.DataFrame) -> go.Figure:
         ),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         margin=dict(l=40, r=50, t=60, b=40),
+    )
+    return fig
+
+
+def create_alt1_loss_concentration_chart(profit_by_band: list[dict], deep_share_of_losses: float) -> go.Figure:
+    """Create the exhibit eliminating 'raise list prices, allow deeper discounts'.
+
+    Shows net dollar impact per discount band: bands above the 20% cap destroy exactly the
+    deep-discount leak, so the leak follows discount depth, not list price - a deeper cap
+    re-opens the same loss zone.
+
+    Args:
+        profit_by_band: List of {"band": str, "net_profit": float} across the 7 discount bands.
+        deep_share_of_losses: Share of all loss dollars sitting above the 20% cap (0-1).
+
+    Returns:
+        Plotly Figure.
+    """
+    if not profit_by_band:
+        return go.Figure()
+
+    below_cap_bands = {"0%", "0.1-10%", "10.1-20%"}
+    below = [r for r in profit_by_band if r["band"] in below_cap_bands]
+    above = [r for r in profit_by_band if r["band"] not in below_cap_bands]
+
+    fig = go.Figure()
+    fig.add_bar(
+        x=[r["band"] for r in below],
+        y=[r["net_profit"] for r in below],
+        name="Profit at or below the 20% cap",
+        marker_color=SUCCESS_COLOR,
+        text=[f"+${r['net_profit']/1e6:,.2f}M" for r in below],
+        textposition="outside",
+    )
+    fig.add_bar(
+        x=[r["band"] for r in above],
+        y=[r["net_profit"] for r in above],
+        name="Loss above the 20% cap",
+        marker_color=DANGER_COLOR,
+        text=[f"-${abs(r['net_profit'])/1e3:,.0f}K" for r in above],
+        textposition="outside",
+    )
+    fig.add_hline(y=0, line_color="#94A3B8")
+    fig.add_vline(x=2.5, line_dash="dash", line_color="#E2E8F0", annotation_text="20% Cap")
+    fig.update_layout(
+        template=CHART_TEMPLATE,
+        title=f"Net Profit $ by Discount Band: {deep_share_of_losses * 100.0:.1f}% of Loss Sits Above the Cap",
+        xaxis_title="Discount Band (ordered by depth)",
+        yaxis_title="Net Profit ($ USD)",
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        margin=dict(l=40, r=40, t=60, b=40),
+    )
+    return fig
+
+
+def create_alt2_exit_vs_3pl_chart(tn_sales: float, tn_loss: float) -> go.Figure:
+    """Create the exhibit eliminating 'exit Turkey and Nigeria entirely'.
+
+    Exiting forfeits the territory revenue while the 3PL model removes the identical
+    operating loss and keeps every sale.
+
+    Args:
+        tn_sales: Turkey + Nigeria gross sales on the ledger.
+        tn_loss: Turkey + Nigeria absolute operating loss on the ledger.
+
+    Returns:
+        Plotly Figure.
+    """
+    fig = go.Figure()
+    fig.add_bar(
+        x=["Gross sales kept", "Operating loss removed"],
+        y=[0.0, tn_loss],
+        name="Exit market entirely",
+        marker_color="#64748B",
+        text=["$0", f"${tn_loss:,.0f}"],
+        textposition="outside",
+    )
+    fig.add_bar(
+        x=["Gross sales kept", "Operating loss removed"],
+        y=[tn_sales, tn_loss],
+        name="3PL restructuring (recommended)",
+        marker_color=SUCCESS_COLOR,
+        text=[f"${tn_sales:,.0f}", f"${tn_loss:,.0f}"],
+        textposition="outside",
+    )
+    fig.update_layout(
+        template=CHART_TEMPLATE,
+        title="Exit vs 3PL: Same Loss Removed, Only 3PL Keeps the Sales",
+        yaxis_title="Amount ($ USD)",
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        margin=dict(l=40, r=40, t=60, b=40),
+    )
+    return fig
+
+
+def create_alt3_freight_cut_vs_leak_chart(freight_total: float, freight_cut: float, deep_discount_loss: float) -> go.Figure:
+    """Create the exhibit demoting 'renegotiate carrier rates company-wide' to a support lever.
+
+    A realistic 10% negotiated freight cut returns a fraction of what the deep-discount
+    leak destroys, and does nothing about the discount itself.
+
+    Args:
+        freight_total: Total shipping cost on the ledger.
+        freight_cut: Recoverable amount under a 10% negotiated cut.
+        deep_discount_loss: Absolute loss from lines discounted above 20%.
+
+    Returns:
+        Plotly Figure.
+    """
+    fig = go.Figure(
+        go.Bar(
+            x=["Total freight spend (4 yrs)", "Realistic 10% negotiated cut", "Deep-discount leak it ignores"],
+            y=[freight_total, freight_cut, deep_discount_loss],
+            marker_color=[PRIMARY_COLOR, WARNING_COLOR, DANGER_COLOR],
+            text=[f"${freight_total/1e6:,.2f}M", f"${freight_cut/1e3:,.0f}K", f"${deep_discount_loss/1e3:,.0f}K"],
+            textposition="outside",
+        )
+    )
+    fig.update_layout(
+        template=CHART_TEMPLATE,
+        title="Freight Cut vs the Discount Leak: Too Small, Too Slow",
+        yaxis_title="Amount ($ USD)",
+        margin=dict(l=40, r=40, t=60, b=40),
     )
     return fig
 

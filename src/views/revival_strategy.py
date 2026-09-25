@@ -4,7 +4,12 @@ import os
 import pandas as pd
 import streamlit as st
 
-from src.components.charts import create_ebitda_bridge_chart
+from src.components.charts import (
+    create_alt1_loss_concentration_chart,
+    create_alt2_exit_vs_3pl_chart,
+    create_alt3_freight_cut_vs_leak_chart,
+    create_ebitda_bridge_chart,
+)
 from src.components.metrics import render_kpi_card
 from src.components.narratives import render_chart_story_card, render_data_dictionary_expander
 from src.services.analyzer import (
@@ -267,6 +272,48 @@ def render_revival_strategy_view(df: pd.DataFrame | None = None) -> None:
             "Verdicts are assessed on the FY2011-FY2014 ledger under the same base-case assumptions as the simulator above. "
             "Modelling estimates, not forecasts."
         )
+
+        st.markdown("##### The Evidence Behind Each Elimination")
+        e1, e2, e3 = st.columns(3)
+        with e1:
+            st.plotly_chart(
+                create_alt1_loss_concentration_chart(alts["profit_by_band"], alts["deep_share_of_losses"]),
+                width="stretch",
+            )
+            st.caption(
+                f"Why 'raise list prices, allow deeper discounts' fails: the leak follows discount depth, not list "
+                f"price. The bands above the 20% line destroy ${alts['deep_discount_loss']:,.0f} of net profit - "
+                f"{alts['deep_share_of_losses'] * 100.0:.1f}% of all loss dollars - so a deeper cap re-opens exactly "
+                f"these bands."
+            )
+        with e2:
+            st.plotly_chart(
+                create_alt2_exit_vs_3pl_chart(alts["tn_sales"], alts["tn_loss"]),
+                width="stretch",
+            )
+            st.caption(
+                f"Why 'exit Turkey & Nigeria' fails: walking away forfeits ${alts['tn_sales']:,.0f} of revenue and two "
+                f"developing markets, while 3PL restructuring removes the identical ${alts['tn_loss']:,.0f} loss and keeps "
+                f"every sale."
+            )
+        with e3:
+            cut_pct_of_leak = (
+                (alts["freight_cut_recovery"] / alts["deep_discount_loss"] * 100.0)
+                if alts["deep_discount_loss"] > 0
+                else 0.0
+            )
+            st.plotly_chart(
+                create_alt3_freight_cut_vs_leak_chart(
+                    alts["freight_total"], alts["freight_cut_recovery"], alts["deep_discount_loss"]
+                ),
+                width="stretch",
+            )
+            st.caption(
+                f"Why 'renegotiate carrier rates company-wide' is only a support lever: freight totals "
+                f"${alts['freight_total']:,.0f} ({alts['freight_ratio'] * 100.0:.1f}% of sales), so a realistic 10% cut "
+                f"returns ~${alts['freight_cut_recovery']:,.0f} after 12+ months of contracting - just "
+                f"{cut_pct_of_leak:.0f}% of the ${alts['deep_discount_loss']:,.0f} discount leak it never touches."
+            )
 
     st.divider()
 

@@ -570,6 +570,7 @@ def compute_alternatives_assessment(df: pd.DataFrame) -> dict[str, Any]:
         "tn_sales": 0.0,
         "tn_loss": 0.0,
         "freight_cut_recovery": 0.0,
+        "profit_by_band": [],
     }
     if df.empty:
         return empty_result
@@ -589,6 +590,16 @@ def compute_alternatives_assessment(df: pd.DataFrame) -> dict[str, Any]:
     tn_sales = float(df.loc[tn_mask, "Sales"].sum())
     tn_loss = float(abs(df.loc[tn_mask, "Profit"].sum()))
 
+    # Net dollar impact by discount band: bands above the 20% cap sum to the deep-discount
+    # leak, so the exhibit shows the leak follows discount depth, not list price
+    band_labels = ["0%", "0.1-10%", "10.1-20%", "20.1-30%", "30.1-40%", "40.1-50%", ">50%"]
+    profit_by_band: list[dict[str, Any]] = []
+    if "Discount_Bucket" in df.columns:
+        band_net = df.groupby("Discount_Bucket", observed=True)["Profit"].sum()
+        profit_by_band = [
+            {"band": band, "net_profit": float(band_net.get(band, 0.0))} for band in band_labels
+        ]
+
     return {
         "freight_total": freight_total,
         "freight_ratio": freight_ratio,
@@ -599,6 +610,7 @@ def compute_alternatives_assessment(df: pd.DataFrame) -> dict[str, Any]:
         "tn_sales": tn_sales,
         "tn_loss": tn_loss,
         "freight_cut_recovery": 0.10 * freight_total,
+        "profit_by_band": profit_by_band,
     }
 
 

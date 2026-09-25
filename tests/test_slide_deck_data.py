@@ -177,6 +177,101 @@ def test_executive_summary_docx():
     assert "Resolution 3: Governance Charter" in all_text
 
 
+def test_alternatives_assessment_numbers(global_df):
+    """Alternatives-elimination evidence: freight $1.35M (10.7%), deep-discount losses 88.5%, Turkey+Nigeria $163K sales."""
+    from src.services.analyzer import compute_alternatives_assessment
+
+    alts = compute_alternatives_assessment(global_df)
+    assert alts["freight_total"] == pytest.approx(1_352_820.69, abs=1.0)
+    assert alts["freight_ratio"] == pytest.approx(0.107, abs=0.001)
+    assert alts["loss_dollars_total"] == pytest.approx(920_646.16, abs=1.0)
+    assert alts["deep_discount_loss"] == pytest.approx(814_682.09, abs=1.0)
+    assert alts["deep_discount_lines"] == 11328
+    assert alts["deep_share_of_losses"] == pytest.approx(0.8849, abs=0.001)
+    assert alts["tn_sales"] == pytest.approx(162_858.30, abs=1.0)
+    assert alts["tn_loss"] == pytest.approx(179_197.95, abs=1.0)
+    assert alts["freight_cut_recovery"] == pytest.approx(135_282.07, abs=1.0)
+    assert isinstance(alts["profit_by_band"], list) and len(alts["profit_by_band"]) == 7
+    band_net_total = sum(b["net_profit"] for b in alts["profit_by_band"])
+    assert band_net_total == pytest.approx(1_467_457.29, abs=1.0)
+    above_cap_net = sum(
+        b["net_profit"] for b in alts["profit_by_band"] if b["band"] not in ("0%", "0.1-10%", "10.1-20%")
+    )
+    assert above_cap_net == pytest.approx(-814_682.09, abs=1.0)
+
+
+def test_dashboard_alternatives_narrative():
+    """Verify the revival strategy view renders the alternatives-eliminated section off the analyzer."""
+    revival_path = os.path.join("src", "views", "revival_strategy.py")
+    with open(revival_path, "r", encoding="utf-8") as f:
+        content = f.read()
+    assert "Alternatives Considered & Eliminated" in content
+    assert "The Evidence Behind Each Elimination" in content
+    assert "compute_alternatives_assessment" in content
+    assert "Raise list prices, allow deeper discounts" in content
+    assert "create_alt1_loss_concentration_chart" in content
+    assert "create_alt2_exit_vs_3pl_chart" in content
+    assert "create_alt3_freight_cut_vs_leak_chart" in content
+
+
+def test_alternative_elimination_charts(global_df):
+    """Verify the three alternatives-elimination exhibits carry the right traces and evidence."""
+    from src.components.charts import (
+        create_alt1_loss_concentration_chart,
+        create_alt2_exit_vs_3pl_chart,
+        create_alt3_freight_cut_vs_leak_chart,
+    )
+    from src.services.analyzer import compute_alternatives_assessment
+
+    alts = compute_alternatives_assessment(global_df)
+
+    fig1 = create_alt1_loss_concentration_chart(alts["profit_by_band"], alts["deep_share_of_losses"])
+    assert len(fig1.data) == 2
+    assert "at or below the 20% cap" in fig1.data[0].name
+    assert "above the 20% cap" in fig1.data[1].name
+    assert sum(fig1.data[0].y) + sum(fig1.data[1].y) == pytest.approx(1_467_457.29, abs=1.0)
+    assert sum(fig1.data[1].y) == pytest.approx(-814_682.09, abs=1.0)
+
+    fig2 = create_alt2_exit_vs_3pl_chart(alts["tn_sales"], alts["tn_loss"])
+    assert len(fig2.data) == 2
+    assert "Exit market entirely" in fig2.data[0].name
+    assert "3PL restructuring" in fig2.data[1].name
+    assert list(fig2.data[0].y) == [0.0, pytest.approx(179_197.95, abs=1.0)]
+    assert list(fig2.data[1].y) == [pytest.approx(162_858.30, abs=1.0), pytest.approx(179_197.95, abs=1.0)]
+
+    fig3 = create_alt3_freight_cut_vs_leak_chart(
+        alts["freight_total"], alts["freight_cut_recovery"], alts["deep_discount_loss"]
+    )
+    assert len(fig3.data) == 1
+    assert list(fig3.data[0].y) == [
+        pytest.approx(1_352_820.69, abs=1.0),
+        pytest.approx(135_282.07, abs=1.0),
+        pytest.approx(814_682.09, abs=1.0),
+    ]
+
+
+def test_deck_alternatives_slide():
+    """Verify the board deck contains the alternatives-eliminated slide with the tested options."""
+    from pptx import Presentation
+
+    prs = Presentation(os.path.join("presentation", "board_deck.pptx"))
+    texts = []
+    for slide in prs.slides:
+        for shape in slide.shapes:
+            if shape.has_text_frame:
+                texts.append(shape.text_frame.text)
+            if shape.has_table:
+                for row in shape.table.rows:
+                    for cell in row.cells:
+                        texts.append(cell.text)
+    joined = " ".join(texts)
+    assert "outearns every alternative tested" in joined
+    assert "Raise list prices, allow deeper discounts" in joined
+    assert "Exit Turkey and Nigeria entirely" in joined
+    assert "Renegotiate carrier rates company-wide" in joined
+    assert "Support lever only" in joined
+
+
 def test_dashboard_narrative_data_accuracy():
     """Verify that all dashboard view narrative files reflect exact empirical calculations without discrepancies."""
     import os
@@ -214,6 +309,27 @@ def test_dashboard_narrative_data_accuracy():
     assert "1,032,488 in operating profit" in revival_content
     assert "179,198 in chronic bilateral cash drain" in revival_content
     assert "46,245 bulky freight recovery" in revival_content
+
+
+def test_deck_presenter_notes():
+    """Verify every slide carries presenter notes and the timing budget stays near the 10-minute briefing."""
+    import re
+
+    from pptx import Presentation
+
+    prs = Presentation(os.path.join("presentation", "board_deck.pptx"))
+    assert len(prs.slides) == 17
+
+    total_seconds = 0.0
+    for i, slide in enumerate(prs.slides, 1):
+        assert slide.has_notes_slide, f"slide {i} has no notes slide"
+        text = slide.notes_slide.notes_text_frame.text
+        m = re.match(r"\[(\d+):(\d+) - Slide \d+ of 17\]", text)
+        assert m, f"slide {i} notes missing timing header: {text[:40]!r}"
+        assert "SAY:" in text, f"slide {i} notes missing talk track"
+        total_seconds += int(m.group(1)) * 60 + int(m.group(2))
+
+    assert 9.0 <= total_seconds / 60.0 <= 11.0, f"briefing length {total_seconds / 60.0:.2f} min off budget"
 
 
 
